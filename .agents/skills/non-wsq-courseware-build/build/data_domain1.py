@@ -1,359 +1,296 @@
-"""Topic 1 labs for C34: prepare, prompt, transform and calculate."""
+"""Topic 1 labs for C34: Use Copilot to Analyse Data (BrightPath recruitment data)."""
+
+from mock_data import EXPECTED
+
+E1 = EXPECTED[1]
+E2 = EXPECTED[2]
+
+
+def _money(v):
+    return f"S${v:,.0f}" if float(v).is_integer() else f"S${v:,.2f}"
+
+
+_SETUP_STEP = (
+    "Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload "
+    "{file} from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. Confirm the title "
+    "bar shows the cloud location and AutoSave is On, and that Formulas > Calculation Options is set to Automatic. Read the "
+    "About_This_Data sheet before you prompt."
+)
 
 DOMAIN1 = [
+    # ------------------------------------------------------------------ LAB 1
     dict(
         num=1,
         topic=1,
-        title="Prepare the Workbook and Create the Copilot Control Trail",
-        duration=45,
+        title="Explore and Question Recruitment Pipeline Data",
+        duration=35,
         objective=(
-            "LO1: confirm the available Copilot experience, preserve the source data, create a named Excel "
-            "table and establish prompt and verification controls"
+            "LO1: confirm Copilot access, prepare a named table, and use Chat and Edit modes to question, check, "
+            "highlight, sort and filter recruitment pipeline data"
         ),
         goal=(
-            "Create a reversible C34 workbook whose source boundary, row grain and baseline controls are explicit "
-            "before Copilot makes any change."
+            "Turn a raw candidate-pipeline export into a named Excel table, find its data-quality issues with Copilot, "
+            "and answer pipeline questions with checked numbers."
         ),
-        workflow=[
-            "Save the source",
-            "Define the grain",
-            "Create the table",
-            "Record controls",
-            "Confirm Copilot",
-        ],
+        workflow=["Save to OneDrive", "Create the table", "Describe the data", "Check quality", "Ask, highlight, filter"],
         desc=(
-            "You will import the synthetic HarbourLight order file, save it as a modern Excel workbook, convert the "
-            "source rows into a named table and create Control and Prompt_Log sheets. You will use Copilot in Chat and "
-            "Plan only to describe the data and propose a safe sequence. The raw source remains unchanged."
+            "You are a talent analyst at BrightPath Talent Solutions, a fictional Singapore recruitment and staffing firm. "
+            "You will put the H1 2026 candidate-pipeline export into a named table, ask Copilot (Chat only) to describe it, "
+            "use Copilot to find duplicate IDs and inconsistent Source labels, then answer pipeline questions and build a "
+            "highlighted, sorted and filtered review view. Every number is checked with a formula."
         ),
         build=(
-            "work-c34/C34-HarbourLight-Copilot-Analysis.xlsx with Raw_Orders, Control and Prompt_Log sheets, "
-            "a tblOrdersRaw table, baseline counts and a recorded Copilot access note"
+            "BrightPath_Candidate_Pipeline.xlsx in OneDrive with table tblApplications, a Source_Clean column, duplicate "
+            "IDs highlighted, Hired rows highlighted, a verified source-by-hires answer and a filled Prompt_Log"
         ),
-        services="Excel for Microsoft 365 or Excel for the web · Copilot · harbourlight-orders-raw.csv",
+        services="Excel for Microsoft 365 or Excel for the web · Copilot (Chat only, Allow editing) · BrightPath_Candidate_Pipeline.xlsx",
+        data_files=["data/BrightPath_Candidate_Pipeline.xlsx"],
         prerequisites=[
-            "Download the repository and keep labs/assets/harbourlight-orders-raw.csv beside the other C34 assets.",
-            "Sign in to an eligible Microsoft 365 account and open Excel or Excel for the web.",
-            "Create a work-c34 training folder in OneDrive or SharePoint. Confirm you can save an .xlsx file there, "
-            "cloud sync is complete and AutoSave is active. Use only the supplied synthetic data.",
+            "A Microsoft 365 account with Copilot in Excel enabled, signed in to Excel or Excel for the web.",
+            "A OneDrive or SharePoint folder named work-c34 that you can upload to.",
+            "This lab folder downloaded, including data/BrightPath_Candidate_Pipeline.xlsx.",
         ],
         steps=[
             (
-                "Open labs/assets/harbourlight-orders-raw.csv in Excel. Select File > Save As and save "
-                "C34-HarbourLight-Copilot-Analysis.xlsx inside your OneDrive or SharePoint work-c34 folder. "
-                "Confirm the title bar shows the cloud location and AutoSave is On, then rename the first sheet "
-                "Raw_Orders. Do not correct, sort or delete any source value.",
-                "Expected source headers:\n"
-                "Order_ID | Order_Date | Region | Channel | Product | Category | Units | Unit_Price | "
-                "Unit_Cost | Discount_Rate | Returned | Customer_Note\n"
-                "Required file state: .xlsx in OneDrive or SharePoint; cloud sync complete; AutoSave On",
+                _SETUP_STEP.format(file="BrightPath_Candidate_Pipeline.xlsx"),
+                "Required state:\n"
+                "File      : OneDrive/work-c34/BrightPath_Candidate_Pipeline.xlsx\n"
+                "AutoSave  : On\n"
+                "Calculation Options : Automatic\n"
+                "Sheets    : About_This_Data | Applications | Prompt_Log",
             ),
             (
-                "Write the grain statement above the control area in a new sheet named Control: 'One data row "
-                "represents one HarbourLight order identified by Order_ID.' On Raw_Orders, click inside the data, "
-                "select Home > Format as Table, confirm My table has headers and choose any accessible style. On "
-                "Table Design, set Table Name to tblOrdersRaw.",
-                "Required table name: tblOrdersRaw\n"
-                "Required grain: one row = one order\n"
-                "Required key: Order_ID",
+                "Select cell A1 on the Applications sheet and press Ctrl+T (Home > Format as Table). Tick My table has headers "
+                "and select OK. On the Table Design tab, set Table Name to tblApplications. Then select the Copilot button. If "
+                "Copilot is unavailable, use the Troubleshooting table before continuing.",
+                "Table name : tblApplications\n"
+                "Grain      : one row = one candidate application (Application_ID)\n"
+                "Expected   : 13 columns, 242 data rows",
             ),
             (
-                "On Control, enter the labels below in A4:A9. In B4:B9 enter formulas that read tblOrdersRaw. "
-                "Use ROWS for row count, COUNTA for populated Order_ID values, MIN and MAX for the date range, "
-                "SUM for Units and SUMPRODUCT for gross sales. Format dates as yyyy-mm-dd and gross sales as S$.",
-                "A4 Source row count\n"
-                "A5 Populated Order_ID count\n"
-                "A6 Earliest order date\n"
-                "A7 Latest order date\n"
-                "A8 Source units\n"
-                "A9 Source gross sales before discount\n\n"
-                "Example formulas:\n"
-                "=ROWS(tblOrdersRaw[Order_ID])\n"
-                "=COUNTA(tblOrdersRaw[Order_ID])\n"
-                "=MIN(tblOrdersRaw[Order_Date])\n"
-                "=MAX(tblOrdersRaw[Order_Date])\n"
-                "=SUM(tblOrdersRaw[Units])\n"
-                "=SUMPRODUCT(tblOrdersRaw[Units],tblOrdersRaw[Unit_Price])",
+                "In the Copilot pane, choose Chat only (no workbook changes). Paste the prompt below. Compare Copilot's row count "
+                "and date range with the table (select the Application_ID column and read Count on the status bar). Record the "
+                "prompt, what Copilot said and your check on the Prompt_Log sheet.",
+                "GOAL: Describe this candidate pipeline before I analyse it.\n"
+                "CONTEXT: BrightPath recruitment desk, H1 2026. One row should be one application.\n"
+                "DATA: Use only tblApplications.\n"
+                "CONSTRAINTS: Do not change the workbook.\n"
+                "OUTPUT: What a row represents, each column with its data type, the number of rows,\n"
+                "        the Applied_Date range and the distinct values of Stage and Source.\n"
+                "REVIEW: Tell me how you counted the rows.",
             ),
             (
-                "Create a sheet named Prompt_Log. Copy the header row from "
-                "labs/assets/prompt-and-verification-log-template.csv into A1:J1, format it as a table named "
-                "tblPromptLog and add the first record. State the Copilot entry point you can see and whether "
-                "Edit, Plan and Chat choices are available. If a label differs, record the label exactly.",
-                "Lab,Timestamp,Mode,Goal,Data_Boundary,Prompt,Proposed_Logic,Workbook_Change,Verification,Decision\n"
-                "1,<TODAY>,Chat,Describe source structure,tblOrdersRaw,<PASTE PROMPT>,<COPILOT RESPONSE>,"
-                "No change,<CHECKS>,Keep or revise",
+                "Still in Chat only, ask Copilot to check data quality. It should report 2 repeated Application_IDs and Source "
+                "values that are not in the canonical list on About_This_Data. Then switch to Allow editing (Edit) and ask Copilot "
+                "to highlight the duplicate IDs and add a Source_Clean column. Check that no row was deleted - the table must still "
+                f"have {E1['rows']} rows.",
+                "CHAT ONLY:\n"
+                "Check tblApplications for data-quality issues. List any Application_ID that appears more than once,\n"
+                "and any Source value that is not exactly one of: LinkedIn, JobStreet, MyCareersFuture, Referral,\n"
+                "BrightPath Website, Job Fair, Talent Database. Give the count of each issue. Do not change anything.\n\n"
+                "ALLOW EDITING:\n"
+                "1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.\n"
+                "2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'\n"
+                "   to 'LinkedIn'. Do not delete or edit any existing values.",
             ),
             (
-                "Open Copilot. In Chat, submit the first prompt below and compare the response with the Control "
-                "sheet. Then choose Plan and submit the second prompt. Do not approve workbook edits. Record both "
-                "prompts, the proposed logic and your decision in tblPromptLog.",
-                "CHAT PROMPT\n"
-                "GOAL: Describe the structure and readiness risks in this order data.\n"
-                "CONTEXT: HarbourLight Retail operations review; one row should represent one order.\n"
-                "DATA: Use only tblOrdersRaw. Name the columns you rely on.\n"
-                "CONSTRAINTS: Do not change the workbook. Do not infer missing business facts.\n"
-                "OUTPUT: Grain, key, date range, numeric fields, category fields and five checks.\n"
-                "REVIEW: Compare row count, Order_ID count, date range, Units and gross sales with Control!B4:B9.\n\n"
-                "PLAN PROMPT\n"
-                "Propose a reversible sequence to prepare tblOrdersRaw for analysis. Preserve Raw_Orders; "
-                "make one bounded change at a time; include verification after every change. Do not act.",
+                "Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it "
+                "shows. Then verify the hires total in an empty cell on Prompt_Log with the formula below, and verify one source "
+                "with COUNTIFS. Duplicate rows are Rejected applications, so they do not change the hire counts.",
+                "PROMPT (Chat only):\n"
+                "Using tblApplications, count applications and hires (Stage = \"Hired\") by Source_Clean.\n"
+                "Show a table sorted by hires, highest first, with hire rate = hires / applications.\n\n"
+                "CHECK FORMULAS:\n"
+                "=COUNTIFS(tblApplications[Stage],\"Hired\")\n"
+                "=COUNTIFS(tblApplications[Source_Clean],\"LinkedIn\",tblApplications[Stage],\"Hired\")",
+            ),
+            (
+                "Switch to Allow editing and build a review view, one change at a time. After each change, inspect the sheet and "
+                "keep it or Undo. Finally apply the filter, read the visible-row count on the status bar, record it, and clear the "
+                f"filter so all {E1['rows']} rows return.",
+                "1) Highlight entire rows of tblApplications where Stage is \"Hired\" with a light green fill.\n"
+                "2) Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline\n"
+                "   from lowest to highest.\n"
+                "3) Filter tblApplications to show only Client_Sector = \"Technology\" and Stage = \"Interview\".",
+            ),
+            (
+                "Complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how you verified it and your "
+                "decision (Keep, Revise or Undo). Save - AutoSave keeps the cloud copy current.",
+                "",
             ),
         ],
+        sample_prompts=[
+            ("Describe", "Describe tblApplications: what one row represents, each column's data type, the row count and the Applied_Date range. Do not change the workbook."),
+            ("Data quality", "List any Application_ID that appears more than once in tblApplications and any Source value that is not in the canonical list on About_This_Data."),
+            ("Clean helper column", "Add a column Source_Clean that trims spaces from Source and replaces 'Linked In' with 'LinkedIn'. Do not change the original Source column."),
+            ("Question", "Using tblApplications, count applications and hires by Source_Clean and show the hire rate. Sort by hires, highest first."),
+            ("Question", "Which Client_Sector received the most applications, and how many? Show the count for every sector."),
+            ("Highlight", "Highlight rows where Stage is Hired in light green."),
+            ("Sort", "Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline from lowest to highest."),
+            ("Filter", "Filter to show only Technology applications at the Interview stage."),
+            ("Insight", "What's interesting about this pipeline data? Give three observations, each with the numbers behind it."),
+        ],
         test=(
-            "Raw_Orders must contain table tblOrdersRaw with exactly 36 data rows and 36 populated Order_ID values. "
-            "Control must show earliest date 2026-01-05, latest date 2026-04-28, 36 rows, 36 populated IDs and the "
-            "same Units and gross-sales controls as labs/assets/expected-controls.md. Prompt_Log must contain one "
-            "Chat and one Plan record, both with 'No change' in Workbook_Change. Raw_Orders must still match the CSV."
+            f"tblApplications exists with {E1['rows']} data rows and =COUNTA(UNIQUE(tblApplications[Application_ID])) returns "
+            f"{E1['unique']}. The repeated IDs are {E1['dup_ids'][0]} and {E1['dup_ids'][1]} (both Rejected) and are orange. "
+            f"Copilot found {E1['variants_linkedin']} 'Linked In' and {E1['variants_jobstreet']} 'JobStreet ' (trailing space) "
+            f"values; =COUNTIF(tblApplications[Source_Clean],\"LinkedIn\") returns {E1['linkedin_clean_all']}. Hires total "
+            f"{E1['hired']} and {E1['top_hire_source']} has the most hires ({E1['top_hire_source_n']}). The Technology + Interview "
+            f"filter shows {E1['tech_interview_all']} rows. Technology received the most applications ({E1['top_sector_n']} unique). "
+            f"After clearing the filter all {E1['rows']} rows are visible, and Prompt_Log has at least 5 entries."
         ),
         checkpoint=(
-            "Save and close the workbook. This file is the Lab 1 checkpoint. Lab 2 copies Raw_Orders into a working "
-            "sheet. If you need to rejoin, follow the Lab 1 rebuild checklist in labs/assets/harbourlight-checkpoints.md."
+            "Keep this workbook in work-c34. Lab 2 uses a separate requisitions workbook, so a learner who is behind can "
+            "start Lab 2 from its own data folder."
         ),
         troubleshooting=[
             (
-                "The Copilot button is missing.",
-                "Confirm the signed-in account, current Excel build, connected-experience settings and organisation policy. "
-                "Also confirm the workbook is .xlsx in OneDrive or SharePoint, cloud sync is complete and AutoSave is On. "
-                "Pair with the trainer for prompt comparison while continuing the workbook controls if access remains unavailable.",
+                "The Copilot button is missing or greyed out.",
+                "Save the file as .xlsx in OneDrive or SharePoint, turn AutoSave On, close and reopen it. Check your licence in "
+                "your Microsoft 365 account and ask IT if Copilot is disabled for your tenant. Pair with a neighbour meanwhile.",
             ),
             (
-                "Copilot appears before saving but becomes unavailable in the workbook.",
-                "Use File > Save As to move the workbook into your OneDrive or SharePoint work-c34 folder, wait for sync, "
-                "turn AutoSave On, close and reopen the cloud file, then retry.",
+                "'Unsupported file state' message.",
+                "If the file is checked out in SharePoint, check it in and reopen it, or open it in Excel for the web. Strict "
+                "Open XML files are not supported - save as a normal .xlsx.",
             ),
             (
-                "The table includes blank rows or stops before the last order.",
-                "Select Table Design > Resize Table and set the range from the 12 headers through the final populated row.",
+                "Copilot answers about the whole sheet instead of the table.",
+                "Name the table (tblApplications) and the exact columns in the prompt, and click inside the table before asking.",
             ),
             (
-                "The date controls show numbers instead of dates.",
-                "Keep the formulas and apply the yyyy-mm-dd number format to Control!B6:B7.",
+                "Copilot's count differs from your formula.",
+                "Ask Copilot how it counted (rows vs unique IDs, which Stage values). Trust the formula, record the difference "
+                "and refine the prompt.",
             ),
         ],
         challenge=(
-            "Add a duplicate-ID control that returns the row count minus the unique Order_ID count. Explain why a zero "
-            "result is necessary but not sufficient to prove the source is ready."
+            "Ask Copilot to add a Pipeline_Status column that groups Stage into Active (Applied, Screening, Interview, Offer), "
+            "Hired and Closed (Rejected, Withdrawn). Verify the three counts add up to the row count."
         ),
-        reflection="Which baseline control would reveal the most serious accidental change later in the workflow, and why?",
+        reflection="Which data-quality issue would most distort a source-effectiveness report if you had not found it, and why?",
     ),
+    # ------------------------------------------------------------------ LAB 2
     dict(
         num=2,
         topic=1,
-        title="Apply Reproducible Highlights, Sorts and Filters",
-        duration=40,
+        title="Generate and Verify Formula Columns and Lookups for Job Requisitions",
+        duration=35,
         objective=(
-            "LO2: translate a business question into explicit highlight, sort and filter rules and verify that "
-            "the resulting view is reversible"
+            "LO1: use Copilot to generate lookup and calculated columns from plain-English rules, explain them, "
+            "and reconcile them to independent control formulas"
         ),
         goal=(
-            "Create a review view for returned and high-discount orders without deleting rows, hiding the denominator "
-            "or changing the protected source."
+            "Add recruiter names, days open, fill rate, estimated placement fee and an ageing flag to a requisitions table, "
+            "then prove each column is right."
         ),
-        workflow=["Copy the source", "Write the rules", "Apply one change", "Count matches", "Restore the view"],
+        workflow=["Lookup", "Days open", "Fill rate & fee", "Ageing flag", "Reconcile"],
         desc=(
-            "You will copy the source into a working sheet, state deterministic review rules and ask Copilot to apply "
-            "highlighting, sorting and filtering one operation at a time. You will record total and visible row counts, "
-            "clear all filters and confirm that the source and working tables still contain the same orders."
+            "BrightPath's permanent-recruitment desk tracks 60 client job orders. You will ask Copilot to add an XLOOKUP for "
+            "the recruiter's name and four calculated columns written from business rules, ask it to explain each formula, "
+            "hand-check one requisition and reconcile column totals to independent formulas on the Control sheet. You will then "
+            "ask Copilot which recruiter generated the most estimated fees and verify the answer."
         ),
         build=(
-            "An Orders_Working sheet with tblOrdersWorking, reversible highlighting, an explicit multi-level sort, "
-            "a returned-order filter and Prompt_Log evidence for every applied change"
+            "BrightPath_Job_Requisitions.xlsx with Recruiter_Name, Days_Open, Fill_Rate, Est_Fee and Ageing_Flag columns in "
+            "tblRequisitions, overdue requisitions highlighted, and a Control sheet that reconciles the totals"
         ),
-        services="Excel · Copilot Edit or Plan · Control sheet · Prompt_Log",
+        services="Excel · Copilot (Allow editing, Chat only) · XLOOKUP · structured references · BrightPath_Job_Requisitions.xlsx",
+        data_files=["data/BrightPath_Job_Requisitions.xlsx"],
         prerequisites=[
-            "Completed Lab 1 workbook with Raw_Orders, tblOrdersRaw, Control and Prompt_Log.",
-            "The source row count and Order_ID count both equal 36.",
-            "Keep Raw_Orders unchanged; all direct changes in this lab go to Orders_Working.",
+            "Lab 1 completed, or Copilot access confirmed on a OneDrive file with AutoSave On.",
+            "This lab folder's data/BrightPath_Job_Requisitions.xlsx.",
         ],
         steps=[
             (
-                "Right-click Raw_Orders, select Move or Copy > Create a copy, place it at the end and rename it "
-                "Orders_Working. Click inside the copied table and set its Table Name to tblOrdersWorking. Confirm "
-                "that Raw_Orders still contains tblOrdersRaw and 36 rows.",
-                "Required sheet: Orders_Working\n"
-                "Required table: tblOrdersWorking\n"
-                "Protected source: Raw_Orders / tblOrdersRaw",
+                _SETUP_STEP.format(file="BrightPath_Job_Requisitions.xlsx")
+                + " Note the fee rule: Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, and the report date in Control!B1.",
+                "Tables : tblRequisitions (60 rows) | tblRecruiters (6 rows)\n"
+                "Control!B1 Report_Date = 2026-06-30",
             ),
             (
-                "On Control, create a Lab 2 rule block with the exact definitions below. Write the total row count "
-                "beside it before any filter. Add a Prompt_Log row in Plan mode and ask Copilot to restate the rules "
-                "as Boolean conditions without acting. Revise the wording until its conditions match exactly.",
-                "Highlight rule A: Returned equals Yes\n"
-                "Highlight rule B: Discount_Rate is greater than or equal to 0.15\n"
-                "Sort rule: Units descending, then Order_ID ascending\n"
-                "Filter rule: Returned equals Yes\n"
-                "Preserve rule: do not delete rows or edit cell values",
+                "Choose Allow editing. Ask Copilot to add the lookup column. Select a cell in the new column and ask Copilot to "
+                "explain the formula. Check one row by hand against tblRecruiters.",
+                "In tblRequisitions, add a column Recruiter_Name that looks up Recruiter_Name from tblRecruiters\n"
+                "using Recruiter_ID. Use XLOOKUP and return \"Not found\" if there is no match.\n\n"
+                "Then: Explain the formula in the selected cell.",
             ),
             (
-                "Switch to Edit only after the plan matches. Ask Copilot to highlight Returned=Yes rows with a pale "
-                "red fill and Discount_Rate>=0.15 cells with a pale amber fill in tblOrdersWorking. Ask it to describe "
-                "the ranges or rules it changed. Review every changed sheet, range and object; confirm only "
-                "tblOrdersWorking formatting changed and use Undo if the scope differs. Inspect at least one matching "
-                "and one non-matching row. On Control, enter "
-                '=COUNTIF(tblOrdersWorking[Discount_Rate],">=0.15") and confirm 11. Record the accepted or rejected '
-                "change scope, count and evidence in Prompt_Log.",
-                "Apply these visual rules only to tblOrdersWorking:\n"
-                "1. Pale red row highlight when Returned exactly equals Yes.\n"
-                "2. Pale amber cell highlight when Discount_Rate >= 0.15.\n"
-                "Do not change values, order or visibility. After acting, state the exact rules applied.",
+                "Ask for Days_Open with an explicit rule for open requisitions. Read the explanation. Test an open row (blank "
+                "Close_Date) and a closed row by subtracting the dates yourself.",
+                "Add a column Days_Open to tblRequisitions. If Close_Date is blank, use Control!B1 minus Open_Date;\n"
+                "otherwise use Close_Date minus Open_Date. Show whole numbers.",
             ),
             (
-                "Ask Copilot to sort tblOrdersWorking by Units descending and Order_ID ascending as the tie-breaker. "
-                "Review the changed sheets, ranges and objects, use Undo if anything outside tblOrdersWorking changed, "
-                "then check the first five Order_ID and Units pairs against the manual Data > Sort result. Record whether "
-                "the tie-break order is deterministic and whether the change scope was accepted.",
-                "Sort tblOrdersWorking by Units, Largest to Smallest. For equal Units, sort Order_ID, A to Z. "
-                "Keep every row and all existing formats. State the first five Order_ID and Units values after sorting.",
+                "Ask for Fill_Rate and Est_Fee, one prompt each. Format Fill_Rate as a percentage and Est_Fee as S$ with no "
+                f"decimals. Hand-check {E2['sample_id']}: Filled {E2['sample_detail'][0]} x S${E2['sample_detail'][1]:,} x 12 x "
+                f"{E2['sample_detail'][2]:.0%} = {_money(E2['sample_fee'])}.",
+                "Add a column Fill_Rate = Filled divided by Openings, formatted as a percentage.\n\n"
+                "Add a column Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, formatted as S$ with no decimals.\n"
+                "Explain the formula.",
             ),
             (
-                "Ask Copilot to filter Returned to Yes. In Control, record the visible returned-order count and the "
-                "unchanged total row count. Review the changed sheets, ranges and objects and use Undo if the scope "
-                "differs. Then select Data > Clear. Confirm that all 36 rows return, the table still has 36 populated "
-                "IDs and Raw_Orders remains unchanged. Record the accepted or rejected scope and save with no filter active.",
-                "Filter tblOrdersWorking so Returned exactly equals Yes. Do not delete non-matching rows. "
-                "State the visible match count and the total table row count. I will clear the filter after verification.",
+                "Ask for the ageing flag and a highlight. Count the flags with the status bar or a COUNTIF.",
+                "Add a column Ageing_Flag that shows \"Overdue\" when Status is \"Open\" and Days_Open is greater than 45,\n"
+                "otherwise leave it blank. Highlight rows where Ageing_Flag is \"Overdue\" with a light amber fill.",
+            ),
+            (
+                "Build independent controls on the Control sheet using the formulas below (type them yourself - do not reuse "
+                "Copilot's columns for the control). Each pair must match.",
+                "A3 Total Est_Fee (column)       B3 =SUM(tblRequisitions[Est_Fee])\n"
+                "A4 Total fee (independent)      B4 =SUMPRODUCT(tblRequisitions[Filled],tblRequisitions[Monthly_Salary_Budget],tblRequisitions[Fee_Rate])*12\n"
+                "A5 Avg days to fill (Filled)    B5 =AVERAGEIFS(tblRequisitions[Days_Open],tblRequisitions[Status],\"Filled\")\n"
+                "A6 Overdue (independent)        B6 =COUNTIFS(tblRequisitions[Status],\"Open\",tblRequisitions[Days_Open],\">45\")\n"
+                "A7 Overdue flags (column)       B7 =COUNTIF(tblRequisitions[Ageing_Flag],\"Overdue\")",
+            ),
+            (
+                "In Chat only, ask which recruiter generated the most estimated fees. Verify with SUMIFS on Control, then log all "
+                "prompts on Prompt_Log.",
+                "Using tblRequisitions, which Recruiter_Name has the highest total Est_Fee? Show the total for every recruiter.\n\n"
+                "CHECK: =SUMIFS(tblRequisitions[Est_Fee],tblRequisitions[Recruiter_Name],\"<name>\")",
             ),
         ],
+        sample_prompts=[
+            ("Lookup", "Add a column Recruiter_Name that looks up Recruiter_Name from tblRecruiters using Recruiter_ID with XLOOKUP. Return \"Not found\" if missing."),
+            ("Duration", "Add a column Days_Open: if Close_Date is blank use Control!B1 minus Open_Date, otherwise Close_Date minus Open_Date."),
+            ("Ratio", "Add a column Fill_Rate = Filled / Openings formatted as a percentage."),
+            ("Business rule", "Add a column Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, formatted as S$ with no decimals."),
+            ("Flag", "Add a column Ageing_Flag that shows \"Overdue\" when Status is Open and Days_Open > 45, otherwise blank."),
+            ("Explain", "Explain the formula in the selected cell step by step, and tell me how blanks are handled."),
+            ("Summary row", "Add a total row to tblRequisitions that sums Openings, Filled and Est_Fee and averages Days_Open."),
+            ("Question", "Which recruiter has the highest total Est_Fee? Show every recruiter's total, highest first."),
+        ],
         test=(
-            "The working table must contain 36 rows before and after the filter. The returned-order filter must show "
-            "the exact count in labs/assets/expected-controls.md; the high-discount rule must match the listed count; "
-            "and the maximum Units value plus first tie-break order must match the control. After Data > Clear, all 36 "
-            "orders must be visible. Raw_Orders values and order must remain unchanged."
+            f"Control!B3 and B4 both show {_money(E2['fee_total'])}. B5 shows {E2['avg_days_filled']} days "
+            f"({E2['filled_n']} Filled requisitions). B6 and B7 both show {E2['overdue_n']}. {E2['sample_id']} shows Est_Fee "
+            f"{_money(E2['sample_fee'])} and Days_Open {E2['sample_days']}. Every Recruiter_Name resolves (no \"Not found\"). "
+            f"The top recruiter by estimated fees is {E2['top_rec']} with {_money(E2['top_rec_fee'])}."
         ),
         checkpoint=(
-            "Save the workbook with tblOrdersWorking sorted by Units descending and no active filter. Lab 3 adds formula "
-            "columns to this table. To rejoin, rebuild Orders_Working from Raw_Orders and use the Lab 2 rules in "
-            "labs/assets/harbourlight-checkpoints.md."
+            "Keep the workbook in work-c34. Topic 2 starts from a new metrics workbook in the Lab 3 folder."
         ),
         troubleshooting=[
             (
-                "Copilot highlights cells but not the full returned row.",
-                "Keep the cell rule if it is clear, or select the table data range and use a conditional-format formula "
-                "based on the Returned column. Record the final range and rule.",
+                "Days_Open is negative or huge for open requisitions.",
+                "The formula used today's date or a blank as zero. Ask Copilot to use Control!B1 explicitly, or edit the formula.",
             ),
             (
-                "The filter count differs from the control.",
-                "Inspect the exact Returned values for spaces or case differences before changing anything; the supplied "
-                "file uses canonical Yes and No values.",
+                "Est_Fee is 12 times too small or too large.",
+                "Re-read the rule: fee is on first-year salary (monthly x 12). Ask Copilot to explain the formula and correct it.",
             ),
             (
-                "The sort changes Raw_Orders.",
-                "Undo immediately, confirm the active sheet and table name, then repeat only on tblOrdersWorking.",
+                "The new column is outside the table.",
+                "Click inside tblRequisitions before prompting and name the table in the prompt; or drag the table's resize handle.",
+            ),
+            (
+                "Copilot cannot add a formula column.",
+                "Confirm Calculation Options is Automatic and the data is an Excel table; try Excel for the web if desktop fails.",
             ),
         ],
         challenge=(
-            "Add a second reversible filter for Discount_Rate>=0.15 and Returned=No. Record both the visible count and "
-            "the full denominator, then explain why the combination answers a different question."
+            "Ask Copilot to add a Fee_Achieved column that is Est_Fee for Filled requisitions only, then build a small "
+            "summary of Fee_Achieved by Sector with SUMIFS. Check that the sector totals add up to the grand total."
         ),
-        reflection="Why is an explicit filter denominator important when a screenshot of the filtered view is shared?",
-    ),
-    dict(
-        num=3,
-        topic=1,
-        title="Generate and Reconcile Formula Columns",
-        duration=45,
-        objective=(
-            "LO2: generate structured-reference formula columns from plain-language rules, inspect the logic and "
-            "reconcile the calculated results to independent controls"
-        ),
-        goal=(
-            "Extend tblOrdersWorking with six auditable calculated columns and prove that representative rows and "
-            "headline totals match the supplied business rules."
-        ),
-        workflow=["Define the rules", "Generate one formula", "Inspect the fill", "Test edge cases", "Reconcile totals"],
-        desc=(
-            "You will write the calculation rules in words, ask Copilot for one structured-reference formula at a time "
-            "and inspect every formula before filling it through the table. You will verify a no-discount row, a discounted "
-            "row, a returned order, the zero-error path and independent totals on the Control sheet."
-        ),
-        build=(
-            "Six calculated columns in tblOrdersWorking - Gross_Sales, Discount_Amount, Net_Sales, Cost_Amount, "
-            "Gross_Profit and Margin_Rate - plus formula checks and reconciled totals on Control"
-        ),
-        services="Excel formulas · Copilot · structured references · expected-controls.md",
-        prerequisites=[
-            "Completed Lab 2 workbook with tblOrdersWorking and no active filter.",
-            "Control shows 36 total rows and the source gross-sales value from Lab 1.",
-            "Open labs/assets/formula-and-verification-rules.md before writing a formula.",
-        ],
-        steps=[
-            (
-                "On Control, copy the six business rules from labs/assets/formula-and-verification-rules.md into a "
-                "Lab 3 block. Include currency units, blank handling and the Margin_Rate denominator. Add a Prompt_Log "
-                "row in Chat and ask Copilot to return only the proposed structured-reference formulas and explanations; "
-                "do not apply them yet.",
-                "Required output columns:\n"
-                "Gross_Sales | Discount_Amount | Net_Sales | Cost_Amount | Gross_Profit | Margin_Rate\n\n"
-                "Use native Excel formulas. Do not use the COPILOT function for numeric calculations.",
-            ),
-            (
-                "Review the proposed Gross_Sales and Discount_Amount formulas. In tblOrdersWorking add the two headers "
-                "and enter the approved formulas in the first data row so Excel fills each calculated column. Select "
-                "three rows and confirm that the formula uses current-row structured references.",
-                "Gross_Sales: =[@Units]*[@Unit_Price]\n"
-                "Discount_Amount: =[@Gross_Sales]*[@Discount_Rate]",
-            ),
-            (
-                "Add Net_Sales, Cost_Amount and Gross_Profit one column at a time. After every column, ask Copilot to "
-                "explain the sign and inputs, then compare one row with a calculator or hand-worked result. Record the "
-                "selected Order_ID, inputs, expected value and observed value in Prompt_Log.",
-                "Net_Sales: =[@Gross_Sales]-[@Discount_Amount]\n"
-                "Cost_Amount: =[@Units]*[@Unit_Cost]\n"
-                "Gross_Profit: =[@Net_Sales]-[@Cost_Amount]",
-            ),
-            (
-                "Add Margin_Rate and format the entire column as 0.0%. The approved denominator is Net_Sales. Use "
-                "IFERROR to return zero if Net_Sales is zero. Check that the formula is filled in all 36 data rows and "
-                "that no formula-error values appear. On Control, create two scratch cells containing Gross_Profit=0 "
-                "and Net_Sales=0, apply =IFERROR(<GROSS_PROFIT_CELL>/<NET_SALES_CELL>,0) and confirm the result is 0. "
-                "Delete the scratch inputs after recording the check; do not add a synthetic order to the table.",
-                "Margin_Rate: =IFERROR([@Gross_Profit]/[@Net_Sales],0)\n"
-                "Required format: 0.0%",
-            ),
-            (
-                "On Control, calculate SUM for Gross_Sales, Discount_Amount, Net_Sales, Cost_Amount and Gross_Profit. "
-                "Add a weighted overall margin formula: total Gross_Profit divided by total Net_Sales. Compare the six "
-                "results with labs/assets/expected-controls.md. Explicitly test HL-1001, HL-1003, HL-1007, HL-1018 "
-                "and HL-1032 against the named row controls. Review every changed sheet, range and object; confirm only "
-                "the six approved calculated columns and Control checks changed, use Undo for scope creep and record "
-                "the accepted or rejected scope. If a value differs, inspect formulas and inputs rather than overwriting it.",
-                "Overall Margin_Rate control:\n"
-                "=SUM(tblOrdersWorking[Gross_Profit])/SUM(tblOrdersWorking[Net_Sales])\n\n"
-                "Do not use AVERAGE(tblOrdersWorking[Margin_Rate]) for the overall margin.",
-            ),
-        ],
-        test=(
-            "All six calculated columns must contain formulas for all 36 rows with no formula-error values. The formula "
-            "text must use structured references and the overall margin must use total Gross_Profit divided by total "
-            "Net_Sales. The six totals and the named representative Order_ID checks must exactly match "
-            "labs/assets/expected-controls.md. Copilot's explanation alone does not satisfy the check."
-        ),
-        checkpoint=(
-            "Save the workbook with all formulas present and no active filter. Lab 4 copies tblOrdersWorking to a clean "
-            "analysis sheet. To rejoin, use the formula block and control totals in "
-            "labs/assets/harbourlight-checkpoints.md."
-        ),
-        troubleshooting=[
-            (
-                "Excel creates A1 references instead of structured references.",
-                "Confirm the range is an Excel table, select the first data cell under the new header and build the formula "
-                "by clicking the current-row cells; Excel should insert named column references.",
-            ),
-            (
-                "The overall margin differs from the control while row formulas look correct.",
-                "Confirm you divided total Gross_Profit by total Net_Sales and did not average row percentages.",
-            ),
-            (
-                "Only the first row contains the formula.",
-                "Double-click the fill handle or re-enter the formula in the table column and confirm calculated-column fill "
-                "is enabled. Do not paste hardcoded values down the column.",
-            ),
-        ],
-        challenge=(
-            "Add a Recalculation_Check column that compares Net_Sales with Gross_Sales minus Discount_Amount and returns "
-            "OK only when the absolute difference is below 0.005. Explain the tolerance."
-        ),
-        reflection="Which formula check is independent enough to catch a fluent but logically wrong Copilot suggestion?",
+        reflection="Which of today's formulas would have looked correct but been wrong without a hand-check, and how did you catch it?",
     ),
 ]

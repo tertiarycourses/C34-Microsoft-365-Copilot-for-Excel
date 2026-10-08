@@ -1,0 +1,80 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 1: Explore and Question Recruitment Pipeline Data
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+
+[1] Describe
+Describe tblApplications: what one row represents, each column's data type, the row count and the Applied_Date range. Do not change the workbook.
+
+[2] Data quality
+List any Application_ID that appears more than once in tblApplications and any Source value that is not in the canonical list on About_This_Data.
+
+[3] Clean helper column
+Add a column Source_Clean that trims spaces from Source and replaces 'Linked In' with 'LinkedIn'. Do not change the original Source column.
+
+[4] Question
+Using tblApplications, count applications and hires by Source_Clean and show the hire rate. Sort by hires, highest first.
+
+[5] Question
+Which Client_Sector received the most applications, and how many? Show the count for every sector.
+
+[6] Highlight
+Highlight rows where Stage is Hired in light green.
+
+[7] Sort
+Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline from lowest to highest.
+
+[8] Filter
+Filter to show only Technology applications at the Interview stage.
+
+[9] Insight
+What's interesting about this pipeline data? Give three observations, each with the numbers behind it.
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Required state:
+File      : OneDrive/work-c34/BrightPath_Candidate_Pipeline.xlsx
+AutoSave  : On
+Calculation Options : Automatic
+Sheets    : About_This_Data | Applications | Prompt_Log
+
+[Step 2]
+Table name : tblApplications
+Grain      : one row = one candidate application (Application_ID)
+Expected   : 13 columns, 242 data rows
+
+[Step 3]
+GOAL: Describe this candidate pipeline before I analyse it.
+CONTEXT: BrightPath recruitment desk, H1 2026. One row should be one application.
+DATA: Use only tblApplications.
+CONSTRAINTS: Do not change the workbook.
+OUTPUT: What a row represents, each column with its data type, the number of rows,
+        the Applied_Date range and the distinct values of Stage and Source.
+REVIEW: Tell me how you counted the rows.
+
+[Step 4]
+CHAT ONLY:
+Check tblApplications for data-quality issues. List any Application_ID that appears more than once,
+and any Source value that is not exactly one of: LinkedIn, JobStreet, MyCareersFuture, Referral,
+BrightPath Website, Job Fair, Talent Database. Give the count of each issue. Do not change anything.
+
+ALLOW EDITING:
+1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.
+2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'
+   to 'LinkedIn'. Do not delete or edit any existing values.
+
+[Step 5]
+PROMPT (Chat only):
+Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
+Show a table sorted by hires, highest first, with hire rate = hires / applications.
+
+CHECK FORMULAS:
+=COUNTIFS(tblApplications[Stage],"Hired")
+=COUNTIFS(tblApplications[Source_Clean],"LinkedIn",tblApplications[Stage],"Hired")
+
+[Step 6]
+1) Highlight entire rows of tblApplications where Stage is "Hired" with a light green fill.
+2) Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline
+   from lowest to highest.
+3) Filter tblApplications to show only Client_Sector = "Technology" and Stage = "Interview".

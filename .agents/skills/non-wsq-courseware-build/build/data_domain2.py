@@ -1,353 +1,266 @@
-"""Topic 2 labs for C34: clean, visualise, analyse and verify."""
+"""Topic 2 labs for C34: Use Copilot to Plot Charts (BrightPath recruitment and placement data)."""
+
+from mock_data import EXPECTED
+from data_domain1 import _SETUP_STEP
+
+E3 = EXPECTED[3]
+E4 = EXPECTED[4]
+_F = E3["funnel"]
 
 DOMAIN2 = [
+    # ------------------------------------------------------------------ LAB 3
+    dict(
+        num=3,
+        topic=2,
+        title="Create and Refine Recruitment Charts with Copilot",
+        duration=45,
+        objective=(
+            "LO2: use Copilot to build PivotTables and trend, comparison, funnel and combo charts from prompts, refine "
+            "them with follow-up prompts and tie each chart to a checked total"
+        ),
+        goal=(
+            "Produce four decision-ready recruitment charts - hiring trend, hires by sector, the H1 2026 funnel and source "
+            "effectiveness - each backed by a reconciled summary."
+        ),
+        workflow=["Trend line", "Sector bars", "Funnel", "Source combo", "Refine & check"],
+        desc=(
+            "BrightPath's leadership wants to see how hiring is moving and which sectors and sourcing channels perform best. "
+            "You will ask Copilot to build PivotTables and charts from 18 months of funnel metrics and a sourcing summary, "
+            "choose each chart from the question it answers, refine titles, labels, sort order and axes with follow-up "
+            "prompts, and reconcile every chart to an independent SUMIFS check."
+        ),
+        build=(
+            "BrightPath_Recruitment_Metrics.xlsx with PivotTables and four refined charts on the Charts sheet: a monthly hires "
+            "line, a sorted 2026 hires-by-sector bar, a 2026 recruitment funnel and a hire-rate vs cost-per-hire combo chart"
+        ),
+        services="Excel · Copilot (Allow editing) · PivotTables · line, bar, funnel and combo charts · BrightPath_Recruitment_Metrics.xlsx",
+        data_files=["data/BrightPath_Recruitment_Metrics.xlsx"],
+        prerequisites=[
+            "Topic 1 completed: you can open a OneDrive workbook, use Copilot modes and verify with formulas.",
+            "This lab folder's data/BrightPath_Recruitment_Metrics.xlsx.",
+        ],
+        steps=[
+            (
+                _SETUP_STEP.format(file="BrightPath_Recruitment_Metrics.xlsx")
+                + " Write the four questions below at the top of the Charts sheet - each chart must answer one of them.",
+                "Tables : tblMonthly (108 rows = 18 months x 6 sectors) | tblSources (7 rows)\n\n"
+                "Q1 Trend      : How have total hires moved month by month since Jan 2025?\n"
+                "Q2 Comparison : Which sector produced the most hires in Jan-Jun 2026?\n"
+                "Q3 Funnel     : Where do candidates drop out between application and hire in 2026?\n"
+                "Q4 Efficiency : Which sources convert best, and at what cost per hire?",
+            ),
+            (
+                "Choose Allow editing. Ask Copilot for the trend PivotTable and line chart. Check the Pivot grand total against "
+                "=SUM(tblMonthly[Hires]) and find the peak month.",
+                "Create a PivotTable from tblMonthly on a new sheet named Pivot_Trend with Month_Label in rows and\n"
+                "Sum of Hires as values. Then create a line chart of total hires by month from that PivotTable.\n"
+                "Show data labels and gridlines. Title: \"Monthly hires, Jan 2025 - Jun 2026\".",
+            ),
+            (
+                "Ask for the 2026 sector comparison. Then refine it with a follow-up prompt. Verify Technology's 2026 hires "
+                "with the SUMIFS shown.",
+                "Create a PivotTable on a new sheet Pivot_Sector from tblMonthly with Sector in rows and Sum of Hires,\n"
+                "filtered to months in 2026 only. Create a bar chart from it.\n\n"
+                "FOLLOW-UP: Sort the bars from highest to lowest and change the title to state the leading sector.\n\n"
+                "CHECK: =SUMIFS(tblMonthly[Hires],tblMonthly[Sector],\"Technology\",tblMonthly[Month],\">=\"&DATE(2026,1,1))",
+            ),
+            (
+                "Ask Copilot to build a 2026 funnel summary with formulas, then a funnel chart. Confirm the summary uses SUMIFS "
+                "(not typed numbers) by clicking a value cell.",
+                "On the Charts sheet, build a small table of 2026 totals for Applications, Screened, Interviews, Offers\n"
+                "and Hires from tblMonthly using SUMIFS on Month >= 1 Jan 2026. Then create a funnel chart from it\n"
+                "with data labels. Add a column showing each stage as a % of Applications.",
+            ),
+            (
+                "Ask Copilot to add rate columns to tblSources and a combo chart with two axes. Check the best hire rate and the "
+                "lowest cost per hire.",
+                "In tblSources add Hire_Rate = Hires / Applications (percentage, 1 decimal) and\n"
+                "Cost_per_Hire = Sourcing_Spend / Hires (S$, no decimals). Create a combo chart: Hire_Rate as\n"
+                "clustered columns sorted highest first, Cost_per_Hire as a line on a secondary axis.\n"
+                "Label both axes with units.",
+            ),
+            (
+                "Refine all four charts with short follow-up prompts, one change at a time, then move them onto the Charts sheet "
+                "in a 2 x 2 grid. Add alt text to each chart.",
+                "Make every chart title state the finding in one sentence.\n"
+                "Use the same blue colour for all hires series and format numbers with thousands separators.\n"
+                "Move all four charts to the Charts sheet in a 2 x 2 grid of equal size.\n"
+                "Add alt text to each chart describing what it shows.",
+            ),
+            (
+                "Ask Copilot (Chat only) to review the charts against the four questions, then log your prompts and checks on "
+                "Prompt_Log.",
+                "Review the four charts on the Charts sheet. For each, tell me which question at the top of the sheet\n"
+                "it answers, whether the chart type suits that question, and one improvement. Do not change anything.",
+            ),
+        ],
+        sample_prompts=[
+            ("PivotTable", "Create a PivotTable from tblMonthly with Month_Label in rows, Sector in columns and Sum of Hires as values."),
+            ("Line chart", "Create a line chart showing total hires by month. Show data labels and gridlines."),
+            ("Bar chart", "Create a bar chart of 2026 hires by Sector, sorted from highest to lowest."),
+            ("Funnel", "Create a funnel chart of 2026 Applications, Screened, Interviews, Offers and Hires with data labels."),
+            ("Combo chart", "Create a combo chart of Hire_Rate as columns and Cost_per_Hire as a line on a secondary axis."),
+            ("Refine", "Change the chart title to: Technology led hiring in H1 2026."),
+            ("Refine", "Sort the bars from highest to lowest and add data labels formatted with thousands separators."),
+            ("Accessibility", "Add alt text to this chart that describes the trend it shows."),
+            ("Review", "Is a line chart the right choice for this data? Suggest a better chart if not, and explain why."),
+        ],
+        test=(
+            f"Pivot_Trend grand total = {E3['h1_hires'] + E3['total_2025']:,} hires (= SUM(tblMonthly[Hires])); the peak month is "
+            f"{E3['peak_month']} with {E3['peak_month_hires']} hires. The 2026 sector bar chart shows {E3['top_sector']} first with "
+            f"{E3['top_sector_hires']} hires and its Pivot total is {E3['h1_hires']}. The funnel shows {_F[0]:,} > {_F[1]:,} > "
+            f"{_F[2]:,} > {_F[3]:,} > {_F[4]:,}. In tblSources, {E3['best_rate_source']} has the highest hire rate "
+            f"({E3['best_rate']}%) and {E3['lowest_cps_source']} the lowest cost per hire (S${E3['lowest_cps']}). All four charts "
+            "sit on the Charts sheet with finding-style titles, labelled axes and alt text."
+        ),
+        checkpoint="Keep the workbook in work-c34. Lab 4 uses its own placements workbook.",
+        troubleshooting=[
+            (
+                "The 2026 filter includes 2025 months.",
+                "Ask Copilot to filter on the Month date field (>= 1 Jan 2026), not on Month_Label text, or add a Year field.",
+            ),
+            (
+                "Copilot inserts a picture of a chart instead of a chart.",
+                "That came from a Chat answer and is static. Switch to Allow editing and ask it to create a chart linked to the data.",
+            ),
+            (
+                "The funnel chart type is not offered.",
+                "Funnel charts need Excel 2019 or Microsoft 365. Ask for a sorted horizontal bar chart of the stages instead.",
+            ),
+            (
+                "Both series in the combo chart share one axis and the line is flat.",
+                "Ask: 'Put Cost_per_Hire on a secondary axis and format it as S$'.",
+            ),
+        ],
+        challenge=(
+            "Ask Copilot for a 100% stacked column chart showing each sector's share of hires by quarter for 2025-2026, then "
+            "decide whether it communicates better or worse than the bar chart, and why."
+        ),
+        reflection="Which of your four charts would most change a BrightPath leadership decision, and what check makes you trust it?",
+    ),
+    # ------------------------------------------------------------------ LAB 4
     dict(
         num=4,
         topic=2,
-        title="Clean and Enrich the Analysis Table",
-        duration=60,
+        title="Visualise Pay and Placement Distributions with Python in Excel",
+        duration=35,
         objective=(
-            "LO3: apply documented cleaning rules to a copy of the working table, add deterministic analysis fields "
-            "and verify categories, row counts and formula totals"
+            "LO2: use Copilot with Python in Excel to create distribution, relationship and heatmap visuals, review the "
+            "generated code and verify plotted statistics with native formulas"
         ),
         goal=(
-            "Create a clean analysis table with canonical Region and Channel values, a Month field, a numeric return "
-            "flag and a reviewed note-theme classification while preserving the raw source."
+            "Show how contract bill rates, pay and margins are distributed across job levels and sectors, and explain one "
+            "outlier, using Python visuals you have checked."
         ),
-        workflow=["Copy the working table", "Profile categories", "Clean one rule", "Add analysis fields", "Tie out"],
+        workflow=["Margin column", "Box plot", "Scatter", "Heatmap", "Outlier check"],
         desc=(
-            "You will copy the formula-complete working table to Orders_Clean, profile observed category values and apply "
-            "the supplied canonical rules one issue at a time. You will add Month, Return_Flag and Note_Theme fields, "
-            "retain Unknown when a note is ambiguous and prove that cleaning did not change row-level monetary results."
+            "BrightPath's flexible-staffing desk places contract associates with clients. You will ask Copilot to add a gross "
+            "margin column, then create Python in Excel visuals - a box plot of bill rates by job level, a scatter of "
+            "experience against pay with a trend line, and a sector-by-level margin heatmap. You will read the =PY code, "
+            "re-compute a median and a correlation with Excel formulas, and investigate the highest pay rate."
         ),
         build=(
-            "An Orders_Clean sheet with tblOrdersClean, canonical categories, Month, Return_Flag and Note_Theme fields, "
-            "plus a cleaning log and before/after control checks"
+            "BrightPath_Contract_Placements.xlsx with a Gross_Margin_Pct column and, on Python_Charts, a box plot, a scatter "
+            "with trend line, a margin heatmap and an outlier table - each with a native-formula check beside it"
         ),
-        services="Excel · Copilot · Clean Data when available · harbourlight-data-dictionary.md",
+        services="Excel · Copilot (Allow editing, Chat only) · Python in Excel (=PY) · BrightPath_Contract_Placements.xlsx",
+        data_files=["data/BrightPath_Contract_Placements.xlsx"],
         prerequisites=[
-            "Completed Lab 3 workbook with tblOrdersWorking and reconciled formula totals.",
-            "Open labs/assets/harbourlight-data-dictionary.md and use only its canonical values and note taxonomy.",
-            "Raw_Orders remains unchanged and is the comparison source.",
+            "Lab 3 completed or equivalent charting experience.",
+            "Python in Excel available: Formulas > Insert Python is visible (Windows, Mac or web; internet required).",
+            "This lab folder's data/BrightPath_Contract_Placements.xlsx.",
         ],
         steps=[
             (
-                "Copy Orders_Working to the end, rename it Orders_Clean and set the copied table name to "
-                "tblOrdersClean. On Control, create a Cleaning_Log table with Issue, Rule, Before_Count, After_Count, "
-                "Affected_Rows, Verification and Decision. Record the 36-row baseline and the five Lab 3 monetary totals.",
-                "Required working sheet: Orders_Clean\n"
-                "Required table: tblOrdersClean\n"
-                "Required log columns: Issue | Rule | Before_Count | After_Count | Affected_Rows | Verification | Decision",
+                _SETUP_STEP.format(file="BrightPath_Contract_Placements.xlsx")
+                + " Check that the Formulas tab shows Insert Python. If it does not, follow the fallback in Troubleshooting.",
+                "Table  : tblPlacements (180 rows)\n"
+                "Levels : Junior | Mid | Senior | Lead\n"
+                "Output sheet : Python_Charts",
             ),
             (
-                "Ask Copilot in Chat to list distinct Region, Channel, Product and Category values with counts from "
-                "tblOrdersClean. Compare the response with Data > Filter for each column. Record every value that differs "
-                "from the canonical dictionary by case or surrounding spaces. Do not clean yet.",
-                "List the distinct values and counts in Region, Channel, Product and Category from tblOrdersClean. "
-                "Do not change the workbook. Preserve exact spaces and case in the displayed values. Flag only values "
-                "that do not match the supplied canonical dictionary.",
+                "Choose Allow editing and ask for the margin column. Check one row by hand and the average with AVERAGE.",
+                "Add a column Gross_Margin_Pct to tblPlacements = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly,\n"
+                "formatted as a percentage with 1 decimal.\n\n"
+                "CHECK: =AVERAGE(tblPlacements[Gross_Margin_Pct])",
             ),
             (
-                "Clean Region and Channel one field at a time using the dictionary. If Clean Data is available, review "
-                "each suggestion before applying it; otherwise ask Copilot to propose exact replacements and apply only "
-                "the approved mapping. After each action, review every changed sheet, range and object; confirm only the "
-                "named text cells in tblOrdersClean changed and use Undo if the scope differs. Confirm that Region contains "
-                "North, South and Central only, while Channel contains Store, Online and Partner only. Record affected "
-                "counts and the accepted or rejected scope.",
-                "Canonical Region values: North | South | Central\n"
-                "Canonical Channel values: Store | Online | Partner\n"
-                "Allowed operations: trim surrounding spaces and standardise case\n"
-                "Do not infer or replace a value outside the mapping.",
+                "Ask Copilot to create the box plot with Python. Click the =PY cell and read the code: which table and columns it "
+                "uses and the order of levels. Then verify the Lead median with a native formula in the cell beside it.",
+                "Using Python in Excel, create a box plot of Bill_Rate_Hourly by Job_Level from tblPlacements,\n"
+                "ordered Junior, Mid, Senior, Lead. Put it in Python_Charts!B2. Title it\n"
+                "\"Contract bill rate by job level (S$/hour)\" and label both axes.\n\n"
+                "CHECK: =MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]=\"Lead\"))",
             ),
             (
-                "Add Month and Return_Flag calculated columns. Month must be yyyy-mm text derived from Order_Date. "
-                "Return_Flag must equal 1 only when Returned exactly equals Yes and 0 otherwise. Fill all rows, record "
-                "the sum of Return_Flag and compare it with the returned-order count from Lab 2.",
-                "Month: =TEXT([@Order_Date],\"yyyy-mm\")\n"
-                "Return_Flag: =--([@Returned]=\"Yes\")",
+                "Ask for a scatter plot with a trend line and the correlation coefficient. Verify r with CORREL.",
+                "Using Python, create a scatter plot of Years_Experience (x) against Pay_Rate_Hourly (y) from\n"
+                "tblPlacements, coloured by Job_Level, with a linear trend line. Also return the Pearson correlation\n"
+                "coefficient in the cell below the chart.\n\n"
+                "CHECK: =CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])",
             ),
             (
-                "Add Note_Theme using only Delivery, Product, Return, No note and Unknown. Ask Copilot to propose a "
-                "classification with a short reason, but review every row against the dictionary. Blank or whitespace-only "
-                "notes become No note. A note that does not match one defined cue remains Unknown. Review all changed sheets, "
-                "ranges and objects, use Undo if anything outside Note_Theme changed and record the accepted or rejected "
-                "scope. Finish by reconciling row count, populated IDs and all five monetary totals to Lab 3.",
-                "Classify Customer_Note using only the supplied taxonomy. Return Order_ID | Note_Theme | cue used. "
-                "Do not invent a reason. Blank text becomes No note; ambiguous text becomes Unknown. "
-                "I will review every proposed label before applying it.",
+                "Ask for a heatmap of average margin. Read the code to confirm it uses the mean of Gross_Margin_Pct per cell.",
+                "Using Python, create a heatmap of the average Gross_Margin_Pct by Sector (rows) and Job_Level (columns,\n"
+                "ordered Junior to Lead) with the values printed in each cell as percentages.",
+            ),
+            (
+                "Ask Copilot (Chat only) to find outliers with a stated rule, then look at the highest pay rate row. Decide in "
+                "Prompt_Log whether it is an error, a genuine specialist rate, or needs checking with the desk - an outlier is not "
+                "automatically wrong.",
+                "Using the IQR rule (above Q3 + 1.5 x IQR), list the Pay_Rate_Hourly outliers in tblPlacements with\n"
+                "Placement_ID, Sector, Job_Level and Pay_Rate_Hourly. State Q1, Q3 and the upper fence. Show the code.",
+            ),
+            (
+                "Ask Copilot to explain what the Python code in the box-plot cell does, then record all prompts and checks in "
+                "Prompt_Log.",
+                "Explain the Python code in Python_Charts!B2 line by line in plain English.",
             ),
         ],
+        sample_prompts=[
+            ("Calculated column", "Add Gross_Margin_Pct = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly as a percentage."),
+            ("Box plot", "Using Python, create a box plot of Bill_Rate_Hourly by Job_Level ordered Junior, Mid, Senior, Lead."),
+            ("Histogram", "Using Python, create a histogram of Pay_Rate_Hourly with 15 bins and mark the median."),
+            ("Scatter", "Using Python, plot Years_Experience against Pay_Rate_Hourly with a linear trend line and return the correlation."),
+            ("Heatmap", "Using Python, create a heatmap of average Gross_Margin_Pct by Sector and Job_Level with values shown."),
+            ("Outliers", "Using the IQR rule, list Pay_Rate_Hourly outliers with Placement_ID, Sector and Job_Level, and state the upper fence."),
+            ("Explain code", "Explain the Python code in the selected cell line by line."),
+            ("Direct answer", "What are the median and mean Bill_Rate_Hourly by Job_Level? Show the code."),
+        ],
         test=(
-            "tblOrdersClean must contain 36 rows and 36 populated Order_ID values. Region must have exactly three canonical "
-            "values and Channel exactly three. Month must contain only 2026-01 through 2026-04. Sum of Return_Flag, the "
-            "five monetary totals and all Note_Theme counts must match labs/assets/expected-controls.md. Raw_Orders and "
-            "Orders_Working must remain unchanged."
+            f"Average Gross_Margin_Pct = {E4['avg_margin']}%. The box plot shows four levels in order and the Lead median bill rate "
+            f"check returns S${E4['median_bill']['Lead']:.2f} (Junior S${E4['median_bill']['Junior']:.2f}, Mid "
+            f"S${E4['median_bill']['Mid']:.2f}, Senior S${E4['median_bill']['Senior']:.2f}). CORREL returns about {E4['corr']} - a "
+            f"moderate positive relationship. The heatmap shows {E4['low_margin_sector']} with the lowest average margin "
+            f"(~{E4['sector_margin'][E4['low_margin_sector']]}%). The IQR rule flags {E4['pay_outliers']} pay-rate outliers above "
+            f"about S${E4['upper_fence']:.2f}; the highest is {E4['max_pay_id']} at S${E4['max_pay']:.2f}, and your Prompt_Log "
+            "records a decision about it."
         ),
-        checkpoint=(
-            "Save the workbook with tblOrdersClean fully reconciled. Labs 5 and 6 use only this clean table for summaries. "
-            "To rejoin, follow the Lab 4 mapping and field checklist in labs/assets/harbourlight-checkpoints.md."
-        ),
+        checkpoint="Keep the workbook in work-c34. Topic 3 starts from the dashboard workbook in the Lab 5 folder.",
         troubleshooting=[
             (
-                "Clean Data shows no suggestions.",
-                "Use the exact distinct-value list and the supplied canonical mapping. Feature availability varies, and the "
-                "verification controls are the same for a reviewed manual or Copilot-assisted correction.",
+                "Insert Python is not visible or =PY returns an error.",
+                "Python in Excel needs a supported plan, Windows/Mac/web and internet. Fallback: ask Copilot in Chat only for the "
+                "same visual (it is returned as a static image) and use Insert > Charts > Statistical > Box and Whisker for a native box plot.",
             ),
             (
-                "A note receives a category outside the taxonomy.",
-                "Reject the output, restate the five allowed values and require Unknown for all unmatched cues.",
+                "The =PY cell shows a Python object instead of a picture.",
+                "Select the cell and change its output (the icon beside the formula bar) from Python Object to Excel Value, or "
+                "click the card icon to view the image.",
             ),
             (
-                "Monetary totals change after cleaning text fields.",
-                "Undo the last action and inspect whether a formula or numeric field was included in the changed range.",
+                "#BUSY! or a slow calculation.",
+                "Python runs in the Microsoft cloud. Wait, or select Formulas > Reset (Python) and recalculate.",
+            ),
+            (
+                "Levels appear in alphabetical order (Junior, Lead, Mid, Senior).",
+                "Ask Copilot to set the category order explicitly to Junior, Mid, Senior, Lead.",
             ),
         ],
         challenge=(
-            "Create a data-validation list for Region and Channel using the canonical values, then explain how validation "
-            "prevents new defects without proving that existing records are correct."
+            "Ask Copilot, using Python, whether contracts that were Extended have a higher average Client_Rating than those "
+            "that were not, with counts. Re-check the two averages with AVERAGEIFS."
         ),
-        reflection="Which cleaning decision required human judgment rather than a mechanical text correction?",
-    ),
-    dict(
-        num=5,
-        topic=2,
-        title="Build Reconciled PivotTables and Charts",
-        duration=55,
-        objective=(
-            "LO3: translate business questions into PivotTable grain, dimensions, measures and charts, then reconcile "
-            "every grand total and denominator to the clean table"
-        ),
-        goal=(
-            "Create an editable operations summary that shows monthly net sales by region and return rate by channel "
-            "without hiding the underlying counts or overstating visual differences."
-        ),
-        workflow=["State the questions", "Build the Pivot", "Tie the total", "Create the chart", "Inspect the visual"],
-        desc=(
-            "You will define two decision questions before asking Copilot to build anything. The first PivotTable and line "
-            "chart show monthly net sales by canonical region. The second summary shows returned orders, order count and "
-            "return rate by channel. You will verify grand totals, denominators, titles, units and source linkage."
-        ),
-        build=(
-            "A Pivot_Analysis sheet with two PivotTables, a monthly regional net-sales line chart, a channel return-rate "
-            "chart, tie-out cells and a Prompt_Log record for each object"
-        ),
-        services="Excel PivotTables · Excel charts · Copilot · tblOrdersClean · expected-controls.md",
-        prerequisites=[
-            "Completed Lab 4 workbook with tblOrdersClean and reconciled clean-table controls.",
-            "Month contains 2026-01 through 2026-04 and Return_Flag contains only 0 and 1.",
-            "No active filter is applied to tblOrdersClean.",
-        ],
-        steps=[
-            (
-                "Create a sheet named Pivot_Analysis. At the top, write two questions and their intended grain. "
-                "Question A: 'How did monthly net sales change by region?' Grain: one Pivot cell equals the sum of "
-                "Net_Sales for one Month-Region combination. Question B: 'Which channel has the highest returned-order "
-                "rate?' Grain: one row equals one canonical Channel.",
-                "Question A fields:\n"
-                "Rows = Month | Columns = Region | Values = Sum of Net_Sales\n\n"
-                "Question B fields:\n"
-                "Rows = Channel | Values = Sum of Return_Flag and Count of Order_ID\n"
-                "Return rate = returned orders / order count",
-            ),
-            (
-                "Ask Copilot to create PivotTable A from tblOrdersClean on Pivot_Analysis. If direct creation is "
-                "unavailable, select Insert > PivotTable, choose tblOrdersClean and use the exact field layout. Format "
-                "Net_Sales as S$ with two decimals, show grand totals and sort Month ascending. Review every changed sheet, "
-                "range and object; confirm only the requested PivotTable was added and use Undo if the scope differs. "
-                "Record the accepted or rejected scope in Prompt_Log.",
-                "Create an editable PivotTable from tblOrdersClean on Pivot_Analysis. Put Month in Rows, Region in "
-                "Columns and Sum of Net_Sales in Values. Show grand totals, sort Month ascending and format values as "
-                "S$ with two decimals. Do not create a static pasted table.",
-            ),
-            (
-                "Below Pivot A, add a tie-out cell that subtracts the Pivot grand total from "
-                "SUM(tblOrdersClean[Net_Sales]). It must equal 0.00. Create a line chart from Pivot A with title "
-                "'Monthly Net Sales by Region', Month on the x-axis, S$ Net Sales on the y-axis and a visible legend "
-                "for North, South and Central. Review the changed sheets, ranges and objects; confirm the chart is linked "
-                "only to Pivot A and use Undo for any unrelated change.",
-                "Required tie-out:\n"
-                "=SUM(tblOrdersClean[Net_Sales])-<PIVOT_A_GRAND_TOTAL_CELL>\n"
-                "Expected result: 0.00",
-            ),
-            (
-                "Create PivotTable B using Channel as rows, Sum of Return_Flag and Count of Order_ID as values. "
-                "Beside the Pivot, calculate Return_Rate for each channel as returned orders divided by order count, "
-                "format as 0.0% and add a total row that uses the grand totals rather than averaging channel percentages. "
-                "Review every changed sheet, range and object; confirm only Pivot B and its adjacent formulas changed and "
-                "use Undo if the scope differs.",
-                "Return_Rate formula: =<RETURNED_ORDERS_CELL>/<ORDER_COUNT_CELL>\n"
-                "Overall return rate: =<SUM_RETURN_FLAG_GRAND_TOTAL>/<COUNT_ORDER_ID_GRAND_TOTAL>",
-            ),
-            (
-                "Create a clustered column chart using Channel and Return_Rate with title 'Returned-Order Rate by "
-                "Channel'. Set the y-axis to percentage, start at zero and show data labels. Compare both PivotTables "
-                "with labs/assets/expected-controls.md. Review all changed sheets, ranges and objects and record the accepted "
-                "or rejected scope, exact totals, visual checks and any manual steps in Prompt_Log.",
-                "Visual checks:\n"
-                "[ ] chart title names the metric and dimension\n"
-                "[ ] axis units match S$ or percentage\n"
-                "[ ] every canonical category is visible\n"
-                "[ ] line chart months are chronological\n"
-                "[ ] return-rate axis starts at zero\n"
-                "[ ] both source ranges remain linked and editable",
-            ),
-        ],
-        test=(
-            "Pivot A must contain four months, three regions and a grand total equal to tblOrdersClean Net_Sales with a "
-            "0.00 tie-out. Pivot B must show three channels, returned-order count, order count and rates that match "
-            "labs/assets/expected-controls.md; the overall rate must use grand-total numerator and denominator. Both "
-            "charts must be editable, linked, fully titled and use the correct units."
-        ),
-        checkpoint=(
-            "Save the workbook with Pivot_Analysis visible and both tie-outs complete. Lab 6 references these values as "
-            "independent checks. To rejoin, use the Pivot field layouts in labs/assets/harbourlight-checkpoints.md."
-        ),
-        troubleshooting=[
-            (
-                "Net_Sales is counted instead of summed.",
-                "Open Value Field Settings, choose Sum and verify that Net_Sales contains numeric values in all rows.",
-            ),
-            (
-                "Months sort alphabetically in the wrong order.",
-                "Confirm Month uses yyyy-mm text or place the real Order_Date in rows and group it by Months and Years.",
-            ),
-            (
-                "The chart omits a region or channel.",
-                "Inspect the Pivot filters and source categories, clear filters and refresh the PivotTable.",
-            ),
-        ],
-        challenge=(
-            "Add a Product gross-profit PivotTable and choose a chart. State why Sum of Gross_Profit is meaningful while "
-            "a simple average of row Margin_Rate may not be the right product-level margin."
-        ),
-        reflection="Which tie-out proves the Pivot aggregation is complete, and what analytical error can it still miss?",
-    ),
-    dict(
-        num=6,
-        topic=2,
-        title="Run Advanced Analysis and Write the Verified Decision Summary",
-        duration=75,
-        objective=(
-            "LO4: use Python-assisted Copilot for a bounded analytical question, inspect the generated method, "
-            "reconcile headline values and produce a traceable decision summary"
-        ),
-        goal=(
-            "Complete the HarbourLight workflow with a reviewed analysis of monthly trends, channel return rates and "
-            "high-value-order outliers, followed by a Share, Revise or Hold decision."
-        ),
-        workflow=["Write the brief", "Run advanced analysis", "Inspect the logic", "Reconcile headlines", "Decide"],
-        desc=(
-            "You will ask Copilot for direct answers and advanced analysis using only tblOrdersClean. You will review the "
-            "referenced fields, filters, groupings, IQR logic and generated code or explanation. You will reconcile the "
-            "headline values to the Control and Pivot_Analysis sheets, then create a concise executive summary that keeps "
-            "observations, hypotheses and limitations separate."
-        ),
-        build=(
-            "An Advanced_Analysis sheet with prompt, method, generated output and reconciliation; plus an "
-            "Executive_Summary sheet with three verified findings, limitations, actions and a final decision"
-        ),
-        services=(
-            "Copilot direct answers · advanced analysis with Python in Excel · Excel controls · Pivot_Analysis · "
-            "advanced-analysis-fallback.md"
-        ),
-        prerequisites=[
-            "Completed Lab 5 workbook with reconciled Pivot A and Pivot B.",
-            "Open labs/assets/advanced-analysis-brief-template.md and labs/assets/expected-controls.md.",
-            "Before class, confirm the account shows the deeper or advanced analysis entry point. If it does not, open "
-            "labs/assets/advanced-analysis-fallback.md so you can inspect saved Python logic and output hands-on.",
-            "Use only tblOrdersClean; do not connect to external data or use real organisational information.",
-        ],
-        steps=[
-            (
-                "Create Advanced_Analysis and Executive_Summary sheets. Copy the analysis brief template to "
-                "Advanced_Analysis and complete its Question, Data, Filters, Metrics, Method, Output and Review fields. "
-                "Require monthly net sales by region, returned-order rate by channel and an IQR review of order Net_Sales. "
-                "State that outliers are candidates for review, not errors or causes.",
-                "Question: What changed across months and regions, which channel has the highest returned-order rate, "
-                "and which order Net_Sales values are high under the 1.5 x IQR rule?\n"
-                "Data: tblOrdersClean only\n"
-                "Filters: none; report missing or excluded rows\n"
-                "Review: reconcile with Control and Pivot_Analysis",
-            ),
-            (
-                "Ask Copilot the direct-answer prompt below. Save the response, cited source fields and any inserted "
-                "static table or image on Advanced_Analysis. If an inserted output will not refresh, place a visible "
-                "'STATIC - rerun after source change' label above it. Review every changed sheet, range and object, use "
-                "Undo for unrelated changes and record the accepted or rejected scope.",
-                "Using only tblOrdersClean, report:\n"
-                "1. Monthly Net_Sales by Region and the grand total.\n"
-                "2. Returned-order count, order count and Return_Rate by Channel.\n"
-                "3. Q1, Q3, IQR, upper fence and Order_ID values above the upper fence for Net_Sales.\n"
-                "Show the fields and filters used. Do not claim causes. Label inserted non-refreshing output as static.",
-            ),
-            (
-                "Choose the follow-up for deeper or advanced analysis, or ask 'Enter advanced analysis mode'. Review "
-                "the generated Python code or expanded logic. Confirm it selects tblOrdersClean, groups by canonical "
-                "Month/Region or Channel, computes rate as sum(Return_Flag)/count(Order_ID), uses the 1.5 x IQR upper "
-                "fence and does not silently drop rows. If the feature is unavailable, inspect the saved code and output "
-                "in labs/assets/advanced-analysis-fallback.md line by line and paste the reviewed method plus your notes "
-                "into Advanced_Analysis. In either route, record the inspected code lines or logic in Prompt_Log.",
-                "Review checklist:\n"
-                "[ ] source is tblOrdersClean\n"
-                "[ ] no hidden filter\n"
-                "[ ] monthly grouping uses Month and Region\n"
-                "[ ] rate denominator is Order_ID count\n"
-                "[ ] Q1/Q3/IQR and upper fence are reported\n"
-                "[ ] excluded or missing rows are counted\n"
-                "[ ] output type is labelled static or refreshable",
-            ),
-            (
-                "On Advanced_Analysis, create a reconciliation table with Metric, Advanced_Result, Independent_Result, "
-                "Difference, Source and Status. Reconcile total Net_Sales, each channel order count and return count, "
-                "the overall return rate, the highest monthly-region value and the listed high outlier Order_ID values. "
-                "Every numeric difference must be zero within S$0.01 or 0.01 percentage points.",
-                "Reconciliation columns:\n"
-                "Metric | Advanced_Result | Independent_Result | Difference | Source | Status\n"
-                "Status rule: OK only when the difference is within the stated tolerance.",
-            ),
-            (
-                "On Executive_Summary, write exactly three findings using the template below. Each finding must cite "
-                "workbook evidence, distinguish OBSERVED from HYPOTHESIS and name a practical owner or next check. Add "
-                "limitations and choose SHARE only if every required reconciliation is OK; otherwise choose REVISE or HOLD. "
-                "Record the reason and owner.",
-                "Finding | Evidence | Type | Why it matters | Next check | Owner\n"
-                "Types: OBSERVED or HYPOTHESIS\n"
-                "Final decision: SHARE | REVISE | HOLD\n"
-                "Required limitations: synthetic data; four-month window; returned status only; no causal evidence",
-            ),
-        ],
-        test=(
-            "Advanced_Analysis must contain the completed brief, direct answer, reviewed code or method, output-type label "
-            "and reconciliation table. Every required metric and outlier must match labs/assets/expected-controls.md "
-            "within the stated tolerance. Executive_Summary must contain exactly three findings, evidence references, "
-            "types, next checks, owners, four required limitations and a final SHARE, REVISE or HOLD decision. SHARE is "
-            "allowed only when every reconciliation status is OK."
-        ),
-        checkpoint=(
-            "This is the final course checkpoint. Keep the workbook with Raw_Orders, Control, Prompt_Log, Orders_Working, "
-            "Orders_Clean, Pivot_Analysis, Advanced_Analysis and Executive_Summary. Use it as a practice model, not as "
-            "evidence about a real organisation."
-        ),
-        troubleshooting=[
-            (
-                "Advanced analysis is not available in the current account.",
-                "Open labs/assets/advanced-analysis-fallback.md, inspect the saved Python logic and output, identify the "
-                "source fields, groupings, rate denominator and IQR rule, then complete the same reconciliations in your "
-                "own workbook. Pair with the trainer only for the interface demonstration.",
-            ),
-            (
-                "The analysis reports a different return rate.",
-                "Check that the numerator is Sum of Return_Flag and the denominator is Count of Order_ID at the same channel grain.",
-            ),
-            (
-                "The generated narrative claims a cause.",
-                "Relabel the statement HYPOTHESIS, remove causal language and name the additional operational evidence needed.",
-            ),
-        ],
-        challenge=(
-            "Ask for a sensitivity check using a 3 x IQR upper fence. Compare the flagged orders with the 1.5 x IQR result "
-            "and explain how the threshold changes the review workload without proving which orders are wrong."
-        ),
-        reflection="What evidence would make the final summary trustworthy to a reviewer who never saw the Copilot chat?",
+        reflection="Which Python visual told you something a column chart of averages would have hidden?",
     ),
 ]

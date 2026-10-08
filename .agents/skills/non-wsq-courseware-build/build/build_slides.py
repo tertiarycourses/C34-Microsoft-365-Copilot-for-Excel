@@ -302,11 +302,14 @@ def activity_overview(tag,title,desc,build,services,kicker,workflow=None):
     bL=len(str(build)); bsize=18 if bL<=120 else (16 if bL<=190 else 14)
     txt(s,Inches(1.1),Inches(4.48),Inches(11),Inches(0.72),[[(build,bsize,_ink(),True)]])
     if workflow:
-        xs=[Inches(1.1),Inches(3.85),Inches(6.6),Inches(9.35)]
-        for i,item in enumerate(workflow[:4]):
-            rect(s,xs[i],Inches(5.28),Inches(2.5),Inches(0.52),_bg(),line=_line())
-            txt(s,xs[i]+Inches(0.08),Inches(5.34),Inches(2.34),Inches(0.38),
-                [[(f"{i+1}  {item}",12,_ink(),True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
+        # Lay out up to five workflow chips evenly across the 11-inch panel.
+        wf=workflow[:5]; k=len(wf); gap=Inches(0.18)
+        cw=int((Inches(11.0)-gap*(k-1))/k)
+        for i,item in enumerate(wf):
+            x=Inches(1.1)+i*(cw+gap)
+            rect(s,x,Inches(5.28),cw,Inches(0.52),_bg(),line=_line())
+            txt(s,x+Inches(0.06),Inches(5.34),cw-Inches(0.12),Inches(0.38),
+                [[(f"{i+1}  {item}",12 if k<=4 else 11,_ink(),True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
     txt(s,Inches(1.1),Inches(6.02),Inches(11.2),Inches(0.3),[[("Tools:  ",12,_grey(),True),(services,12,_grey(),False)]]); footer(s); return s
 def step_slide(kicker,act_title,n,total,text,cmd=""):
     s=head(slide(),act_title,kicker,TEAL)
@@ -586,7 +589,7 @@ def test_slide(act_title,text,kicker):
     s=head(slide(),act_title,kicker,TEAL)
     rect(s,Inches(0.85),Inches(2.3),Inches(11.7),Inches(2.8),DK_PANEL if THEME["dark"] else RGBColor(0xE8,0xF7,0xEE))
     txt(s,Inches(1.2),Inches(2.6),Inches(11),Inches(0.5),[[("✅  Test it",20,DK_GREEN if THEME["dark"] else RGBColor(0x12,0x7A,0x3E),True)]])
-    tsize=18 if len(str(text))<=380 else 16
+    tsize=18 if len(str(text))<=380 else (16 if len(str(text))<=520 else 14)
     txt(s,Inches(1.2),Inches(3.25),Inches(11),Inches(1.65),[[(text,tsize,_ink(),False)]]); footer(s); return s
 def brk(kind,dur,color=AMBER):
     s=slide(); rect(s,0,0,SW,SH,_bg())
@@ -615,7 +618,7 @@ _dl=flow_h("Access Course Materials",[
  f"Open the {C.COURSE_CODE} course page or the trainer-supplied Drive folder",
  "Open the courseware links for this course",
  "Download the Slides, Learner Guide and Lesson Plan",
- "Open the Activities folder for all six labs",
+ f"Open the Activities folder for all {len(ACTIVITIES)} lab folders",
  "Keep the files together as you work"],kicker="COURSE MATERIALS")
 # Course-page URL as a wide caption (kept out of the narrow chips so it never wraps mid-token)
 txt(_dl,Inches(0.85),Inches(6.5),Inches(11.6),Inches(0.4),
@@ -818,6 +821,10 @@ for t in C.TOPICS:
             kicker=f"TOPIC {t['code']} · HANDS-ON", workflow=a.get("workflow", []),
         )
         _lab_extras(a["num"])
+        if a.get("sample_prompts"):
+            content(f"Sample Prompts — Lab {a['num']}",
+                    [f"{lbl}: {pr}" for lbl,pr in a["sample_prompts"][:5]],
+                    kicker=f"LAB {a['num']} · PROMPTS TO TRY",size=14)
         # Keep the deck concept-first: the overview above carries objective,
         # context, outcome and key workflow; click-by-click detail lives in the
         # aligned lab Markdown and Learner Guide.

@@ -1,180 +1,92 @@
-<div align="center">
-
 # Microsoft 365 Copilot for Excel
 
-[![Course](https://img.shields.io/badge/Course-C34-1f6feb?style=for-the-badge)](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html)
-[![Duration](https://img.shields.io/badge/Duration-1_day_7_5_instructional_hours-5E5E5E?style=for-the-badge)](#course-toolkit)
-[![Labs](https://img.shields.io/badge/Labs-6-34d399?style=for-the-badge)](labs/README.md)
-[![License](https://img.shields.io/badge/License-Educational-fbbf24?style=for-the-badge)](#license)
+Use Copilot in Excel to analyse data, plot charts, build dashboards and draw evidence-backed insights and recommendations, practised hands-on with realistic HR and recruitment data.
 
-**A connected, hands-on course in Microsoft 365 Copilot for Excel — progress through 6 practical labs from Prepare the Workbook and Create the Copilot Control Trail to Run Advanced Analysis and Write the Verified Decision Summary.**
-
-[📘 Course Page](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) · [🧪 Hands-On Labs](labs/README.md) · [📖 Learner Guide](<LG-Microsoft 365 Copilot for Excel.md>) · [🐛 Report Bug](https://github.com/tertiarycourses/C34---Microsoft-365-Copilot-for-Excel/issues) · [💡 Request Feature](https://github.com/tertiarycourses/C34---Microsoft-365-Copilot-for-Excel/issues)
-
-</div>
-
-> [!NOTE]
-> **These are the official hands-on lab materials for the commercial course:**
-> ### 🎓 Microsoft 365 Copilot for Excel
-> **Course Code:** `C34` · by Tertiary Courses / Tertiary Infotech<br>
-> **Duration:** 1 day · 7.5 instructional hours<br>
-> **Course page:** https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html
+| Course detail | Information |
+|---|---|
+| Course code | `C34` |
+| Programme | Non-WSQ |
+| Duration | 1 day · 7.5 hours |
+| Format | Instructor-led, with 8 hands-on labs |
+| Registration | [View course details and register](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) |
+| Courseware version | v2.0 · 8 October 2026 |
 
 ---
 
-## Lab Activities
+## About the course
 
-The 6 labs form one connected practical journey. Complete them in order so each verified output can support the activities that follow.
+Microsoft 365 Copilot in Excel lets you describe a task in plain language. Copilot then plans it and carries it out with Excel's own features: formulas, lookups, PivotTables, charts, conditional formatting, dashboards and Python-based analysis. This course shows you how to use it well and how to check what it produces.
 
-### Topic 1 — Getting Started with Copilot in Excel
+Every lab uses mock data from **BrightPath Talent Solutions**, a fictional Singapore recruitment, flexible-staffing and HR-outsourcing firm. The datasets cover a candidate pipeline, job requisitions, monthly recruitment metrics, contract placements, internal workforce headcount, an attrition study and an engagement survey. Each lab ends with a **Test It** step that lists the exact values you should get, so you can check Copilot's output against them.
 
-| # | Activity | Outcome |
-|---:|----------|---------|
-| **1** | [Prepare the Workbook and Create the Copilot Control Trail](labs/lab-01-prepare-the-workbook-and-create-the-copilot-control-trail.md) | work-c34/C34-HarbourLight-Copilot-Analysis.xlsx with Raw_Orders, Control and Prompt_Log sheets, a tblOrdersRaw table, baseline counts and a recorded Copilot access note |
-| **2** | [Apply Reproducible Highlights, Sorts and Filters](labs/lab-02-apply-reproducible-highlights-sorts-and-filters.md) | An Orders_Working sheet with tblOrdersWorking, reversible highlighting, an explicit multi-level sort, a returned-order filter and Prompt_Log evidence for every applied change |
-| **3** | [Generate and Reconcile Formula Columns](labs/lab-03-generate-and-reconcile-formula-columns.md) | Six calculated columns in tblOrdersWorking - Gross_Sales, Discount_Amount, Net_Sales, Cost_Amount, Gross_Profit and Margin_Rate - plus formula checks and reconciled totals on Control |
+The content draws on current Microsoft Support and Microsoft Learn guidance for Copilot in Excel, Python in Excel and Copilot for HR scenarios.
 
-### Topic 2 — AI-Powered Data Analysis and Insights
+## Learning outcomes
 
-| # | Activity | Outcome |
-|---:|----------|---------|
-| **4** | [Clean and Enrich the Analysis Table](labs/lab-04-clean-and-enrich-the-analysis-table.md) | An Orders_Clean sheet with tblOrdersClean, canonical categories, Month, Return_Flag and Note_Theme fields, plus a cleaning log and before/after control checks |
-| **5** | [Build Reconciled PivotTables and Charts](labs/lab-05-build-reconciled-pivottables-and-charts.md) | A Pivot_Analysis sheet with two PivotTables, a monthly regional net-sales line chart, a channel return-rate chart, tie-out cells and a Prompt_Log record for each object |
-| **6** | [Run Advanced Analysis and Write the Verified Decision Summary](labs/lab-06-run-advanced-analysis-and-write-the-verified-decision-summary.md) | An Advanced_Analysis sheet with prompt, method, generated output and reconciliation; plus an Executive_Summary sheet with three verified findings, limitations, actions and a final decision |
+By the end of the course, you will be able to:
 
----
+1. **Analyse data.** Explain how Copilot in Excel works (modes, requirements and limits), and use it to analyse, highlight, sort, filter and calculate HR and recruitment data with verified formulas.
+2. **Plot charts.** Use Copilot to create, refine and verify charts, PivotCharts and Python visuals that answer specific HR and recruitment questions.
+3. **Create dashboards.** Use Copilot to build an interactive, refreshable HR KPI dashboard with PivotTables, KPI cards, charts and slicers, and check every KPI against its definition.
+4. **Draw insights and recommendations.** Use Copilot and Python-based advanced analysis to draw evidence-backed insights and actionable, owned recommendations from workforce and survey data.
 
-## About
+## Topics covered
 
-This repository contains the complete lab and courseware package for **Microsoft 365 Copilot for Excel** (**C34**) by Tertiary Courses / Tertiary Infotech. The practical activities build progressively from **Prepare the Workbook and Create the Copilot Control Trail** to **Run Advanced Analysis and Write the Verified Decision Summary**, with explicit checks that help learners verify each result before moving on.
+| Topic | Content |
+|---|---|
+| **1. Use Copilot to Analyse Data** | Copilot modes (Allow editing, Plan, Chat only), licensing and requirements, preparing HR data as tables, prompting for analysis, direct answers, highlighting, sorting and filtering, formula and lookup columns |
+| **2. Use Copilot to Plot Charts** | Choosing the right chart for an HR question, charts and PivotTables from a prompt, refining charts with follow-up prompts, advanced visuals with Python in Excel |
+| **3. Use Copilot to Create Dashboards** | HR and recruitment KPI design, building with Plan and Edit modes, slicers, refresh and maintenance, sharing people dashboards responsibly |
+| **4. Use Copilot to Draw Insights and Recommendations** | Trends, outliers and drivers, advanced analysis mode with Python, survey themes and sentiment, turning a verified insight into an owned recommendation |
 
-### What you'll learn
+## Labs
 
-- Complete **6 connected hands-on activities** and carry their outputs through one coherent learning journey.
-- Practise with **Microsoft 365 Copilot · Microsoft Excel** and the supporting resources supplied in the repository.
-- Begin with **Prepare the Workbook and Create the Copilot Control Trail** and finish with **Run Advanced Analysis and Write the Verified Decision Summary**.
-- Apply safe data handling, evidence checks and named human review before using AI-generated or automated outputs.
+Each lab has its own folder containing:
 
-> 📖 **Full walkthrough:** see the [Learner Guide](<LG-Microsoft 365 Copilot for Excel.md>) for the complete course narrative, and [labs/README.md](labs/README.md) for the lab index. Slides, the Learner Guide and the Lesson Plan are in [courseware/](courseware/).
+- an **instruction PDF with sample prompts**;
+- the same instructions as `README.md`;
+- `sample-prompts.txt`, with prompts ready to copy;
+- the **mock-data workbook** in `data/`.
 
----
+See the [labs index](labs/README.md).
 
-## Course Toolkit
+| # | Lab | Topic | Instructions | Mock data |
+|---:|---|---|---|---|
+| 1 | [Explore and Question Recruitment Pipeline Data](labs/lab-01-explore-and-question-recruitment-pipeline-data/README.md) | Analyse | [PDF](labs/lab-01-explore-and-question-recruitment-pipeline-data/Lab-01-Instructions.pdf) | [Candidate pipeline](labs/lab-01-explore-and-question-recruitment-pipeline-data/data/BrightPath_Candidate_Pipeline.xlsx) |
+| 2 | [Generate and Verify Formula Columns and Lookups for Job Requisitions](labs/lab-02-generate-and-verify-formula-columns-and-lookups-for-job-requisitions/README.md) | Analyse | [PDF](labs/lab-02-generate-and-verify-formula-columns-and-lookups-for-job-requisitions/Lab-02-Instructions.pdf) | [Job requisitions](labs/lab-02-generate-and-verify-formula-columns-and-lookups-for-job-requisitions/data/BrightPath_Job_Requisitions.xlsx) |
+| 3 | [Create and Refine Recruitment Charts with Copilot](labs/lab-03-create-and-refine-recruitment-charts-with-copilot/README.md) | Charts | [PDF](labs/lab-03-create-and-refine-recruitment-charts-with-copilot/Lab-03-Instructions.pdf) | [Recruitment metrics](labs/lab-03-create-and-refine-recruitment-charts-with-copilot/data/BrightPath_Recruitment_Metrics.xlsx) |
+| 4 | [Visualise Pay and Placement Distributions with Python in Excel](labs/lab-04-visualise-pay-and-placement-distributions-with-python-in-excel/README.md) | Charts | [PDF](labs/lab-04-visualise-pay-and-placement-distributions-with-python-in-excel/Lab-04-Instructions.pdf) | [Contract placements](labs/lab-04-visualise-pay-and-placement-distributions-with-python-in-excel/data/BrightPath_Contract_Placements.xlsx) |
+| 5 | [Build a Recruitment KPI Dashboard with Copilot](labs/lab-05-build-a-recruitment-kpi-dashboard-with-copilot/README.md) | Dashboard | [PDF](labs/lab-05-build-a-recruitment-kpi-dashboard-with-copilot/Lab-05-Instructions.pdf) | [Dashboard data](labs/lab-05-build-a-recruitment-kpi-dashboard-with-copilot/data/BrightPath_Recruitment_Dashboard_Data.xlsx) |
+| 6 | [Build an Interactive Workforce and Attrition Dashboard](labs/lab-06-build-an-interactive-workforce-and-attrition-dashboard/README.md) | Dashboard | [PDF](labs/lab-06-build-an-interactive-workforce-and-attrition-dashboard/Lab-06-Instructions.pdf) | [Workforce headcount](labs/lab-06-build-an-interactive-workforce-and-attrition-dashboard/data/BrightPath_Workforce_Headcount.xlsx) |
+| 7 | [Surface Attrition Insights with Copilot and Advanced Analysis](labs/lab-07-surface-attrition-insights-with-copilot-and-advanced-analysis/README.md) | Insights | [PDF](labs/lab-07-surface-attrition-insights-with-copilot-and-advanced-analysis/Lab-07-Instructions.pdf) | [Attrition study](labs/lab-07-surface-attrition-insights-with-copilot-and-advanced-analysis/data/BrightPath_Attrition_Analysis.xlsx) |
+| 8 | [Turn Engagement Survey Feedback into Recommendations](labs/lab-08-turn-engagement-survey-feedback-into-recommendations/README.md) | Insights | [PDF](labs/lab-08-turn-engagement-survey-feedback-into-recommendations/Lab-08-Instructions.pdf) | [Engagement survey](labs/lab-08-turn-engagement-survey-feedback-into-recommendations/data/BrightPath_Engagement_Survey.xlsx) |
 
-| Category | Details |
-|----------|---------|
-| **Duration** | 1 day · 7.5 instructional hours |
-| **Delivery** | Instructor-led, hands-on practical labs |
-| **Core tools** | Microsoft 365 Copilot · Microsoft Excel |
-| **Practical work** | 6 connected labs with verification steps |
-| **Courseware** | PowerPoint and PDF slides, Word and PDF guides, Markdown lab instructions |
+### Before you start
 
----
+- You need Excel for Microsoft 365 (Windows, Mac or web) with Copilot enabled.
+- Upload each lab workbook to a **OneDrive or SharePoint** folder and turn **AutoSave** on. Copilot does not work on unsaved local files.
+- Labs 4 and 7 use **Python in Excel**. Each of those labs gives a fallback if Python in Excel is not available on your account.
 
-## Learning Journey
+## Courseware package
 
-```text
-START
-  Lab 1    Prepare the Workbook and Create the Copilot Control Trail
-     │
-     ▼
-  Topic 1 — Getting Started with Copilot in Excel
-  Labs 1–3
-     │
-     ▼
-  Topic 2 — AI-Powered Data Analysis and Insights
-  Labs 4–6
-     │
-     ▼
-FINISH
-  Lab 6   Run Advanced Analysis and Write the Verified Decision Summary
-```
+| Item | Files |
+|---|---|
+| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v2.0.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v2.0.pdf>) |
+| Learner Guide | [Word](<courseware/LG-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LG-Microsoft 365 Copilot for Excel.pdf>) · [Markdown](<LG-Microsoft 365 Copilot for Excel.md>) |
+| Lesson Plan | [Word](<courseware/LP-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LP-Microsoft 365 Copilot for Excel.pdf>) |
+| Labs | [labs/](labs/README.md): 8 lab folders with instruction PDFs, sample prompts and mock data |
 
----
+The deck, Learner Guide, Lesson Plan and labs are all generated from one content source in `.agents/skills/non-wsq-courseware-build/build/`, so they stay aligned. To rebuild them, run `build_courseware.sh` in that folder.
 
-## Project Structure
+## Distribution boundary
 
-```text
-C34---Microsoft-365-Copilot-for-Excel/
-├── README.md
-├── LG-Microsoft 365 Copilot for Excel.md
-│
-├── labs/
-│   ├── README.md                 # Start here: complete lab index
-│   └── lab-*.md                    # 6 connected practical activities
-│
-└── courseware/
-    ├── *.pptx / *.pdf             # Trainer and learner slides
-    ├── LG-*.docx / LG-*.pdf       # Learner Guide
-    └── LP-*.docx / LP-*.pdf       # Lesson Plan
-```
+This repository publishes the current learner-facing courseware and labs. It does not publish superseded versions (`courseware/archive/`), source reference material or credentials. This is a non-WSQ commercial course, so it has no assessment.
 
----
+## Data notice
 
-## Getting Started
+All BrightPath organisations, people, IDs and values are **fictional training data**, generated for this course. Any resemblance to a real company or person is coincidental. Do not paste real employees' personal data into Copilot during practice.
 
-### Prerequisites
+## Provider
 
-- The accounts and software required for **Microsoft 365 Copilot · Microsoft Excel**. Follow the setup and access notes in each lab.
-- A modern web browser and Git for cloning the materials.
-- Synthetic or authorised data only. Do not place secrets, personal data or confidential material into an unapproved service.
-- A named human reviewer for facts, calculations, decisions and any externally released output.
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/tertiarycourses/C34---Microsoft-365-Copilot-for-Excel.git
-cd C34---Microsoft-365-Copilot-for-Excel
-```
-
-### 2. Open the lab index
-
-Start with [labs/README.md](labs/README.md), then complete Labs 1–6 in order. Each lab provides the activity context, practical steps and a way to verify the result.
-
-### 3. Keep your connected outputs
-
-Store each lab output in the suggested working folder and retain the evidence or review notes requested by the lab. Later activities depend on these approved outputs.
-
----
-
-## Contributing
-
-Contributions, corrections and improvements are welcome:
-
-1. **Fork** the repository.
-2. Create a feature branch: `git checkout -b feature/my-improvement`.
-3. Commit your changes: `git commit -m "Add my improvement"`.
-4. Push the branch: `git push origin feature/my-improvement`.
-5. Open a **Pull Request**.
-
-Found a bug or have an idea? Open an [issue](https://github.com/tertiarycourses/C34---Microsoft-365-Copilot-for-Excel/issues).
-
----
-
-## License
-
-This material is provided for **educational use** as part of the commercial course **Microsoft 365 Copilot for Excel (C34)**. © Tertiary Infotech Pte. Ltd. All rights reserved.
-
----
-
-## Developed By
-
-**Tertiary Infotech Pte. Ltd.** — [Tertiary Courses](https://www.tertiarycourses.com.sg)<br>
-Course: [Microsoft 365 Copilot for Excel (C34)](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html)
-
-## Acknowledgements
-
-- The teams behind Microsoft 365 Copilot · Microsoft Excel.
-- Course trainers and learners of C34.
-
----
-
-<div align="center">
-
-⭐ **If these materials helped you learn Microsoft 365 Copilot for Excel, star the repository!**
-
-Powered by [Tertiary Infotech Academy Pte Ltd](https://www.tertiaryinfotech.com/)
-
-[📘 Course Page](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) · [🧪 Hands-On Labs](labs/README.md) · [📖 Learner Guide](<LG-Microsoft 365 Copilot for Excel.md>)
-
-</div>
+Developed and delivered by **Tertiary Infotech Academy Pte Ltd** (Tertiary Courses), Singapore · UEN 201200696W
+Course page: <https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html>

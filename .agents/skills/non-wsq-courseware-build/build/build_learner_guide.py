@@ -43,7 +43,9 @@ REPO=_find_repo(HERE); ASSETS=os.path.join(os.path.dirname(HERE),"assets")
 # terse course_data steps if a README is missing/unparseable.
 import glob as _glob, re as _re
 def _readme_steps(num):
-    cands=_glob.glob(os.path.join(REPO,"labs",f"lab-{num:02d}-*.md"))
+    cands=_glob.glob(os.path.join(REPO,"labs",f"lab-{num:02d}-*","README.md"))
+    if not cands:
+        cands=_glob.glob(os.path.join(REPO,"labs",f"lab-{num:02d}-*.md"))
     if not cands:
         cands=_glob.glob(os.path.join(REPO,"labs",f"lab{num:02d}-*","README.md"))
     if not cands: return None
@@ -172,6 +174,9 @@ for t in C.TOPICS:
         st=_readme_steps(a["num"]) or [(instr,cmd) for (instr,cmd) in a["steps"]]
         st=[(si,sc) for (si,sc) in st if "youtube" not in sc.lower() and "youtube" not in si.lower()]
         steps(st)
+        if a.get("sample_prompts"):
+            h3("Sample prompts")
+            table(["Purpose","Prompt"],a["sample_prompts"])
         h3("Test it")
         p(a["test"])
         if a.get("checkpoint"):
@@ -186,7 +191,8 @@ for t in C.TOPICS:
         if a.get("reflection"):
             h3("Reflection")
             p(a["reflection"])
-        note(f"The complete lab and its support-file references are in labs/lab-{a['num']:02d}-*.md. "
+        note(f"The lab folder labs/lab-{a['num']:02d}-*/ holds the instruction PDF with sample prompts, "
+             f"sample-prompts.txt and the mock-data workbook ({', '.join(a.get('data_files',[])) or 'none'}). "
              + getattr(C,"LAB_NOTE","Use only accounts and data you are authorised to use."))
         rule()
     _recaps=getattr(C,"TOPIC_RECAPS",{}).get(t["num"],[])

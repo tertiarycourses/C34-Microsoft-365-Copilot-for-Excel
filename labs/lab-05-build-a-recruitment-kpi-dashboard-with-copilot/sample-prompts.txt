@@ -1,0 +1,81 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 5: Build a Recruitment KPI Dashboard with Copilot
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+
+[1] Plan
+Plan a recruitment KPI dashboard on the Dashboard sheet from tblApps with KPI cards for applications, hires, offer acceptance rate, average time to hire and cost per hire. List the formulas before building.
+
+[2] KPI card
+Create a KPI card that shows Cost per hire = total Sourcing_Cost / hires, formatted as S$ with 2 decimals.
+
+[3] Chart vs target
+Create a column chart of hires by Hire_Date month with Hire_Target from tblTargets as a line.
+
+[4] Slicers
+Add slicers for Sector and Recruiter and connect them to all PivotTables on Dash_Data.
+
+[5] Fix a KPI
+The offer acceptance rate must exclude Pending offers. Update the formula and explain it.
+
+[6] Layout
+Arrange the KPI cards in one row and the three charts in a grid below them with equal sizes.
+
+[7] Review
+Review this dashboard for a Head of Recruitment. What is unclear, missing or potentially misleading?
+
+[8] Question
+Which recruiter made the most hires in H1 2026, and what was their average time to hire?
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Tables : tblApps (600 applications, Jan-Jun 2026) | tblTargets (monthly hire targets)
+KPI definitions:
+  Applications          = number of rows
+  Hires                 = Furthest_Stage = "Hired"
+  Offer acceptance rate = accepted / (accepted + declined)   (Pending excluded)
+  Avg time to hire      = average Time_to_Hire_Days of hires
+  Cost per hire         = total Sourcing_Cost / hires
+
+[Step 2]
+A1 Applications        B1 =ROWS(tblApps[Application_ID])
+A2 Hires               B2 =COUNTIFS(tblApps[Furthest_Stage],"Hired")
+A3 Offer acceptance    B3 =COUNTIFS(tblApps[Offer_Accepted],"Yes")/(COUNTIFS(tblApps[Offer_Accepted],"Yes")+COUNTIFS(tblApps[Offer_Accepted],"No"))
+A4 Avg time to hire    B4 =AVERAGEIFS(tblApps[Time_to_Hire_Days],tblApps[Furthest_Stage],"Hired")
+A5 Cost per hire       B5 =SUM(tblApps[Sourcing_Cost])/B2
+
+[Step 3]
+GOAL: Build a one-page H1 2026 recruitment KPI dashboard on the Dashboard sheet.
+CONTEXT: For BrightPath's Head of Recruitment; monthly review meeting.
+DATA: tblApps and tblTargets only. Use the KPI definitions on About_This_Data.
+CONSTRAINTS: Do not change tblApps or tblTargets. KPI cards must be formulas, not typed numbers.
+OUTPUT:
+  Row 1: title "Recruitment Dashboard - Jan to Jun 2026" and "Data as at 2026-06-30".
+  Row 3: five KPI cards - Applications, Hires, Offer acceptance rate, Avg time to hire (days),
+         Cost per hire (S$).
+  Below: (1) column chart of hires by Hire_Date month with a line for Hire_Target from tblTargets,
+         (2) bar chart of hires by Sector sorted highest first,
+         (3) bar chart of applications by Source.
+  Slicers for Sector and Recruiter connected to all PivotTables. Put PivotTables on a sheet Dash_Data.
+REVIEW: List each KPI formula you will use before building.
+
+[Step 4]
+The plan is approved. Build the dashboard exactly as planned.
+
+[Step 5]
+FOLLOW-UP EXAMPLE:
+The Offer acceptance rate card must exclude Offer_Accepted = "Pending". Change its formula to
+accepted / (accepted + declined) and show it as a percentage with 1 decimal.
+
+[Step 6]
+CHECK (Technology):
+=COUNTIFS(tblApps[Sector],"Technology")
+=COUNTIFS(tblApps[Sector],"Technology",tblApps[Furthest_Stage],"Hired")
+
+If a KPI card does not change, ask: "Make the KPI cards respond to the Sector and Recruiter slicers."
+
+[Step 7]
+Add a note under the title: "Source: tblApps; KPI definitions on About_This_Data".
+Use one consistent colour scheme and align the charts in a grid.
+CHAT ONLY: Review this dashboard for a Head of Recruitment. What is unclear or missing?

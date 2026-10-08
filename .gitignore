@@ -4,3 +4,6 @@ __pycache__/
 .DS_Store
 work-c34/
 courseware/assets/screenshots/_rendered/
+archive/
+.env
+.env.*

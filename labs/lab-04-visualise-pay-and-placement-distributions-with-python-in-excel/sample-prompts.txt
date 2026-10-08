@@ -1,0 +1,66 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 4: Visualise Pay and Placement Distributions with Python in Excel
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+
+[1] Calculated column
+Add Gross_Margin_Pct = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly as a percentage.
+
+[2] Box plot
+Using Python, create a box plot of Bill_Rate_Hourly by Job_Level ordered Junior, Mid, Senior, Lead.
+
+[3] Histogram
+Using Python, create a histogram of Pay_Rate_Hourly with 15 bins and mark the median.
+
+[4] Scatter
+Using Python, plot Years_Experience against Pay_Rate_Hourly with a linear trend line and return the correlation.
+
+[5] Heatmap
+Using Python, create a heatmap of average Gross_Margin_Pct by Sector and Job_Level with values shown.
+
+[6] Outliers
+Using the IQR rule, list Pay_Rate_Hourly outliers with Placement_ID, Sector and Job_Level, and state the upper fence.
+
+[7] Explain code
+Explain the Python code in the selected cell line by line.
+
+[8] Direct answer
+What are the median and mean Bill_Rate_Hourly by Job_Level? Show the code.
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Table  : tblPlacements (180 rows)
+Levels : Junior | Mid | Senior | Lead
+Output sheet : Python_Charts
+
+[Step 2]
+Add a column Gross_Margin_Pct to tblPlacements = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly,
+formatted as a percentage with 1 decimal.
+
+CHECK: =AVERAGE(tblPlacements[Gross_Margin_Pct])
+
+[Step 3]
+Using Python in Excel, create a box plot of Bill_Rate_Hourly by Job_Level from tblPlacements,
+ordered Junior, Mid, Senior, Lead. Put it in Python_Charts!B2. Title it
+"Contract bill rate by job level (S$/hour)" and label both axes.
+
+CHECK: =MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]="Lead"))
+
+[Step 4]
+Using Python, create a scatter plot of Years_Experience (x) against Pay_Rate_Hourly (y) from
+tblPlacements, coloured by Job_Level, with a linear trend line. Also return the Pearson correlation
+coefficient in the cell below the chart.
+
+CHECK: =CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])
+
+[Step 5]
+Using Python, create a heatmap of the average Gross_Margin_Pct by Sector (rows) and Job_Level (columns,
+ordered Junior to Lead) with the values printed in each cell as percentages.
+
+[Step 6]
+Using the IQR rule (above Q3 + 1.5 x IQR), list the Pay_Rate_Hourly outliers in tblPlacements with
+Placement_ID, Sector, Job_Level and Pay_Rate_Hourly. State Q1, Q3 and the upper fence. Show the code.
+
+[Step 7]
+Explain the Python code in Python_Charts!B2 line by line in plain English.
