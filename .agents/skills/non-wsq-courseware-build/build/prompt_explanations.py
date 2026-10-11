@@ -307,3 +307,92 @@ FORMULAS = {
         ]),
     },
 }
+
+
+# "What it does" for the first five sample prompts of each lab - shown beside each
+# prompt on the deck's "Sample Prompts - Lab n" slide. Keyed by lab number, in the
+# same order as the lab's sample_prompts. Formulas are what Copilot typically writes.
+SAMPLE_EXPLAIN = {
+    1: [
+        "Chat only: Copilot reads the table and reports what a row is, each column's type, the row count and the "
+        "date range. Nothing in the sheet changes.",
+        "Reports duplicate IDs and Source values that are not on the canonical list, so you see the problems before "
+        "fixing anything.",
+        "Plan mode: Copilot lists its steps and waits. You approve or correct the plan before any cell changes.",
+        "Writes e.g. =SUBSTITUTE(TRIM([@Source]),\"Linked In\",\"LinkedIn\"): TRIM removes extra spaces, SUBSTITUTE "
+        "fixes the spelling. The original Source stays as it was.",
+        "Counts applications and hires (Stage = \"Hired\") for each Source_Clean value; hire rate = hires / "
+        "applications. Check it with COUNTIFS.",
+    ],
+    2: [
+        "Writes e.g. =XLOOKUP([@Recruiter_ID], tblRecruiters[Recruiter_ID], tblRecruiters[Recruiter_Name], "
+        "\"Not found\"): finds this row's ID in tblRecruiters and returns the name.",
+        "Writes e.g. =IF([@Close_Date]=\"\", Control!$B$1-[@Open_Date], [@Close_Date]-[@Open_Date]): still open? "
+        "count to the report date; closed? count to the close date.",
+        "Writes =[@Filled]/[@Openings]: this row's filled positions divided by its openings, e.g. 4 of 4 = 100%.",
+        "Writes =[@Filled]*[@Monthly_Salary_Budget]*12*[@Fee_Rate]: monthly salary x 12 = annual salary, x fee rate, "
+        "x positions filled. JOB-2002: 4 x S$4,900 x 12 x 25% = S$58,800.",
+        "Writes =IF(AND([@Status]=\"Open\", [@Days_Open]>45), \"Overdue\", \"\"): Overdue only when both tests are "
+        "true; otherwise the cell stays blank.",
+    ],
+    3: [
+        "Builds a summary with no formulas: one row per month, one column per sector, each cell the total hires. "
+        "Check the grand total against =SUM(tblMonthly[Hires]).",
+        "Draws a line chart linked to the PivotTable, so it changes when the PivotTable is filtered or refreshed.",
+        "Totals 2026 hires for each sector and draws bars, longest first, so the top sector stands out.",
+        "Shows how many candidates remain at each stage, from applications down to hires, so you see where people "
+        "drop out.",
+        "Puts two measures with different units on one chart: hire rate (%) as columns on the left axis, cost per "
+        "hire (S$) as a line on the right axis.",
+    ],
+    4: [
+        "Copilot reads the workbook's current formats (dates, money, tables) and writes them as rules on a new "
+        ".Rules sheet.",
+        "Adds one line to column A of .Rules; from now on every chart Copilot makes in this workbook uses those "
+        "colours.",
+        "A one-line prompt is enough: Copilot reads .Rules and applies every rule - statuses, regions, client names, "
+        "dates, money - to a clean copy.",
+        "Lists each spelling with its count and groups variants such as WIP and In Progress, so you know what the "
+        "rules must fix.",
+        "Rate: =XLOOKUP([@Owner], tblRateCard[Owner], tblRateCard[Hourly_Rate]) finds the owner's rate. "
+        "Delivered_Value: =[@Hours_Logged]*[@Rate], hours x rate.",
+    ],
+    5: [
+        "Chat only: Copilot lists the skills you can call - Formatting, Visualization and Finance - and when each "
+        "one helps.",
+        "Calls the chart-design skill: it picks a suitable chart type, then builds and formats the chart.",
+        "Calls the unit-economics skill: CAC = spend / new clients and payback = CAC / (ARPA x gross margin), for each "
+        "channel. Check against your Checks sheet.",
+        "Calls the check-model skill to audit the sheet: typed numbers where formulas should be, formulas unlike their "
+        "neighbours, totals that miss rows.",
+        "Calls the theme-design skill: one coordinated set of colours and fonts for cells, tables and charts.",
+    ],
+    6: [
+        "Copilot writes the whole SKILL.md: a name and description at the top, then the steps. You save it in your "
+        "OneDrive skills folder.",
+        "Copilot reads a skill file and explains its steps in plain English - a quick review before you save or run it.",
+        "Runs your custom skill from one line: it builds the Monday-to-Friday calendar and flags clashes.",
+        "The same skill for a new week - no need to repeat the instructions.",
+        "Finds overlapping interviews with the same interviewer, or onsite interviews in the same room, and lists "
+        "both IDs.",
+    ],
+    7: [
+        "Plan mode: Copilot proposes the dashboard - KPI cards, charts, slicers - using the definitions in .Rules, "
+        "and waits for your approval.",
+        "Reads the totals from the PivotTable with GETPIVOTDATA (sourcing cost / hires), so the card follows the "
+        "slicers instead of showing a fixed number.",
+        "Calls chart-design for a combo chart: hires as columns and the monthly target as a line, so each month is "
+        "seen against target.",
+        "Adds a date slider for Hire_Date; connected to every PivotTable, it filters all charts and cards together.",
+        "Data bars draw a bar inside each cell; traffic-light colours turn the target card green, amber or red by "
+        "the % reached.",
+    ],
+    8: [
+        "Copilot writes the dashboard recipe as a SKILL.md; its first step reads .Rules, so every run uses the same "
+        "definitions.",
+        "Runs the skill: helper columns, Checks sheet, PivotTables, KPI cards, charts and slicers - all from one line.",
+        "Refreshes every PivotTable after new rows were added and reports which KPIs moved, e.g. headcount 237 to 245.",
+        "Finds filter combinations that would show fewer than 5 people, so you can hide or group them before sharing.",
+        "Explains the card's formula: exits in the period / ((opening + closing headcount) / 2) = 29 / 223.5 = 13.0%.",
+    ],
+}

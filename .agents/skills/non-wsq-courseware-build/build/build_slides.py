@@ -204,6 +204,24 @@ def content(title,items,kicker=None,size=20):
         txt(s,cx+Inches(0.74),cy+Inches(0.08),cw-Inches(0.98),ch-Inches(0.16),
             [[(it,fs,_ink(),False)]],anchor=MSO_ANCHOR.MIDDLE)
     footer(s); return s
+def prompt_explain(title,rows,kicker=None):
+    """Sample prompts with a 'What it does' column: one numbered card per prompt.
+    rows: list of (label, prompt, explanation)."""
+    s=head(slide(),title,kicker)
+    n=max(1,len(rows)); x0=Inches(0.85); W=Inches(11.63); y0=Inches(2.2); gap=Inches(0.1)
+    ch=int((Inches(4.6)-gap*(n-1))/n); split=Inches(6.55)
+    txt(s,x0+Inches(0.75),Inches(1.8),Inches(4),Inches(0.32),[[("PROMPT",12,_acc(BLUE),True)]])
+    txt(s,x0+split+Inches(0.25),Inches(1.8),Inches(4),Inches(0.32),[[("WHAT IT DOES",12,_acc(TEAL),True)]])
+    fs=12 if max(len(p)+len(e) for _l,p,e in rows)<=330 else 11
+    for i,(lbl,pr,ex) in enumerate(rows):
+        y=int(y0+(ch+gap)*i); col=PALETTE[i%len(PALETTE)]
+        rect(s,x0,y,W,ch,_panel())
+        bd=Inches(0.38); oval(s,x0+Inches(0.2),int(y+ch/2-bd/2),bd,bd,col)
+        txt(s,x0+Inches(0.2),int(y+ch/2-bd/2),bd,bd,[[(str(i+1),12,WHITE,True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
+        txt(s,x0+Inches(0.75),y,split-Inches(0.9),ch,[[(f"{lbl}:  ",fs,col,True),(pr,fs,_ink(),False)]],anchor=MSO_ANCHOR.MIDDLE)
+        rect(s,x0+split,y+Inches(0.12),Inches(0.015),ch-Inches(0.24),_line())
+        txt(s,x0+split+Inches(0.25),y,W-split-Inches(0.4),ch,[[(ex,fs,_grey(),False)]],anchor=MSO_ANCHOR.MIDDLE)
+    footer(s); return s
 def two_col(title,left,right,kicker=None,lhead="",rhead="",size=16):
     s=head(slide(),title,kicker)
     rect(s,Inches(0.85),Inches(1.95),Inches(5.7),Inches(4.7),_panel()); rect(s,Inches(6.95),Inches(1.95),Inches(5.53),Inches(4.7),_panel())
@@ -957,6 +975,10 @@ def _render_section(t,sec,accent,tag):
             kicker=f"{tag} · PRACTITIONER CONTROL",
         )
 
+try:
+    from prompt_explanations import SAMPLE_EXPLAIN as _SAMPLE_EXPLAIN
+except ImportError:
+    _SAMPLE_EXPLAIN={}
 # All slides for one lab: overview, screenshots, sample prompts and checks.
 def _render_lab(t,a):
     activity_overview(
@@ -966,9 +988,15 @@ def _render_lab(t,a):
     )
     _lab_extras(a["num"])
     if a.get("sample_prompts"):
-        content(f"Sample Prompts — Lab {a['num']}",
-                [f"{lbl}: {pr}" for lbl,pr in a["sample_prompts"][:5]],
-                kicker=f"LAB {a['num']} · PROMPTS TO TRY",size=14)
+        _ex=_SAMPLE_EXPLAIN.get(a["num"])
+        if _ex:   # prompt + what it does (and the formula Copilot writes)
+            prompt_explain(f"Sample Prompts — Lab {a['num']}",
+                           [(lbl,pr,ex) for (lbl,pr),ex in zip(a["sample_prompts"][:5],_ex)],
+                           kicker=f"LAB {a['num']} · PROMPTS TO TRY")
+        else:
+            content(f"Sample Prompts — Lab {a['num']}",
+                    [f"{lbl}: {pr}" for lbl,pr in a["sample_prompts"][:5]],
+                    kicker=f"LAB {a['num']} · PROMPTS TO TRY",size=14)
     # Keep the deck concept-first: the overview above carries objective,
     # context, outcome and key workflow; click-by-click detail lives in the
     # aligned lab Markdown and Learner Guide.
