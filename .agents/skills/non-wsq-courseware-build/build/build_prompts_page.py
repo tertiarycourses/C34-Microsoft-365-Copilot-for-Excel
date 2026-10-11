@@ -213,6 +213,12 @@ def render_lab(lab):
         tail = (f' <span class="see">→ Prompt{"s" if prompts_here > 1 else ""} '
                 f'{", ".join(LETTERS[k + j] for j in range(prompts_here))}</span>') if prompts_here else ""
         steps_html.append(f"<li>{esc(instr)}{tail}{info}</li>")
+        if i > 1 and items and all(kind == "info" for kind, _, _ in items):
+            # a hands-on Excel step with no Copilot prompt (e.g. create the table) — show it in sequence
+            blocks.append(
+                f'<article class="prompt manual"><header><div><span class="pname">Lab {n} · Step {i}</span>'
+                f'<span class="ptool">Do this in Excel first — no Copilot prompt</span></div></header>'
+                f'<p>{esc(instr)}</p>{info}</article>')
         for kind, tag, body in items:
             if kind == "prompt":
                 body = unwrap(body)
@@ -263,12 +269,12 @@ def render_lab(lab):
 
 CSS = """
 :root{--bg:#F7F9F7;--panel:#fff;--ink:#1D211F;--muted:#5D6762;--rule:#D5DDD8;
---accent:#107C41;--on-accent:#fff;--accent-bg:#EEF6F1;--ok:#185ABD;--mark:#FCE9B8;--code:#F1F4F2}
+--accent:#107C41;--on-accent:#fff;--accent-bg:#EEF6F1;--ok:#185ABD;--mark:#FCE9B8;--code:#F1F4F2;--warn:#B7791F;--warn-bg:#FDF4E3}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
 --bg:#161A18;--panel:#1F2421;--ink:#ECF0EE;--muted:#AAB5AF;--rule:#36403B;
---accent:#4CC38A;--on-accent:#0E1A13;--accent-bg:#1E2B24;--ok:#7AB4FF;--mark:#5A4A1E;--code:#262C29}}
+--accent:#4CC38A;--on-accent:#0E1A13;--accent-bg:#1E2B24;--ok:#7AB4FF;--mark:#5A4A1E;--code:#262C29;--warn:#E0A84A;--warn-bg:#2E2618}}
 :root[data-theme="dark"]{--bg:#161A18;--panel:#1F2421;--ink:#ECF0EE;--muted:#AAB5AF;--rule:#36403B;
---accent:#4CC38A;--on-accent:#0E1A13;--accent-bg:#1E2B24;--ok:#7AB4FF;--mark:#5A4A1E;--code:#262C29}
+--accent:#4CC38A;--on-accent:#0E1A13;--accent-bg:#1E2B24;--ok:#7AB4FF;--mark:#5A4A1E;--code:#262C29;--warn:#E0A84A;--warn-bg:#2E2618}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
 font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,sans-serif}
@@ -309,6 +315,9 @@ border:0;border-radius:8px;padding:9px 18px;cursor:pointer;min-height:40px}
 .copy.done{background:var(--ok)}
 .copy.small{font-size:13px;padding:5px 12px;min-height:32px}
 .formulas{border-left-color:var(--ok)}
+.manual{border-left-color:var(--warn);border-width:1.5px 1.5px 1.5px 4px;border-color:var(--warn)}
+.manual header{background:var(--warn-bg)}
+.manual p{margin:0;padding:12px 14px 4px}.manual pre.info{margin:4px 14px 14px}
 .formulas ul,.ask ul{list-style:none;padding:0;margin:0}
 .formulas li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:10px 14px;border-top:1px solid var(--rule)}
 .formulas li:first-child{border-top:0}
