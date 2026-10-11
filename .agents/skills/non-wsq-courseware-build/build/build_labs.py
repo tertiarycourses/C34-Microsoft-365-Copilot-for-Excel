@@ -257,7 +257,8 @@ def build_md(lab, topic, fname_prev, fname_next):
          f"**Duration:** {lab.get('duration', '—')} minutes  ",
          f"**Tools:** {lab['services']}\n",
          f"> 📄 **Instruction PDF (with sample prompts):** [{pdf_name(lab)}]({pdf_name(lab)})  ",
-         "> 💬 **Copy-ready prompts:** [sample-prompts.txt](sample-prompts.txt)  "]
+         "> 💬 **Copy-ready prompts:** [sample-prompts.txt](sample-prompts.txt)  ",
+         f"> 🌐 **Prompts web page (one-click copy):** [Lab {n} prompts]({C.PROMPTS_PAGE}#lab-{n})  "]
     for f in lab.get("data_files", []):
         L.append(f"> 📊 **Mock data:** [{f}]({f})  ")
     L.append("")
@@ -333,6 +334,7 @@ R = [f"# {C.TITLE} — Hands-On Labs\n",
      "Every lab has its own folder containing an **instruction PDF with sample prompts**, the same instructions as "
      "`README.md`, a copy-ready `sample-prompts.txt`, and a `data/` folder with the **mock HR / recruitment workbook**. "
      "All data belongs to *BrightPath Talent Solutions*, a fictional Singapore recruitment and staffing firm.\n",
+     f"**Prompts web page:** every lab's prompts with one-click Copy buttons — [{C.PROMPTS_PAGE}]({C.PROMPTS_PAGE})\n",
      "Work through the labs in order. Each lab opens its own workbook, so you can rejoin at any lab.\n"]
 for t in C.TOPICS:
     R.append(f"\n## Topic {t['num']} — {t['title']}\n")
