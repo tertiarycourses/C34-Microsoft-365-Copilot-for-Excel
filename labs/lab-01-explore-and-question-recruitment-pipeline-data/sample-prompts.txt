@@ -64,6 +64,9 @@ ALLOW EDITING:
 2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'
    to 'LinkedIn'. Do not delete or edit any existing values.
 
+FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In'
+and no value with a trailing space, and that tblApplications still has 242 rows.
+
 [Step 5]
 PROMPT (Chat only):
 Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
