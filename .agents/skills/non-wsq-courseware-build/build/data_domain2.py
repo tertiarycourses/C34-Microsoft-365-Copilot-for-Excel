@@ -272,19 +272,22 @@ DOMAIN2 = [
                 "Payback = CAC / (ARPA x gross margin), in months",
             ),
             (
-                "Find the skills. In the Copilot pane select Settings (...) > Manage plugins & skills and open each folder. Turn "
-                "on chart-design (it is off by default), unit-economics and check-model. Close the dialog, type @ in the prompt "
-                "box and confirm they are listed. A skill that is off can still be called with an @mention.",
-                "Formatting    : brandkit, theme-design\n"
-                "Visualization : chart-design\n"
-                "Finance       : 3-statements, check-model, comps-analysis, unit-economics and more (20 skills)\n"
+                "Turn on the skills. In the Copilot pane select Settings (...) > Manage plugins & skills. Open the Finance "
+                "folder and turn on unit-economics and check-model. Open the Visualisation folder and turn on chart-design (it is "
+                "off by default). Leave every other skill as it is. Close the dialog, type @ in the prompt box and confirm all "
+                "three are listed. theme-design (Step 7) sits in a Formatting folder that is still rolling out - if you have no "
+                "Formatting folder, skip it; Step 7 shows what to do.",
+                "Where         : Settings (...) > Manage plugins & skills - turn on only these\n"
+                "Finance       : unit-economics, check-model\n"
+                "Visualisation : chart-design (off by default)\n"
+                "Formatting    : theme-design - only if this folder is shown\n"
                 "Call a skill  : type @ and its name, e.g. @chart-design\n\n"
                 "CHAT ONLY:\n"
                 "Which of your skills would help me analyse client acquisition cost and churn in this workbook, and\n"
                 "which would help me audit the Headcount_Budget sheet? Do not change anything.",
             ),
             (
-                "Call @chart-design (Visualization) in Allow editing. It chooses and formats the chart using the Excel design "
+                "Call @chart-design (Visualisation) in Allow editing. It chooses and formats the chart using the Excel design "
                 f"team's guidance. Check the values: MRR grows from {_money(E5['mrr_jan25'])} in Jan 2025 to "
                 f"{_money(E5['mrr_end'])} in Jun 2026, with {E5['active_end']} active clients at the end.",
                 "ALLOW EDITING:\n"
@@ -334,7 +337,8 @@ DOMAIN2 = [
             ),
             (
                 "Style the workbook with @theme-design (Formatting). It applies one coordinated theme to cells, tables and charts. "
-                "If your organisation has set up a brand kit, try @brandkit instead. Then log your prompts.",
+                "If theme-design is not in your @ list, your account does not have it yet: delete @theme-design and run the rest "
+                "of the prompt as it is. If your organisation has set up a brand kit, try @brandkit instead. Then log your prompts.",
                 "ALLOW EDITING:\n"
                 "@theme-design Apply one clean, professional theme to the Charts, Unit_Economics, Checks and\n"
                 "Headcount_Budget sheets.\n\n" + _LOG,
@@ -360,7 +364,7 @@ DOMAIN2 = [
             f"{E5['total_cell']} (total misses {E5['last_role']}); after the fixes the total rises from "
             f"{_money(E5['budget_reported'])} to {_money(E5['budget_correct'])}."
         ),
-        checkpoint="Keep the workbook in work-c34. Lab 6 needs your OneDrive, because custom skills are stored there.",
+        checkpoint="Keep the workbook in work-c34. Lab 6 needs your OneDrive for one thing only: custom skills are stored there.",
         troubleshooting=[
             (
                 "Manage plugins & skills is missing or greyed out.",
@@ -423,16 +427,16 @@ DOMAIN2 = [
         steps=[
             (
                 _SETUP_STEP.format(file="BrightPath_Interview_Schedule.xlsx")
-                + " For this lab the OneDrive copy matters: Copilot finds custom skills in your OneDrive.",
+                + " The workbook stays local; only the skill file goes in OneDrive (Step 2).",
                 "Table  : tblInterviews (41 interviews, 6-17 July 2026)\n"
                 "Week 1 : Mon 6 July - Fri 10 July 2026\n"
                 "Week 2 : Mon 13 July - Fri 17 July 2026\n"
                 "Clash  : same Interviewer overlapping, or two Onsite interviews in the same Room overlapping",
             ),
             (
-                "Create your skills folder. In the Copilot pane select Settings (...) > Manage plugins & skills > Custom skills > "
-                "Create OneDrive folder, then Open skills folder. OneDrive opens a folder named skills, usually under Documents > "
-                "Copilot > Microsoft Excel. Open the sample calendar skill folder (e.g. make-calendar.example) and read its "
+                "Create your skills folder. In the Copilot pane select Settings (...) > Manage plugins & skills > Custom skills and "
+                "turn the Custom skills switch on. Then select Add in OneDrive (in some versions: Create OneDrive folder, then Open "
+                "skills folder). OneDrive opens a folder named skills, usually under Documents > Copilot > Microsoft Excel. Open the sample calendar skill folder (e.g. make-calendar.example) and read its "
                 "SKILL.md: a front matter block between --- lines, then plain-English steps.",
                 "Folder      : skills/<skill-name>/   (folder name = the skill name, lower case with hyphens)\n"
                 "File        : SKILL.md\n"
@@ -467,12 +471,14 @@ DOMAIN2 = [
                 "Check    : the file is called SKILL.md (not SKILL.md.txt)",
             ),
             (
-                "Make Excel see the new skill: Settings (...) > Manage plugins & skills > Custom skills > Refresh, then turn "
-                "interview-calendar on. Close the dialog and type @inter in the prompt box - the skill should appear.",
+                "Make Excel see the new skill: Settings (...) > Manage plugins & skills > Custom skills, check the Custom skills "
+                "switch is on and select Refresh (the round arrow). Wait until the list loads, then turn interview-calendar on. Close the dialog and type @inter in the prompt box - the skill should appear.",
                 "",
             ),
             (
-                "Run the skill in Allow editing with a one-line prompt. When it finishes, inspect the calendar and select Done. "
+                "Run the skill in Allow editing with a one-line prompt. First check that the title bar shows "
+                "BrightPath_Interview_Schedule: the skill is available in every workbook, but it only works where tblInterviews "
+                "exists. When it finishes, inspect the calendar and select Done. "
                 "Then ask Copilot to add the check formula and compare it with the number of interviews on the calendar.",
                 "ALLOW EDITING:\n"
                 "@interview-calendar Build the calendar for the week starting Monday 6 July 2026.\n\n"
@@ -524,9 +530,14 @@ DOMAIN2 = [
                 "that folder. Select Refresh again.",
             ),
             (
-                "There is no Create OneDrive folder button.",
+                "There is no Add in OneDrive or Create OneDrive folder button.",
                 "Custom skills are rolling out and depend on your licence and update channel. Use the ready-made SKILL.md to "
                 "read the format, and run the same steps as a normal prompt instead.",
+            ),
+            (
+                "Copilot says tblInterviews is not present in this workbook.",
+                "The skill ran in another lab's workbook. Open BrightPath_Interview_Schedule.xlsx and send the prompt again "
+                "from its Copilot pane.",
             ),
             (
                 "The calendar misses a clash.",
