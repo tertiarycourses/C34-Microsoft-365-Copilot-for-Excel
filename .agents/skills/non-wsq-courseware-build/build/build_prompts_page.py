@@ -54,7 +54,7 @@ def folder_name(lab):
 
 
 from lab_prompts import LETTERS, parse_step, unwrap  # noqa: E402
-from prompt_explanations import EXPLAIN  # noqa: E402
+from prompt_explanations import EXPLAIN, FORMULAS  # noqa: E402
 
 
 # =========================================================================== render
@@ -75,6 +75,15 @@ def copy_btn(text, small=False):
     cls = "copy small" if small else "copy"
     return f'<button class="{cls}" type="button" data-copy="{attr(text)}">Copy</button>'
 
+
+
+def _formulas_html(entry):
+    """'Formulas explained' block: each formula with what every part of it does."""
+    if not entry:
+        return ""
+    title, rows = entry
+    items = "".join(f'<li><code>{esc(f)}</code><span>{esc(m)}</span></li>' for f, m in rows)
+    return f'<div class="fx"><b>{esc(title)}</b><ul>{items}</ul></div>'
 
 
 def render_lab(lab):
@@ -109,6 +118,7 @@ def render_lab(lab):
                     f'<article class="prompt"><header><div><span class="pname">Lab {n} · Prompt {LETTERS[k]}</span>'
                     f'<span class="ptool">Step {i} · {esc(tag)}</span></div></header>'
                     f'<p class="what"><b>What it does:</b> {esc(what[LETTERS[k]])}</p>'
+                    + _formulas_html(FORMULAS.get(n, {}).get(LETTERS[k])) +
                     f'<div class="pbar"><span>Prompt</span>{copy_btn(body)}</div>'
                     f"<pre>{marked(body)}</pre></article>")
                 k += 1
@@ -123,6 +133,8 @@ def render_lab(lab):
                     f'<span class="ptool">{esc(tag)}{"" if tag.startswith("Option") else " — paste into an empty cell"}</span></div></header>'
                     f'<ul>{"".join(rows)}</ul></article>')
         mode = mode_next
+    fx_extra = sorted(set(FORMULAS.get(n, {})) - set(LETTERS[:k]))
+    assert not fx_extra, f"prompt_explanations.py: Lab {n} FORMULAS for prompts it does not have: {fx_extra}"
     extra = sorted(set(what) - set(LETTERS[:k]))
     assert not extra, f"prompt_explanations.py: Lab {n} explains prompts it does not have: {extra}"
 
@@ -198,6 +210,12 @@ padding:10px 14px;background:var(--accent-bg)}
 pre{margin:0;padding:14px;white-space:pre-wrap;word-wrap:break-word;
 font:15px/1.5 ui-monospace,Menlo,Consolas,monospace}
 .what{margin:0;padding:12px 14px 0}
+.fx{margin:10px 14px 0;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--code)}
+.fx>b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fx ul{list-style:none;margin:6px 0 0;padding:0}.fx li{padding:8px 0;border-top:1px solid var(--rule)}
+.fx li:first-child{border-top:0}
+.fx code{display:block;font:13.5px/1.5 ui-monospace,Menlo,Consolas,monospace;word-break:break-word;margin-bottom:3px}
+.fx span{font-size:15px}
 .pbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px 0}
 .pbar span{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .prompt>pre{margin:8px 14px 14px;background:var(--code);border-radius:8px}
