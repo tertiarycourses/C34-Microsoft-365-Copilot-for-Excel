@@ -280,7 +280,8 @@ def build_pdf(lab, topic, path):
 
 def build_prompts_txt(lab):
     out = [f"{C.TITLE} ({C.COURSE_CODE}) — Lab {lab['num']}: {lab['title']}",
-           "Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.",
+           ("Sample prompts: use the app labelled in each step. Copy one at a time, adapt it, and verify every result."
+            if lab["num"] == 8 else "Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result."),
            f"Prompts web page (one-click Copy): {C.PROMPTS_PAGE}#lab-{lab['num']}", ""]
     for i, (lbl, pr) in enumerate(lab.get("sample_prompts", []), 1):
         out += [f"[{i}] {lbl}", pr, ""]
@@ -299,6 +300,8 @@ def fill_prompt_log(path, lab):
     if "Prompt_Log" not in wb.sheetnames:
         return
     ws = wb["Prompt_Log"]
+    if lab["num"] == 8:
+        ws.cell(row=1, column=2, value="App / mode (Excel or Microsoft 365 Copilot web)")
     rows = [(f"{r['step']} · {r['letter']}", r["mode"], r["text"]) for r in prompt_rows(lab)]
     rows += [(f"Extra {i}", "Any", pr) for i, (_lbl, pr) in enumerate(lab.get("sample_prompts", []), 1)]
     top = Alignment(wrap_text=True, vertical="top")

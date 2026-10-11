@@ -1,6 +1,6 @@
 # Microsoft 365 Copilot for Excel — Learner Guide
 
-**Course Code:** C34  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v3.0 · 11 October 2026**
+**Course Code:** C34  |  **Conducted by:** Tertiary Infotech Academy Pte Ltd (UEN 201200696W)  |  **Version v3.1 · 12 October 2026**
 
 ## Contents
 
@@ -2421,16 +2421,17 @@ Learning outcome: LO3: use Copilot to write a dashboard skill, run it on a workf
 
 Goal: Build BrightPath's workforce and attrition dashboard from a one-line skill call, prove it updates when new joiners arrive, and make sure no small group can be identified.
 
-BrightPath's HR Director needs the same kind of dashboard every month. Instead of repeating a long brief, you will ask Copilot to write an hr-workforce-dashboard skill, save it to OneDrive and run it on the workforce workbook, whose .Rules sheet holds the period, the attrition definition and the privacy rule. Then you will append eight July joiners and refresh to prove the dashboard is live, check that no slicer combination exposes fewer than 5 people, and ask Copilot for a short leadership summary.
+BrightPath's HR Director needs the same kind of dashboard every month. Instead of repeating a long brief, you will ask Microsoft 365 Copilot at https://copilot.cloud.microsoft/ to write an hr-workforce-dashboard skill, save it to OneDrive and return to Excel to run it on the workforce workbook, whose .Rules sheet holds the period, the attrition definition and the privacy rule. Then you will append eight July joiners and refresh to prove the dashboard is live, check that no slicer combination exposes fewer than 5 people, and ask Copilot for a short leadership summary.
 
 **What you'll build**
 
-An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.xlsx with a .Rules sheet, helper columns, a Checks sheet and an HR_Dashboard with six KPI cards, four charts and Location and Job_Level slicers - refresh-tested and privacy-checked   (Tools: Excel · Copilot (Chat only, Plan, Allow editing) · .Rules · custom skill · PivotTables, slicers, refresh.)
+An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.xlsx with a .Rules sheet, helper columns, a Checks sheet and an HR_Dashboard with six KPI cards, four charts and Location and Job_Level slicers - refresh-tested and privacy-checked   (Tools: Microsoft 365 Copilot web (https://copilot.cloud.microsoft/) to draft the skill · Excel Copilot to run it · .Rules · PivotTables, slicers, refresh.)
 
 **Prerequisites**
 
 - Lab 6 and Lab 7 completed: you can save a custom skill to OneDrive and build a dashboard with rules.
 - This lab folder's data workbook, rules-template.txt and skills/hr-workforce-dashboard/SKILL.md (fallback).
+- Access to https://copilot.cloud.microsoft/ with the same work account used in Excel and OneDrive.
 
 **Step-by-step**
 
@@ -2464,12 +2465,19 @@ An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.
    Every chart title states the finding. Rates as % with 1 decimal. Years with 1 decimal.
    ```
 
-3. Let Copilot write the skill. In Chat only, describe the recipe you followed in Lab 7, made general. Read the reply and ask for changes until the steps are clear.
+3. Open https://copilot.cloud.microsoft/ in your browser and sign in with the same work account used in Excel. Start a new chat in Microsoft 365 Copilot on the web and paste Prompt B below to draft the skill. The web chat does not automatically see your local workbook or Excel chat, so this prompt supplies the table schema and dashboard recipe. No workbook upload is needed. Read the returned text: it must start with --- and include name: hr-workforce-dashboard and a description, followed by the numbered steps. Ask for corrections in this web chat before saving.
 
    ```text
-   CHAT ONLY:
+   PROMPT (Microsoft 365 Copilot web):
    Write a complete SKILL.md for a Copilot in Excel skill named hr-workforce-dashboard.
+   Return reusable skill instructions; do not build a dashboard or claim to inspect my local workbook in this chat.
+   Start with YAML front matter containing name: hr-workforce-dashboard and a description.
    Description: Use when I ask for a workforce, headcount or attrition dashboard from an employee table.
+   Workbook context for the skill when it runs in Excel: tblEmployees has Employee_ID, Department, Location, Job_Level, Employment_Type, Hire_Date, Exit_Date, Exit_Type, Status, Monthly_Salary, Engagement_Score, and Training_Hours_YTD. Status is Active or Exited; blank Exit_Date means no recorded exit.
+   The .Rules worksheet holds the reporting period (2025-07-01 to 2026-06-30 for this lab), KPI definitions, privacy limits and formatting. Read it at run time; ask if it is missing or unclear.
+   Attrition = exits in period / ((headcount at period start + headcount at period end) / 2).
+   Voluntary attrition uses voluntary exits and the same denominator; handle a zero denominator explicitly.
+   Never display Employee_ID, salary, individual records or groups smaller than 5 on the dashboard.
    Steps:
    1) Read the .Rules sheet first and follow it.
    2) Add helper columns Active_Start, Exit_In_Period and Tenure_Years using the period in the rules.
@@ -2478,11 +2486,12 @@ An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.
    5) Build HR_Dashboard: six KPI cards (Active headcount, Exits, Attrition rate, Voluntary attrition rate,
       Avg tenure of active staff, Hires), charts of headcount by Department, attrition rate by Department, hires vs exits by quarter and headcount by Location, and slicers for Location and Job_Level.
    6) Compare every KPI card with Checks and report any difference.
-   7) List any slicer combination with fewer than 5 employees.
-   Return only the SKILL.md text, starting with the --- front matter.
+   7) Check slicer combinations for groups smaller than 5; suppress their values and report the privacy check.
+   8) Use tblEmployees as a dynamic source and refresh all PivotTables after new rows are appended.
+   Return only the full SKILL.md text, starting with the --- front matter, without code fences or commentary.
    ```
 
-4. Save it as before: copy the reply into a plain-text file named SKILL.md, create the folder hr-workforce-dashboard in your OneDrive skills folder and upload the file (or upload the ready-made one from this lab folder). In Excel select Settings (...) > Manage plugins & skills > Custom skills > Refresh and turn the skill on.
+4. Copy the skill text from the web chat into a plain-text file named SKILL.md (not SKILL.md.txt). Do not include Markdown code fences around the file. Return to Excel: Settings (...) > Manage plugins & skills > Custom skills > Open skills folder (select Create OneDrive folder first if needed). Create the folder hr-workforce-dashboard in your OneDrive skills folder and upload the file (or upload the ready-made one from this lab folder). In Excel select Settings (...) > Manage plugins & skills > Custom skills > Refresh and turn the skill on.
 
    ```text
    OneDrive : .../skills/hr-workforce-dashboard/SKILL.md
@@ -2519,7 +2528,7 @@ An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.
    New joiners by department: Recruitment +2, Sales & Client Services +2, IT +4
    ```
 
-8. Check it is safe to share, then ask for a leadership summary that uses only dashboard numbers. Copilot drafts; you check every number before it leaves HR. Log your prompts.
+8. Check it is safe to share, then ask for a leadership summary that uses only dashboard numbers. Copilot drafts; you check every number before it leaves HR. Manually fill in the Step 3 / Prompt B row in Prompt_Log: record that the web chat drafted SKILL.md and how you checked the front matter and steps. Excel Copilot cannot see that web conversation. Then log the Excel prompts with Prompt I.
 
    ```text
    CHAT ONLY:
@@ -2529,7 +2538,8 @@ An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.
    Write a 5-line summary of HR_Dashboard for BrightPath's leadership team. Use only numbers shown on the dashboard, and label any explanation as a hypothesis to test.
 
    LOG (Allow editing):
-   Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
+   In Prompt_Log, leave the Step 3 / Prompt B web-chat row unchanged. For each Excel prompt I ran, fill in What Copilot did and How I verified, and set Decision to Keep. Do not invent results for web prompts.
+   I will tell you any row to change to Revise or Undo.
    ```
 
 
@@ -2537,12 +2547,12 @@ An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.
 
 | Purpose | Prompt |
 |---|---|
-| Write a skill | Write a SKILL.md named hr-workforce-dashboard that reads the .Rules sheet first and builds a verified workforce dashboard. |
+| Write a skill · Microsoft 365 Copilot web | In the web chat at https://copilot.cloud.microsoft/, use the complete Step 3 prompt below to draft hr-workforce-dashboard. It includes the workbook schema and rules that this chat cannot see. |
 | Run a skill | @hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30. |
 | Refresh | I added rows to tblEmployees. Refresh all PivotTables and tell me which KPI values changed. |
 | Privacy | Which slicer combinations show a group of fewer than 5 employees? Suggest how to suppress them. |
 | Explain | Explain how the Attrition rate card is calculated, step by step. |
-| Improve the skill | Update the hr-workforce-dashboard SKILL.md so it also adds a timeline on Hire_Date. Return the full file. |
+| Improve the skill · Microsoft 365 Copilot web | I will paste my current hr-workforce-dashboard SKILL.md below. Update it so it also adds a timeline on Hire_Date. Preserve its front matter, KPI definitions and privacy rules. Return the full file without code fences. If I have not pasted the file, ask me for it first. |
 | Summary | Write a 5-line leadership summary using only the numbers on HR_Dashboard. |
 
 **Test it**
@@ -2564,6 +2574,8 @@ You now have two custom skills in OneDrive. Run hr-workforce-dashboard again nex
 
 | If this happens | Fix |
 |---|---|
+| The web chat asks to see my workbook or outputs a dashboard instead of SKILL.md. | Use the full Step 3 prompt at https://copilot.cloud.microsoft/. Ask for reusable skill instructions only; the local workbook is used later in Excel. Do not upload it just to draft the skill. |
+| The skill does not appear in Excel after saving. | Use the skills folder opened from Excel, check the file is SKILL.md rather than SKILL.md.txt, and ensure the folder name and front-matter name are both hr-workforce-dashboard. Select Refresh and enable it. If custom skills are unavailable for your account, use the supplied skill text as a normal Excel prompt and record that the installation could not be completed. |
 | The new rows did not join the table and nothing changed on refresh. | Ask Copilot to resize tblEmployees to include the 8 new rows, then refresh all PivotTables again. |
 | Attrition shows 12.2% (29 / 237) instead of 13.0%. | The card divides by closing headcount only. Ask Copilot to use the average of opening and closing headcount, then add that wording to the skill. |
 | The skill ignores the .Rules sheet. | Check the sheet is named .Rules and is visible, and that step 1 of the skill says to read it. Start a New chat. |

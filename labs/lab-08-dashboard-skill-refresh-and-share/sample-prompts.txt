@@ -1,9 +1,9 @@
 Microsoft 365 Copilot for Excel (C34) — Lab 8: Turn the Dashboard into a Reusable Skill, Refresh It and Share It Safely
-Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Sample prompts: use the app labelled in each step. Copy one at a time, adapt it, and verify every result.
 Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-8
 
-[1] Write a skill
-Write a SKILL.md named hr-workforce-dashboard that reads the .Rules sheet first and builds a verified workforce dashboard.
+[1] Write a skill · Microsoft 365 Copilot web
+In the web chat at https://copilot.cloud.microsoft/, use the complete Step 3 prompt below to draft hr-workforce-dashboard. It includes the workbook schema and rules that this chat cannot see.
 
 [2] Run a skill
 @hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30.
@@ -17,8 +17,8 @@ Which slicer combinations show a group of fewer than 5 employees? Suggest how to
 [5] Explain
 Explain how the Attrition rate card is calculated, step by step.
 
-[6] Improve the skill
-Update the hr-workforce-dashboard SKILL.md so it also adds a timeline on Hire_Date. Return the full file.
+[6] Improve the skill · Microsoft 365 Copilot web
+I will paste my current hr-workforce-dashboard SKILL.md below. Update it so it also adds a timeline on Hire_Date. Preserve its front matter, KPI definitions and privacy rules. Return the full file without code fences. If I have not pasted the file, ask me for it first.
 
 [7] Summary
 Write a 5-line leadership summary using only the numbers on HR_Dashboard.
@@ -52,9 +52,16 @@ Colours: navy #1F4E79 for headcount, teal #2A9D8F for hires, amber #F4A261 for e
 Every chart title states the finding. Rates as % with 1 decimal. Years with 1 decimal.
 
 [Step 3]
-CHAT ONLY:
+PROMPT (Microsoft 365 Copilot web):
 Write a complete SKILL.md for a Copilot in Excel skill named hr-workforce-dashboard.
+Return reusable skill instructions; do not build a dashboard or claim to inspect my local workbook in this chat.
+Start with YAML front matter containing name: hr-workforce-dashboard and a description.
 Description: Use when I ask for a workforce, headcount or attrition dashboard from an employee table.
+Workbook context for the skill when it runs in Excel: tblEmployees has Employee_ID, Department, Location, Job_Level, Employment_Type, Hire_Date, Exit_Date, Exit_Type, Status, Monthly_Salary, Engagement_Score, and Training_Hours_YTD. Status is Active or Exited; blank Exit_Date means no recorded exit.
+The .Rules worksheet holds the reporting period (2025-07-01 to 2026-06-30 for this lab), KPI definitions, privacy limits and formatting. Read it at run time; ask if it is missing or unclear.
+Attrition = exits in period / ((headcount at period start + headcount at period end) / 2).
+Voluntary attrition uses voluntary exits and the same denominator; handle a zero denominator explicitly.
+Never display Employee_ID, salary, individual records or groups smaller than 5 on the dashboard.
 Steps:
 1) Read the .Rules sheet first and follow it.
 2) Add helper columns Active_Start, Exit_In_Period and Tenure_Years using the period in the rules.
@@ -63,8 +70,9 @@ Steps:
 5) Build HR_Dashboard: six KPI cards (Active headcount, Exits, Attrition rate, Voluntary attrition rate,
    Avg tenure of active staff, Hires), charts of headcount by Department, attrition rate by Department, hires vs exits by quarter and headcount by Location, and slicers for Location and Job_Level.
 6) Compare every KPI card with Checks and report any difference.
-7) List any slicer combination with fewer than 5 employees.
-Return only the SKILL.md text, starting with the --- front matter.
+7) Check slicer combinations for groups smaller than 5; suppress their values and report the privacy check.
+8) Use tblEmployees as a dynamic source and refresh all PivotTables after new rows are appended.
+Return only the full SKILL.md text, starting with the --- front matter, without code fences or commentary.
 
 [Step 4]
 OneDrive : .../skills/hr-workforce-dashboard/SKILL.md
@@ -99,4 +107,5 @@ CHAT ONLY:
 Write a 5-line summary of HR_Dashboard for BrightPath's leadership team. Use only numbers shown on the dashboard, and label any explanation as a hypothesis to test.
 
 LOG (Allow editing):
-Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
+In Prompt_Log, leave the Step 3 / Prompt B web-chat row unchanged. For each Excel prompt I ran, fill in What Copilot did and How I verified, and set Decision to Keep. Do not invent results for web prompts.
+I will tell you any row to change to Revise or Undo.

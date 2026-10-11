@@ -152,8 +152,9 @@ EXPLAIN = {
     8: {
         "A": "Writes the workforce dashboard rules into .Rules: definitions, privacy limits (no individual data, no "
              "group under 5), layout and colours.",
-        "B": "Copilot writes a SKILL.md for an hr-workforce-dashboard skill that builds the whole dashboard with "
-             "checks. Chat only - you save the text as the skill file.",
+        "B": "Microsoft 365 Copilot on the web (https://copilot.cloud.microsoft/) drafts the complete "
+             "hr-workforce-dashboard SKILL.md from the supplied schema and recipe. Save the returned text, then "
+             "install and run it in Excel. No workbook upload is needed to draft the skill.",
         "C": "Runs your skill to plan, then build the workforce dashboard for the 12 months to 30 June 2026. Review "
              "the plan before you approve it.",
         "D": "Compares each KPI card with the Checks sheet and shows the attrition formula. Chat only.",
@@ -164,7 +165,7 @@ EXPLAIN = {
              "every KPI labelled? Chat only.",
         "H": "Writes a 5-line leadership summary that uses only the dashboard's numbers and labels any explanation "
              "as a hypothesis.",
-        "I": _LOG,
+        "I": "Logs the Excel prompts, preserving the web-chat Prompt B row that you fill in manually. Excel cannot see the web conversation.",
     },
 }
 

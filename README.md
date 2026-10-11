@@ -10,7 +10,7 @@ Use Copilot in Excel for everyday Excel work, make it consistent and repeatable 
 | Format | Instructor-led, with 8 hands-on labs |
 | Registration | [View course details and register](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) |
 | Lab prompts | [Copy-ready prompts page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/) |
-| Courseware version | v3.0 · 11 October 2026 |
+| Courseware version | v3.1 · 12 October 2026 |
 
 ---
 
@@ -69,6 +69,7 @@ See the [labs index](labs/README.md).
 
 - You need a current Excel for Microsoft 365 desktop app (Windows or Mac) and a work account with a Microsoft 365 Copilot licence.
 - Copy each lab workbook into a local `work-c34` folder and open it in Excel; no OneDrive upload is needed. OneDrive is used only for **custom skills** (Labs 6 and 8), which Excel reads from your OneDrive skills folder.
+- In Lab 8, draft the custom skill in [Microsoft 365 Copilot on the web](https://copilot.cloud.microsoft/), then install it through OneDrive and run it in Excel. The creation prompt includes the workbook context, so no upload is needed for drafting.
 - Skills and workbook rules are fully supported only when Excel's display language is **English**.
 - Copilot's menus and skills are still rolling out, so some labels may differ on your screen. Each lab includes troubleshooting tips.
 
@@ -76,7 +77,7 @@ See the [labs index](labs/README.md).
 
 | Item | Files |
 |---|---|
-| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v3.0.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v3.0.pdf>) |
+| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v3.1.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v3.1.pdf>) |
 | Learner Guide | [Word](<courseware/LG-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LG-Microsoft 365 Copilot for Excel.pdf>) · [Markdown](<LG-Microsoft 365 Copilot for Excel.md>) |
 | Lesson Plan | [Word](<courseware/LP-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LP-Microsoft 365 Copilot for Excel.pdf>) |
 | Labs | [labs/](labs/README.md): 8 lab folders with instruction PDFs, sample prompts, mock data, rules templates and skills |

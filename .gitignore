@@ -8,3 +8,8 @@ archive/
 .env
 .env.*
 .playwright-mcp/
+
+assessment/
+reference/
+node_modules/
+.venv/

@@ -259,10 +259,11 @@ DOMAIN3 = [
             "Build BrightPath's workforce and attrition dashboard from a one-line skill call, prove it updates when new "
             "joiners arrive, and make sure no small group can be identified."
         ),
-        workflow=["Write .Rules", "Copilot writes the skill", "@hr-workforce-dashboard", "Refresh test", "Privacy & summary"],
+        workflow=["Write .Rules", "Draft skill on the web", "Run skill in Excel", "Refresh test", "Privacy & summary"],
         desc=(
             "BrightPath's HR Director needs the same kind of dashboard every month. Instead of repeating a long brief, you will "
-            "ask Copilot to write an hr-workforce-dashboard skill, save it to OneDrive and run it on the workforce workbook, "
+            "ask Microsoft 365 Copilot at https://copilot.cloud.microsoft/ to write an hr-workforce-dashboard skill, "
+            "save it to OneDrive and return to Excel to run it on the workforce workbook, "
             "whose .Rules sheet holds the period, the attrition definition and the privacy rule. Then you will append eight "
             "July joiners and refresh to prove the dashboard is live, check that no slicer combination exposes fewer than 5 "
             "people, and ask Copilot for a short leadership summary."
@@ -272,7 +273,7 @@ DOMAIN3 = [
             "columns, a Checks sheet and an HR_Dashboard with six KPI cards, four charts and Location and Job_Level slicers - "
             "refresh-tested and privacy-checked"
         ),
-        services="Excel · Copilot (Chat only, Plan, Allow editing) · .Rules · custom skill · PivotTables, slicers, refresh",
+        services="Microsoft 365 Copilot web (https://copilot.cloud.microsoft/) to draft the skill · Excel Copilot to run it · .Rules · PivotTables, slicers, refresh",
         data_files=["data/BrightPath_Workforce_Headcount.xlsx"],
         extra_files=[("rules-template.txt", RULES_LAB8 + "\n", "the .Rules text to paste into column A"),
                      ("skills/hr-workforce-dashboard/SKILL.md", SKILL_DASHBOARD,
@@ -280,6 +281,7 @@ DOMAIN3 = [
         prerequisites=[
             "Lab 6 and Lab 7 completed: you can save a custom skill to OneDrive and build a dashboard with rules.",
             "This lab folder's data workbook, rules-template.txt and skills/hr-workforce-dashboard/SKILL.md (fallback).",
+            "Access to https://copilot.cloud.microsoft/ with the same work account used in Excel and OneDrive.",
         ],
         steps=[
             (
@@ -297,11 +299,25 @@ DOMAIN3 = [
                 "Keep each ## heading in its own cell. Do not change any other sheet.\n" + RULES_LAB8,
             ),
             (
-                "Let Copilot write the skill. In Chat only, describe the recipe you followed in Lab 7, made general. Read the "
-                "reply and ask for changes until the steps are clear.",
-                "CHAT ONLY:\n"
+                "Open https://copilot.cloud.microsoft/ in your browser and sign in with the same work account used in Excel. "
+                "Start a new chat in Microsoft 365 Copilot on the web and paste Prompt B below to draft the skill. "
+                "The web chat does not automatically see your local workbook or Excel chat, so this prompt supplies the "
+                "table schema and dashboard recipe. No workbook upload is needed. Read the returned text: it must start "
+                "with --- and include name: hr-workforce-dashboard and a description, followed by the numbered steps. "
+                "Ask for corrections in this web chat before saving.",
+                "PROMPT (Microsoft 365 Copilot web):\n"
                 "Write a complete SKILL.md for a Copilot in Excel skill named hr-workforce-dashboard.\n"
+                "Return reusable skill instructions; do not build a dashboard or claim to inspect my local workbook in this chat.\n"
+                "Start with YAML front matter containing name: hr-workforce-dashboard and a description.\n"
                 "Description: Use when I ask for a workforce, headcount or attrition dashboard from an employee table.\n"
+                "Workbook context for the skill when it runs in Excel: tblEmployees has Employee_ID, Department, Location,\n"
+                "Job_Level, Employment_Type, Hire_Date, Exit_Date, Exit_Type, Status, Monthly_Salary, Engagement_Score,\n"
+                "and Training_Hours_YTD. Status is Active or Exited; blank Exit_Date means no recorded exit.\n"
+                "The .Rules worksheet holds the reporting period (2025-07-01 to 2026-06-30 for this lab), KPI definitions,\n"
+                "privacy limits and formatting. Read it at run time; ask if it is missing or unclear.\n"
+                "Attrition = exits in period / ((headcount at period start + headcount at period end) / 2).\n"
+                "Voluntary attrition uses voluntary exits and the same denominator; handle a zero denominator explicitly.\n"
+                "Never display Employee_ID, salary, individual records or groups smaller than 5 on the dashboard.\n"
                 "Steps:\n"
                 "1) Read the .Rules sheet first and follow it.\n"
                 "2) Add helper columns Active_Start, Exit_In_Period and Tenure_Years using the period in the rules.\n"
@@ -312,11 +328,14 @@ DOMAIN3 = [
                 "   Avg tenure of active staff, Hires), charts of headcount by Department, attrition rate by Department,\n"
                 "   hires vs exits by quarter and headcount by Location, and slicers for Location and Job_Level.\n"
                 "6) Compare every KPI card with Checks and report any difference.\n"
-                "7) List any slicer combination with fewer than 5 employees.\n"
-                "Return only the SKILL.md text, starting with the --- front matter.",
+                "7) Check slicer combinations for groups smaller than 5; suppress their values and report the privacy check.\n"
+                "8) Use tblEmployees as a dynamic source and refresh all PivotTables after new rows are appended.\n"
+                "Return only the full SKILL.md text, starting with the --- front matter, without code fences or commentary.",
             ),
             (
-                "Save it as before: copy the reply into a plain-text file named SKILL.md, create the folder "
+                "Copy the skill text from the web chat into a plain-text file named SKILL.md (not SKILL.md.txt). "
+                "Do not include Markdown code fences around the file. Return to Excel: Settings (...) > Manage plugins & "
+                "skills > Custom skills > Open skills folder (select Create OneDrive folder first if needed). Create the folder "
                 "hr-workforce-dashboard in your OneDrive skills folder and upload the file (or upload the ready-made one from "
                 "this lab folder). In Excel select Settings (...) > Manage plugins & skills > Custom skills > Refresh and turn "
                 "the skill on.",
@@ -353,22 +372,28 @@ DOMAIN3 = [
             ),
             (
                 "Check it is safe to share, then ask for a leadership summary that uses only dashboard numbers. Copilot drafts; "
-                "you check every number before it leaves HR. Log your prompts.",
+                "you check every number before it leaves HR. Manually fill in the Step 3 / Prompt B row in Prompt_Log: "
+                "record that the web chat drafted SKILL.md and how you checked the front matter and steps. "
+                "Excel Copilot cannot see that web conversation. Then log the Excel prompts with Prompt I.",
                 "CHAT ONLY:\n"
                 "Review HR_Dashboard before I share it with the leadership team. Does any element expose individual\n"
                 "employee data or a group smaller than 5? Is each KPI labelled with its period and definition?\n\n"
                 "CHAT ONLY:\n"
                 "Write a 5-line summary of HR_Dashboard for BrightPath's leadership team. Use only numbers shown on the\n"
-                "dashboard, and label any explanation as a hypothesis to test.\n\n" + _LOG,
+                "dashboard, and label any explanation as a hypothesis to test.\n\n"
+                "LOG (Allow editing):\n"
+                "In Prompt_Log, leave the Step 3 / Prompt B web-chat row unchanged. For each Excel prompt I ran, fill in\n"
+                "What Copilot did and How I verified, and set Decision to Keep. Do not invent results for web prompts.\n"
+                "I will tell you any row to change to Revise or Undo.",
             ),
         ],
         sample_prompts=[
-            ("Write a skill", "Write a SKILL.md named hr-workforce-dashboard that reads the .Rules sheet first and builds a verified workforce dashboard."),
+            ("Write a skill · Microsoft 365 Copilot web", "In the web chat at https://copilot.cloud.microsoft/, use the complete Step 3 prompt below to draft hr-workforce-dashboard. It includes the workbook schema and rules that this chat cannot see."),
             ("Run a skill", "@hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30."),
             ("Refresh", "I added rows to tblEmployees. Refresh all PivotTables and tell me which KPI values changed."),
             ("Privacy", "Which slicer combinations show a group of fewer than 5 employees? Suggest how to suppress them."),
             ("Explain", "Explain how the Attrition rate card is calculated, step by step."),
-            ("Improve the skill", "Update the hr-workforce-dashboard SKILL.md so it also adds a timeline on Hire_Date. Return the full file."),
+            ("Improve the skill · Microsoft 365 Copilot web", "I will paste my current hr-workforce-dashboard SKILL.md below. Update it so it also adds a timeline on Hire_Date. Preserve its front matter, KPI definitions and privacy rules. Return the full file without code fences. If I have not pasted the file, ask me for it first."),
             ("Summary", "Write a 5-line leadership summary using only the numbers on HR_Dashboard."),
         ],
         test=(
@@ -378,13 +403,26 @@ DOMAIN3 = [
             f"{E8['avg_tenure']} years. {E8['top_attr_dept']} has the highest attrition rate ({_RD['rate']}%, {_RD['exits']} "
             f"exits) and the largest active headcount ({_RD['hc']}). After appending the July joiners and refreshing, Active "
             f"headcount shows {E8['active_after']} and tblEmployees has {E8['rows_after']} rows. The dashboard shows no "
-            "Employee_ID, salary or individual record, and the skill appears when you type @."
+            "Employee_ID, salary or individual record, and the skill appears when you type @ in Excel. The saved SKILL.md "
+            "starts with valid front matter and was drafted in Microsoft 365 Copilot on the web."
         ),
         checkpoint=(
             "You now have two custom skills in OneDrive. Run hr-workforce-dashboard again next month on new data, and improve "
             "the skill whenever you correct Copilot twice."
         ),
         troubleshooting=[
+            (
+                "The web chat asks to see my workbook or outputs a dashboard instead of SKILL.md.",
+                "Use the full Step 3 prompt at https://copilot.cloud.microsoft/. Ask for reusable skill instructions only; "
+                "the local workbook is used later in Excel. Do not upload it just to draft the skill.",
+            ),
+            (
+                "The skill does not appear in Excel after saving.",
+                "Use the skills folder opened from Excel, check the file is SKILL.md rather than SKILL.md.txt, and ensure "
+                "the folder name and front-matter name are both hr-workforce-dashboard. Select Refresh and enable it. "
+                "If custom skills are unavailable for your account, use the supplied skill text as a normal Excel prompt "
+                "and record that the installation could not be completed.",
+            ),
             (
                 "The new rows did not join the table and nothing changed on refresh.",
                 "Ask Copilot to resize tblEmployees to include the 8 new rows, then refresh all PivotTables again.",
