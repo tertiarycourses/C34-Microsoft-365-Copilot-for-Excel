@@ -1,0 +1,85 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 3: Build PivotTables, PivotCharts and Recruitment Charts with Copilot
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-3
+
+[1] PivotTable
+Create a PivotTable from tblMonthly with Month_Label in rows, Sector in columns and Sum of Hires as values.
+
+[2] PivotChart
+Create a line PivotChart from the Pivot_Trend PivotTable showing total hires by month. Show data labels and gridlines.
+
+[3] Bar chart
+Create a bar chart of 2026 hires by Sector, sorted from highest to lowest.
+
+[4] Funnel
+Create a funnel chart of 2026 Applications, Screened, Interviews, Offers and Hires with data labels.
+
+[5] Combo chart
+Create a combo chart of Hire_Rate as columns and Cost_per_Hire as a line on a secondary axis.
+
+[6] Refine
+Change the chart title to: Technology led hiring in H1 2026.
+
+[7] Refine
+Sort the bars from highest to lowest and add data labels formatted with thousands separators.
+
+[8] Accessibility
+Add alt text to this chart that describes the trend it shows.
+
+[9] Review
+Is a line chart the right choice for this data? Suggest a better chart if not, and explain why.
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Tables : tblMonthly (108 rows = 18 months x 6 sectors) | tblSources (7 rows)
+
+Q1 Trend      : How have total hires moved month by month since Jan 2025?
+Q2 Comparison : Which sector produced the most hires in Jan-Jun 2026?
+Q3 Funnel     : Where do candidates drop out between application and hire in 2026?
+Q4 Efficiency : Which sources convert best, and at what cost per hire?
+
+[Step 2]
+Create a PivotTable from tblMonthly on a new sheet named Pivot_Trend with Month_Label in rows and Sum of Hires as values. Then create a line PivotChart of total hires by month on the Charts sheet, placed over A1:H18. Format it cleanly: white background, no border or effects, one blue line with markers, data labels above the points, light grey gridlines, axis titles Month and Hires.
+Title: "Monthly hires, Jan 2025 - Jun 2026".
+
+CHECK (Allow editing):
+In an empty cell on Pivot_Trend, add this formula. Tell me whether it matches the PivotTable grand total, and which month had the most hires:
+=SUM(tblMonthly[Hires])
+
+[Step 3]
+Create a PivotTable on a new sheet Pivot_Sector from tblMonthly with Sector in rows and Sum of Hires, filtered to months in 2026 only. Then create a bar PivotChart from it on the Charts sheet, placed over J1:Q18, in the same clean style as the first chart.
+
+FOLLOW-UP: Sort the bars from highest to lowest and change the title to state the leading sector.
+
+CHECK (Allow editing):
+In an empty cell on Pivot_Sector, add this formula and tell me if it matches Technology's bar:
+=SUMIFS(tblMonthly[Hires],tblMonthly[Sector],"Technology",tblMonthly[Month],">="&DATE(2026,1,1))
+
+[Step 4]
+On a new sheet named Funnel_2026, build a small table of 2026 totals for Applications, Screened, Interviews, Offers and Hires from tblMonthly using SUMIFS on Month >= 1 Jan 2026. Add a column showing each stage as a % of Applications. Then create a funnel chart from it with data labels on the Charts sheet, placed over A20:H37, in the same clean style as the first chart.
+
+FOLLOW-UP: Show the formula in each value cell of the funnel table.
+
+[Step 5]
+In tblSources add Hire_Rate = Hires / Applications (percentage, 1 decimal) and Cost_per_Hire = Sourcing_Spend / Hires (S$, no decimals). Create a combo chart on the Charts sheet:
+Hire_Rate as clustered columns sorted highest first, Cost_per_Hire as a line on a secondary axis.
+Label both axes with units. Place it over J20:Q37 in the same clean style as the first chart.
+
+FOLLOW-UP: Which source has the highest Hire_Rate, and which has the lowest Cost_per_Hire? Give both values.
+
+[Step 6]
+Make every chart title state the finding in one sentence.
+Use the same blue colour for all hires series and format numbers with thousands separators.
+Make the four charts on the Charts sheet the same size and line them up in a 2 x 2 grid.
+Add alt text to each chart describing what it shows.
+
+[Step 7]
+CHAT ONLY:
+Review the four charts on the Charts sheet. For each, tell me which question it answers (Q1 Trend,
+Q2 Comparison, Q3 Funnel, Q4 Efficiency), whether the chart type suits that question, and one improvement. Do not change anything.
+
+LOG (Allow editing):
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.

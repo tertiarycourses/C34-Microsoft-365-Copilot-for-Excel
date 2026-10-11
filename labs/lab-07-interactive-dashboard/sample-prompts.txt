@@ -1,0 +1,111 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 7: Build an Interactive Recruitment Dashboard with Rules and Skills
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-7
+
+[1] Plan
+Plan a recruitment dashboard following the workbook rules. Show me the plan first.
+
+[2] KPI card
+Create a KPI card for Cost per hire linked to the PivotTable with GETPIVOTDATA, formatted as S$.
+
+[3] Chart skill
+@chart-design Turn the hires-by-month chart into columns for hires and a line for Hire_Target.
+
+[4] Timeline
+Add a timeline on Hire_Date and connect it to every PivotTable on Dash_Data.
+
+[5] Visual cue
+Add data bars to the hires-by-recruiter table and traffic-light colours to the target card.
+
+[6] Theme skill
+@theme-design Apply a modern theme that keeps the colours in the workbook rules.
+
+[7] Review
+Does this dashboard follow every rule on the .Rules sheet? List any that it breaks.
+
+[8] Question
+Which recruiter made the most hires in H1 2026, and what was their average time to hire?
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Tables : tblApps (600 applications, Jan-Jun 2026) | tblTargets (monthly hire targets)
+KPI definitions:
+  Applications          = number of rows
+  Hires                 = Furthest_Stage = "Hired", by Hire_Date month
+  Offer acceptance rate = accepted / (accepted + declined)   (Pending excluded)
+  Avg time to hire      = average Time_to_Hire_Days of hires
+  Cost per hire         = total Sourcing_Cost / hires
+
+[Step 2]
+ALLOW EDITING:
+On the .Rules sheet, replace everything in column A with these rules, one per cell from A1 down.
+Keep each ## heading in its own cell. Do not change any other sheet.
+## DASHBOARD STANDARDS
+This workbook builds BrightPath's H1 2026 recruitment dashboard. Never change tblApps or tblTargets.
+Applications = rows of tblApps. Hires = Furthest_Stage "Hired", counted by Hire_Date month.
+Offer acceptance rate = accepted / (accepted + declined). Pending offers are excluded.
+Avg time to hire = average Time_to_Hire_Days of hires. Cost per hire = total Sourcing_Cost / hires.
+KPI cards are formulas linked to the PivotTables (GETPIVOTDATA) so they respond to slicers - never typed numbers.
+## LAYOUT
+Dashboard sheet: title in A1, "Data as at 2026-06-30" in A2, KPI cards in row 4, charts in a grid below, slicers and the timeline on the right.
+Put every PivotTable on a sheet named Dash_Data.
+Never merge cells. Hide gridlines on the Dashboard sheet.
+## VISUAL STYLE
+Colours: navy #1F4E79 for hires, teal #2A9D8F for targets and comparisons, amber #F4A261 for warnings.
+Every chart title states the finding, e.g. Technology led H1 hiring.
+Money as S$ with no decimals, except Cost per hire with 2 decimals. Rates as % with 1 decimal. Days with 1 decimal.
+
+[Step 3]
+CHECK (Allow editing):
+Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:
+A1 Applications        B1 =ROWS(tblApps[Application_ID])
+A2 Hires               B2 =COUNTIFS(tblApps[Furthest_Stage],"Hired")
+A3 Offer acceptance    B3 =COUNTIFS(tblApps[Offer_Accepted],"Yes")/(COUNTIFS(tblApps[Offer_Accepted],"Yes")+COUNTIFS(tblApps[Offer_Accepted],"No"))
+A4 Avg time to hire    B4 =AVERAGEIFS(tblApps[Time_to_Hire_Days],tblApps[Furthest_Stage],"Hired")
+A5 Cost per hire       B5 =SUM(tblApps[Sourcing_Cost])/B2
+A6 Hires vs target     B6 =B2/SUM(tblTargets[Hire_Target])
+
+[Step 4]
+PLAN MODE:
+Build a one-page, highly visual H1 2026 recruitment dashboard on the Dashboard sheet for BrightPath's Head of Recruitment, following the workbook rules.
+KPI cards: Applications, Hires, Offer acceptance rate, Avg time to hire, Cost per hire, Hires vs target %.
+Charts: hires by Hire_Date month vs Hire_Target (columns + line); hires by Sector (bar, sorted); applications by Source (bar, sorted); hires by Recruiter (column).
+Interactivity: slicers for Sector, Source and Recruiter and a timeline on Hire_Date, connected to every PivotTable.
+
+[Step 5]
+ALLOW EDITING:
+@chart-design Review every chart on the Dashboard: titles that state the finding, axis titles, data labels where they help, and the colours in the workbook rules.
+
+FOLLOW-UP:
+Colour the Hires vs target % card green at 100% or more, amber from 90% to 99.9% and red below 90%.
+
+FOLLOW-UP:
+@theme-design Apply a clean, modern theme to the Dashboard that keeps the colours in the workbook rules.
+
+[Step 6]
+CHAT ONLY:
+Compare each KPI card on the Dashboard with Checks!B1:B6, with no slicer selected. Show each card's formula, its value, the Checks value and whether they match.
+
+ALLOW EDITING (if needed):
+The Offer acceptance rate card must exclude Offer_Accepted = "Pending", as the workbook rules say.
+Fix the card formula.
+
+[Step 7]
+CHECK (Allow editing):
+On the Checks sheet, add these formulas in D1:D3 with labels in C1:C3, and tell me if they match the cards when Sector = Technology, and the Hires card when the timeline shows Apr-Jun 2026:
+=COUNTIFS(tblApps[Sector],"Technology")
+=COUNTIFS(tblApps[Sector],"Technology",tblApps[Furthest_Stage],"Hired")
+=COUNTIFS(tblApps[Hire_Date],">="&DATE(2026,4,1),tblApps[Hire_Date],"<="&DATE(2026,6,30))
+
+If a KPI card does not change, ask: "Link the KPI cards to the PivotTables with GETPIVOTDATA so they respond to the slicers and timeline."
+
+[Step 8]
+CHAT ONLY:
+Review this dashboard for a Head of Recruitment. What is unclear, missing or potentially misleading?
+Does it follow every rule on the .Rules sheet?
+
+LOG (Allow editing):
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.

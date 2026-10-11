@@ -1,0 +1,19 @@
+## ABOUT THIS WORKBOOK
+Orders_Raw is the original export. Do not sort, delete or add rows on Orders_Raw. Build cleaned data on new sheets.
+One row = one client order, identified by Order_ID.
+Put "Created by Copilot" and today's date in cell A1 of every new sheet you create (except the Checks sheet), and start the data in row 3.
+## DATA VALUES
+Status must be one of: Open, In Progress, On Hold, Completed, Cancelled. Map every variation: WIP and Ongoing = In Progress; Done and Closed - filled = Completed; Not started and New = Open; Paused and Hold = On Hold; Canceled and Client cancelled = Cancelled.
+If Notes say the work is paused, the Status is On Hold, whatever the Status column says.
+Region must be one of: CENTRAL, EAST, NORTH, NORTH-EAST, WEST (upper case). For example C = CENTRAL and Northeast = NORTH-EAST.
+Client is the short trading name with no legal suffix, in title case. For example QUILLON SYSTEMS PTE. LTD. = Quillon Systems.
+Owner names are trimmed and in title case, exactly as in tblRateCard[Owner].
+## DATES AND MONEY
+Text dates in Orders_Raw are day-first. For example 09/03/2026 is 9 March 2026.
+Show dates as dd-mmm-yyyy, for example 09-Mar-2026.
+Budget is in Singapore dollars. Convert text such as 12.5k, SGD 12,500 and $12,500 to the number 12500.
+Format money as S$ with thousands separators and no decimals, e.g. S$12,500. Show negative values in red in brackets.
+## TABLES AND FORMULAS
+Format every new data range as an Excel table named tbl + the sheet name without underscores, e.g. tblOrdersClean.
+Use XLOOKUP for lookups and return "Not found" when there is no match.
+Never merge cells.

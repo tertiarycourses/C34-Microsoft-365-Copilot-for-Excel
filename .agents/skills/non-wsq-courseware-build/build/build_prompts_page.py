@@ -44,11 +44,13 @@ TOPICS = {t["num"]: t for t in C.TOPICS}
 
 
 def slug(s):
-    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", s.lower())).strip("-")
+    s = s.lower().replace("&", " and ")
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", s)).strip("-")
 
 
 def folder_name(lab):
-    return f"lab-{lab['num']:02d}-{slug(lab['title'])}"
+    # Folder named after the short lab theme (falls back to the full title).
+    return f"lab-{lab['num']:02d}-{slug(lab.get('theme') or lab['title'])}"
 
 
 from lab_prompts import LETTERS, parse_step, unwrap  # noqa: E402
@@ -79,7 +81,7 @@ def render_lab(lab):
     topic = TOPICS.get(lab["topic"], {})
     base_blob, base_raw = f"{GH}/blob/main/labs/{fname}", f"{GH}/raw/main/labs/{fname}"
     files = [f'<a href="{base_blob}/Lab-{n:02d}-Instructions.pdf">Instructions PDF</a>',
-             f'<a href="{base_blob}/README.md">Lab page on GitHub</a>']
+             f'<a href="{GH}/tree/main/labs/{fname}">Lab folder on GitHub</a>']
     files += [f'<a href="{base_raw}/{d}">Download {esc(os.path.basename(d))}</a>' for d in lab.get("data_files", [])]
 
     mode, steps_html, blocks, has_ph, k = None, [], [], False, 0
@@ -131,7 +133,8 @@ def render_lab(lab):
     hint = ('<p class="hint">Replace the <mark>highlighted</mark> parts before you send.</p>' if has_ph else "")
     return (
         f'<section class="lab" data-lab="{n}" id="lab-{n}-section">'
-        f'<p class="eyebrow">Lab {n} · Topic {lab["topic"]} · {lab.get("duration", "—")} min</p>'
+        f'<p class="eyebrow">Lab {n}' + (f' · {esc(lab["theme"])}' if lab.get("theme") else '')
+        + f' · Topic {lab["topic"]} · {lab.get("duration", "—")} min</p>'
         f'<h2>{esc(lab["title"])}</h2>'
         f'<p class="use"><b>Topic {lab["topic"]}:</b> {esc(topic.get("title", ""))}<br>'
         f'<b>Use:</b> {esc(lab["services"])}</p>'
@@ -140,7 +143,8 @@ def render_lab(lab):
         f"<h3>The prompts</h3>{hint}{''.join(blocks)}"
         f'<section class="ask"><h3>More prompts to try</h3><p>Copy one at a time, adapt it, and verify '
         f"every result with a formula.</p><ul>{asks}</ul></section>"
-        f'<details class="test"><summary>Test it — what you should see</summary><p>{esc(lab["test"])}</p></details>'
+        f'<details class="test"><summary>Test it — what you should see</summary>' + ('<ul>' + ''.join(f'<li><b>{esc(c)}:</b> {esc(e)}</li>' for c, e in lab["checks"]) + '</ul>'
+               if lab.get("checks") else f'<p>{esc(lab["test"])}</p>') + '</details>'
         f"</section>")
 
 
@@ -245,7 +249,8 @@ def build_page():
             "labelled with its lab, so check it before you copy.</p>"]
     for t in C.TOPICS:
         pick.append(f'<h4>Topic {t["num"]} · {esc(t["title"])}</h4><ul>')
-        pick += [f'<li><a href="#lab-{l["num"]}">Lab {l["num"]} — {esc(l["title"])}</a></li>'
+        pick += [f'<li><a href="#lab-{l["num"]}">Lab {l["num"]}'
+                 + (f' · {esc(l["theme"])}' if l.get("theme") else '') + f' — {esc(l["title"])}</a></li>'
                  for l in labs if l["topic"] == t["num"]]
         pick.append("</ul>")
     pick.append("</div>")

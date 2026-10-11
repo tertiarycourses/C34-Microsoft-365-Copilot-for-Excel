@@ -1,0 +1,80 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 6: Use Copilot to Build a Custom Interview-Calendar Skill
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-6
+
+[1] Write a skill
+Write a SKILL.md for a skill named weekly-recruiter-report that summarises interviews by Interviewer and Client for a given week, with a small bar chart.
+
+[2] Explain a skill
+Read this SKILL.md and tell me what Copilot will do, step by step, and anything that is unclear.
+
+[3] Call a skill
+@interview-calendar Build the calendar for the week starting Monday 6 July 2026.
+
+[4] Reuse
+@interview-calendar Week starting 13 July 2026.
+
+[5] Clash check
+List every interview clash in tblInterviews for 6-10 July 2026 with both Interview_IDs.
+
+[6] Improve
+Update the skill so Video interviews show the Teams icon text [Teams] and the calendar prints on one A4 page.
+
+[7] Question
+Which interviewer has the most interviews in the week of 6 July, and on which day?
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Table  : tblInterviews (41 interviews, 6-17 July 2026)
+Week 1 : Mon 6 July - Fri 10 July 2026
+Week 2 : Mon 13 July - Fri 17 July 2026
+Clash  : same Interviewer overlapping, or two Onsite interviews in the same Room overlapping
+
+[Step 2]
+Folder      : skills/<skill-name>/   (folder name = the skill name, lower case with hyphens)
+File        : SKILL.md
+Front matter: name (the skill name) and description (when Copilot should use it)
+Body        : the steps Copilot follows - plain English, no code needed
+
+[Step 3]
+CHAT ONLY:
+Write a Copilot in Excel custom skill as a complete SKILL.md file.
+Name: interview-calendar
+Description: Use when I ask for an interview calendar, schedule or clashes for a week.
+The skill must:
+1) Read tblInterviews (Interview_ID, Role, Interviewer, Interview_Date, Start_Time, Duration_Min, Mode, Room).
+2) Ask for the week start date (a Monday) if I do not give one.
+3) Create a sheet Cal_<yyyy-mm-dd> with Monday to Friday as columns and 30-minute rows from 09:00 to 17:30.
+4) In each slot show Interviewer - Role (Mode); colour Onsite light blue and Video light green.
+5) Flag clashes: overlapping interviews with the same Interviewer, or Onsite interviews in the same Room.
+   Colour them red and list them in a Clashes table under the calendar.
+6) Add a summary of interviews per day and per Interviewer.
+7) Never change tblInterviews.
+Return only the SKILL.md text, starting with the --- front matter.
+
+[Step 4]
+OneDrive : .../skills/interview-calendar/SKILL.md
+Check    : the folder name and the name: line are both exactly interview-calendar
+Check    : the file is called SKILL.md (not SKILL.md.txt)
+
+[Step 6]
+ALLOW EDITING:
+@interview-calendar Build the calendar for the week starting Monday 6 July 2026.
+
+CHECK (Allow editing):
+In an empty cell to the right of the calendar, add this formula and tell me whether it matches the number of interviews on the calendar:
+=COUNTIFS(tblInterviews[Interview_Date],">="&DATE(2026,7,6),tblInterviews[Interview_Date],"<="&DATE(2026,7,10))
+
+[Step 7]
+ALLOW EDITING:
+@interview-calendar Week starting 13 July 2026.
+
+[Step 8]
+CHAT ONLY:
+Update the interview-calendar SKILL.md so the summary also shows total interview hours per Interviewer, and the reply lists the busiest day. Return the full updated file.
+
+LOG (Allow editing):
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.

@@ -1,0 +1,14 @@
+## WORKFORCE DASHBOARD STANDARDS
+Never change or delete existing rows of tblEmployees.
+Never show Employee_ID, Monthly_Salary or any individual record on a dashboard.
+The 12-month period is 2025-07-01 to 2026-06-30. Active on a date = Hire_Date on or before it and Exit_Date blank or after it.
+Active headcount = employees with Status Active now, so new joiners count as soon as they are added to tblEmployees.
+Attrition rate = exits in the period / ((active on 2025-07-01 + active on 2026-06-30) / 2). New joiners after 2026-06-30 do not change it.
+Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if still active; use 0 for anyone hired after 2026-06-30.
+Do not show any group of fewer than 5 employees. Group it into Other or leave it out.
+## LAYOUT
+Dashboard sheet HR_Dashboard: title in A1, "Data as at 2026-06-30" in A2, KPI cards in row 4, charts in a grid below, slicers on the right.
+Put every PivotTable on a sheet named Dash_Data. Never merge cells. Hide gridlines on HR_Dashboard.
+## VISUAL STYLE
+Colours: navy #1F4E79 for headcount, teal #2A9D8F for hires, amber #F4A261 for exits and attrition.
+Every chart title states the finding. Rates as % with 1 decimal. Years with 1 decimal.

@@ -1,6 +1,6 @@
 # Microsoft 365 Copilot for Excel
 
-Use Copilot in Excel to analyse data, plot charts, build dashboards and draw evidence-backed insights and recommendations, practised hands-on with realistic HR and recruitment data.
+Use Copilot in Excel for everyday Excel work, make it consistent and repeatable with workbook rules and skills, and build highly visual, interactive dashboards, practised hands-on with realistic HR, recruitment and HR-outsourcing data.
 
 | Course detail | Information |
 |---|---|
@@ -10,74 +10,76 @@ Use Copilot in Excel to analyse data, plot charts, build dashboards and draw evi
 | Format | Instructor-led, with 8 hands-on labs |
 | Registration | [View course details and register](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) |
 | Lab prompts | [Copy-ready prompts page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/) |
-| Courseware version | v2.0 · 8 October 2026 |
+| Courseware version | v3.0 · 11 October 2026 |
 
 ---
 
 ## About the course
 
-Microsoft 365 Copilot in Excel lets you describe a task in plain language. Copilot then plans it and carries it out with Excel's own features: formulas, lookups, PivotTables, charts, conditional formatting, dashboards and Python-based analysis. This course shows you how to use it well and how to check what it produces.
+Copilot in Excel now does far more than answer questions. You choose how it works (**Chat only**, **Plan** or **Allow editing**), pick the AI model, bring in other files, clean messy data, and write formulas, PivotTables and charts from plain English. You can also teach it your standards: **Personalization** for your own preferences, a **`.Rules` sheet** for one workbook, and **skills** for repeatable tasks. Skills include Microsoft's built-in ones (such as `@chart-design`, `@theme-design`, `@unit-economics` and `@check-model`) and custom `SKILL.md` skills that Copilot can write for you.
 
-Every lab uses mock data from **BrightPath Talent Solutions**, a fictional Singapore recruitment, flexible-staffing and HR-outsourcing firm. The datasets cover a candidate pipeline, job requisitions, monthly recruitment metrics, contract placements, internal workforce headcount, an attrition study and an engagement survey. Each lab ends with a **Test It** step that lists the exact values you should get, so you can check Copilot's output against them.
+This course covers all of that in three topics, and ends with an interactive dashboard built from Copilot, rules and skills together.
 
-The content draws on current Microsoft Support and Microsoft Learn guidance for Copilot in Excel, Python in Excel and Copilot for HR scenarios.
+Every lab uses mock data from **BrightPath Talent Solutions**, a fictional Singapore recruitment, flexible-staffing and HR-outsourcing firm. Each lab ends with a **Test It** step that lists the exact values you should get, so you can check Copilot's output against them.
+
+The content follows Microsoft Support guidance for Copilot in Excel as of October 2026.
 
 ## Learning outcomes
 
 By the end of the course, you will be able to:
 
-1. **Analyse data.** Explain how Copilot in Excel works (modes, requirements and limits), and use it to analyse, highlight, sort, filter and calculate HR and recruitment data with verified formulas.
-2. **Plot charts.** Use Copilot to create, refine and verify charts, PivotCharts and Python visuals that answer specific HR and recruitment questions.
-3. **Create dashboards.** Use Copilot to build an interactive, refreshable HR KPI dashboard with PivotTables, KPI cards, charts and slicers, and check every KPI against its definition.
-4. **Draw insights and recommendations.** Use Copilot and Python-based advanced analysis to draw evidence-backed insights and actionable, owned recommendations from workforce and survey data.
+1. **Excel fundamentals with Copilot.** Use the Chat only, Plan and Allow editing modes to prepare and clean data, write formulas and XLOOKUPs, and build PivotTables, PivotCharts and charts, verifying every result.
+2. **Skills and rules.** Make Copilot's work consistent and repeatable with personalisation, workbook rules (`.Rules`), built-in skills and custom skills that you create with Copilot.
+3. **Interactive dashboards.** Combine Copilot, rules and skills to build a highly visual, interactive and refreshable dashboard, and verify and share it responsibly.
 
 ## Topics covered
 
 | Topic | Content |
 |---|---|
-| **1. Use Copilot to Analyse Data** | Copilot modes (Allow editing, Plan, Chat only), licensing and requirements, preparing HR data as tables, prompting for analysis, direct answers, highlighting, sorting and filtering, formula and lookup columns |
-| **2. Use Copilot to Plot Charts** | Choosing the right chart for an HR question, charts and PivotTables from a prompt, refining charts with follow-up prompts, advanced visuals with Python in Excel |
-| **3. Use Copilot to Create Dashboards** | HR and recruitment KPI design, building with Plan and Edit modes, slicers, refresh and maintenance, sharing people dashboards responsibly |
-| **4. Use Copilot to Draw Insights and Recommendations** | Trends, outliers and drivers, advanced analysis mode with Python, survey themes and sentiment, turning a verified insight into an owned recommendation |
+| **1. Excel Fundamentals with Copilot** | Chat only, Plan and Allow editing; the Copilot pane, data sources and the model picker; data prep and automated cleanup; formulas and XLOOKUP; PivotTables, PivotCharts and charts |
+| **2. Skills and Rules** | Personalisation; workbook rules on a `.Rules` sheet; built-in formatting, visualisation and finance skills; custom `SKILL.md` skills; using Copilot to write and improve a skill (e.g. an interview calendar) |
+| **3. Interactive Dashboards** | Highly visual dashboard design; KPI definitions and style in `.Rules`; Plan mode plus `@chart-design` and `@theme-design`; slicers, a timeline and KPI cards; a reusable dashboard skill; refresh testing and responsible sharing |
 
 ## Labs
 
 Each lab has its own folder containing:
 
 - an **instruction PDF with sample prompts**;
-- the same instructions as `README.md`;
 - `sample-prompts.txt`, with prompts ready to copy;
-- the **mock-data workbook** in `data/`.
+- the **mock-data workbook** in `data/`, with a Prompt_Log sheet already listing the lab's prompts;
+- for Labs 4, 7 and 8, a `rules-template.txt` to paste into the `.Rules` sheet;
+- for Labs 6 and 8, a ready-made `skills/<name>/SKILL.md` to upload if you run short of time.
 
 All lab prompts are also on one web page with one-click **Copy** buttons: [Lab Prompts](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/).
 
 See the [labs index](labs/README.md).
 
-| # | Lab | Topic | Instructions | Mock data |
+| # | Lab | Theme | Instructions | Mock data |
 |---:|---|---|---|---|
-| 1 | [Explore and Question Recruitment Pipeline Data](labs/lab-01-explore-and-question-recruitment-pipeline-data/README.md) | Analyse | [PDF](labs/lab-01-explore-and-question-recruitment-pipeline-data/Lab-01-Instructions.pdf) | [Candidate pipeline](labs/lab-01-explore-and-question-recruitment-pipeline-data/data/BrightPath_Candidate_Pipeline.xlsx) |
-| 2 | [Generate and Verify Formula Columns and Lookups for Job Requisitions](labs/lab-02-generate-and-verify-formula-columns-and-lookups-for-job-requisitions/README.md) | Analyse | [PDF](labs/lab-02-generate-and-verify-formula-columns-and-lookups-for-job-requisitions/Lab-02-Instructions.pdf) | [Job requisitions](labs/lab-02-generate-and-verify-formula-columns-and-lookups-for-job-requisitions/data/BrightPath_Job_Requisitions.xlsx) |
-| 3 | [Create and Refine Recruitment Charts with Copilot](labs/lab-03-create-and-refine-recruitment-charts-with-copilot/README.md) | Charts | [PDF](labs/lab-03-create-and-refine-recruitment-charts-with-copilot/Lab-03-Instructions.pdf) | [Recruitment metrics](labs/lab-03-create-and-refine-recruitment-charts-with-copilot/data/BrightPath_Recruitment_Metrics.xlsx) |
-| 4 | [Visualise Pay and Placement Distributions with Python in Excel](labs/lab-04-visualise-pay-and-placement-distributions-with-python-in-excel/README.md) | Charts | [PDF](labs/lab-04-visualise-pay-and-placement-distributions-with-python-in-excel/Lab-04-Instructions.pdf) | [Contract placements](labs/lab-04-visualise-pay-and-placement-distributions-with-python-in-excel/data/BrightPath_Contract_Placements.xlsx) |
-| 5 | [Build a Recruitment KPI Dashboard with Copilot](labs/lab-05-build-a-recruitment-kpi-dashboard-with-copilot/README.md) | Dashboard | [PDF](labs/lab-05-build-a-recruitment-kpi-dashboard-with-copilot/Lab-05-Instructions.pdf) | [Dashboard data](labs/lab-05-build-a-recruitment-kpi-dashboard-with-copilot/data/BrightPath_Recruitment_Dashboard_Data.xlsx) |
-| 6 | [Build an Interactive Workforce and Attrition Dashboard](labs/lab-06-build-an-interactive-workforce-and-attrition-dashboard/README.md) | Dashboard | [PDF](labs/lab-06-build-an-interactive-workforce-and-attrition-dashboard/Lab-06-Instructions.pdf) | [Workforce headcount](labs/lab-06-build-an-interactive-workforce-and-attrition-dashboard/data/BrightPath_Workforce_Headcount.xlsx) |
-| 7 | [Surface Attrition Insights with Copilot and Advanced Analysis](labs/lab-07-surface-attrition-insights-with-copilot-and-advanced-analysis/README.md) | Insights | [PDF](labs/lab-07-surface-attrition-insights-with-copilot-and-advanced-analysis/Lab-07-Instructions.pdf) | [Attrition study](labs/lab-07-surface-attrition-insights-with-copilot-and-advanced-analysis/data/BrightPath_Attrition_Analysis.xlsx) |
-| 8 | [Turn Engagement Survey Feedback into Recommendations](labs/lab-08-turn-engagement-survey-feedback-into-recommendations/README.md) | Insights | [PDF](labs/lab-08-turn-engagement-survey-feedback-into-recommendations/Lab-08-Instructions.pdf) | [Engagement survey](labs/lab-08-turn-engagement-survey-feedback-into-recommendations/data/BrightPath_Engagement_Survey.xlsx) |
+| 1 | [Explore and Question Recruitment Pipeline Data](labs/lab-01-data-prep-and-data-quality/Lab-01-Instructions.pdf) | Data Prep & Data Quality | [PDF](labs/lab-01-data-prep-and-data-quality/Lab-01-Instructions.pdf) | [Candidate pipeline](labs/lab-01-data-prep-and-data-quality/data/BrightPath_Candidate_Pipeline.xlsx) |
+| 2 | [Generate and Verify Formula Columns and XLOOKUPs for Job Requisitions](labs/lab-02-formulas-and-xlookup/Lab-02-Instructions.pdf) | Formulas & XLOOKUP | [PDF](labs/lab-02-formulas-and-xlookup/Lab-02-Instructions.pdf) | [Job requisitions](labs/lab-02-formulas-and-xlookup/data/BrightPath_Job_Requisitions.xlsx) |
+| 3 | [Build PivotTables, PivotCharts and Recruitment Charts with Copilot](labs/lab-03-pivottables-pivotcharts-and-visuals/Lab-03-Instructions.pdf) | PivotTables, PivotCharts & Visuals | [PDF](labs/lab-03-pivottables-pivotcharts-and-visuals/Lab-03-Instructions.pdf) | [Recruitment metrics](labs/lab-03-pivottables-pivotcharts-and-visuals/data/BrightPath_Recruitment_Metrics.xlsx) |
+| 4 | [Clean Messy Client Orders with Cleanup, Personalisation and Rules](labs/lab-04-workbook-rules-and-personalisation/Lab-04-Instructions.pdf) | Workbook Rules & Personalisation | [PDF](labs/lab-04-workbook-rules-and-personalisation/Lab-04-Instructions.pdf) | [Client orders (raw)](labs/lab-04-workbook-rules-and-personalisation/data/BrightPath_Client_Orders_Raw.xlsx) |
+| 5 | [Analyse HR-Outsourcing Finances with Built-in Skills](labs/lab-05-built-in-skills-visual-and-finance/Lab-05-Instructions.pdf) | Built-in Skills: Visual & Finance | [PDF](labs/lab-05-built-in-skills-visual-and-finance/Lab-05-Instructions.pdf) | [HR-outsourcing finance](labs/lab-05-built-in-skills-visual-and-finance/data/BrightPath_HR_Outsourcing_Finance.xlsx) |
+| 6 | [Use Copilot to Build a Custom Interview-Calendar Skill](labs/lab-06-custom-skills-calendar/Lab-06-Instructions.pdf) | Custom Skills: Calendar | [PDF](labs/lab-06-custom-skills-calendar/Lab-06-Instructions.pdf) | [Interview schedule](labs/lab-06-custom-skills-calendar/data/BrightPath_Interview_Schedule.xlsx) |
+| 7 | [Build an Interactive Recruitment Dashboard with Rules and Skills](labs/lab-07-interactive-dashboard/Lab-07-Instructions.pdf) | Interactive Dashboard | [PDF](labs/lab-07-interactive-dashboard/Lab-07-Instructions.pdf) | [Dashboard data](labs/lab-07-interactive-dashboard/data/BrightPath_Recruitment_Dashboard_Data.xlsx) |
+| 8 | [Turn the Dashboard into a Reusable Skill, Refresh It and Share It Safely](labs/lab-08-dashboard-skill-refresh-and-share/Lab-08-Instructions.pdf) | Dashboard Skill, Refresh & Share | [PDF](labs/lab-08-dashboard-skill-refresh-and-share/Lab-08-Instructions.pdf) | [Workforce headcount](labs/lab-08-dashboard-skill-refresh-and-share/data/BrightPath_Workforce_Headcount.xlsx) |
 
 ### Before you start
 
-- You need Excel for Microsoft 365 (Windows, Mac or web) with Copilot enabled.
-- Upload each lab workbook to a **OneDrive or SharePoint** folder and turn **AutoSave** on. Copilot does not work on unsaved local files.
-- Labs 4 and 7 use **Python in Excel**. Each of those labs gives a fallback if Python in Excel is not available on your account.
+- You need a current Excel for Microsoft 365 (Windows, Mac or web) and a work account with a Microsoft 365 Copilot licence.
+- Upload each lab workbook to a **OneDrive** folder. OneDrive gives you AutoSave and version history, and custom skills (Labs 6 and 8) are stored in a OneDrive skills folder.
+- Skills and workbook rules are fully supported only when Excel's display language is **English**.
+- Copilot's menus and skills are still rolling out, so some labels may differ on your screen. Each lab includes troubleshooting tips.
 
 ## Courseware package
 
 | Item | Files |
 |---|---|
-| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v2.0.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v2.0.pdf>) |
+| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v3.0.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v3.0.pdf>) |
 | Learner Guide | [Word](<courseware/LG-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LG-Microsoft 365 Copilot for Excel.pdf>) · [Markdown](<LG-Microsoft 365 Copilot for Excel.md>) |
 | Lesson Plan | [Word](<courseware/LP-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LP-Microsoft 365 Copilot for Excel.pdf>) |
-| Labs | [labs/](labs/README.md): 8 lab folders with instruction PDFs, sample prompts and mock data |
+| Labs | [labs/](labs/README.md): 8 lab folders with instruction PDFs, sample prompts, mock data, rules templates and skills |
 
 The deck, Learner Guide, Lesson Plan and labs are all generated from one content source in `.agents/skills/non-wsq-courseware-build/build/`, so they stay aligned. To rebuild them, run `build_courseware.sh` in that folder.
 
