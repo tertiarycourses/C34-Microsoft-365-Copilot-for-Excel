@@ -38,29 +38,51 @@ Output sheet : Python_Charts
 Add a column Gross_Margin_Pct to tblPlacements = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly,
 formatted as a percentage with 1 decimal.
 
-CHECK: =AVERAGE(tblPlacements[Gross_Margin_Pct])
+CHECK (Allow editing):
+In an empty cell on Python_Charts, add this formula, tell me the result, and show the Gross_Margin_Pct
+calculation for the first row:
+=AVERAGE(tblPlacements[Gross_Margin_Pct])
 
 [Step 3]
 Using Python in Excel, create a box plot of Bill_Rate_Hourly by Job_Level from tblPlacements,
 ordered Junior, Mid, Senior, Lead. Put it in Python_Charts!B2. Title it
 "Contract bill rate by job level (S$/hour)" and label both axes.
 
-CHECK: =MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]="Lead"))
+FOLLOW-UP: Which table and columns does the code in Python_Charts!B2 use, and in what order are the levels?
+
+CHECK (Allow editing):
+In the cell beside the box plot, add this formula and tell me if it matches the Lead median in the chart:
+=MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]="Lead"))
 
 [Step 4]
 Using Python, create a scatter plot of Years_Experience (x) against Pay_Rate_Hourly (y) from
 tblPlacements, coloured by Job_Level, with a linear trend line. Also return the Pearson correlation
 coefficient in the cell below the chart.
 
-CHECK: =CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])
+CHECK (Allow editing):
+In an empty cell below the scatter plot, add this formula and tell me if it matches the r you returned:
+=CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])
 
 [Step 5]
 Using Python, create a heatmap of the average Gross_Margin_Pct by Sector (rows) and Job_Level (columns,
 ordered Junior to Lead) with the values printed in each cell as percentages.
 
+FOLLOW-UP: Does the heatmap code use the mean of Gross_Margin_Pct for each Sector and Job_Level cell?
+Show that line of code.
+
 [Step 6]
+CHAT ONLY:
 Using the IQR rule (above Q3 + 1.5 x IQR), list the Pay_Rate_Hourly outliers in tblPlacements with
 Placement_ID, Sector, Job_Level and Pay_Rate_Hourly. State Q1, Q3 and the upper fence. Show the code.
 
+ALLOW EDITING:
+Add a row to Prompt_Log for the highest Pay_Rate_Hourly outlier with my decision:
+<error / genuine specialist rate / check with the desk> and a one-line reason.
+
 [Step 7]
+CHAT ONLY:
 Explain the Python code in Python_Charts!B2 line by line in plain English.
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.

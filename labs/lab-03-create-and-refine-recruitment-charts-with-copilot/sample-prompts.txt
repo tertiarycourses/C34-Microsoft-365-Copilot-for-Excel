@@ -41,9 +41,22 @@ Q3 Funnel     : Where do candidates drop out between application and hire in 202
 Q4 Efficiency : Which sources convert best, and at what cost per hire?
 
 [Step 2]
+ALLOW EDITING:
+In Charts!A1:A4, type these four questions:
+Q1 Trend: How have total hires moved month by month since Jan 2025?
+Q2 Comparison: Which sector produced the most hires in Jan-Jun 2026?
+Q3 Funnel: Where do candidates drop out between application and hire in 2026?
+Q4 Efficiency: Which sources convert best, and at what cost per hire?
+
+ALLOW EDITING:
 Create a PivotTable from tblMonthly on a new sheet named Pivot_Trend with Month_Label in rows and
 Sum of Hires as values. Then create a line chart of total hires by month from that PivotTable.
 Show data labels and gridlines. Title: "Monthly hires, Jan 2025 - Jun 2026".
+
+CHECK (Allow editing):
+In an empty cell on Pivot_Trend, add this formula. Tell me whether it matches the PivotTable grand total,
+and which month had the most hires:
+=SUM(tblMonthly[Hires])
 
 [Step 3]
 Create a PivotTable on a new sheet Pivot_Sector from tblMonthly with Sector in rows and Sum of Hires,
@@ -51,18 +64,24 @@ filtered to months in 2026 only. Create a bar chart from it.
 
 FOLLOW-UP: Sort the bars from highest to lowest and change the title to state the leading sector.
 
-CHECK: =SUMIFS(tblMonthly[Hires],tblMonthly[Sector],"Technology",tblMonthly[Month],">="&DATE(2026,1,1))
+CHECK (Allow editing):
+In an empty cell on Pivot_Sector, add this formula and tell me if it matches Technology's bar:
+=SUMIFS(tblMonthly[Hires],tblMonthly[Sector],"Technology",tblMonthly[Month],">="&DATE(2026,1,1))
 
 [Step 4]
 On the Charts sheet, build a small table of 2026 totals for Applications, Screened, Interviews, Offers
 and Hires from tblMonthly using SUMIFS on Month >= 1 Jan 2026. Then create a funnel chart from it
 with data labels. Add a column showing each stage as a % of Applications.
 
+FOLLOW-UP: Show the formula in each value cell of the funnel table.
+
 [Step 5]
 In tblSources add Hire_Rate = Hires / Applications (percentage, 1 decimal) and
 Cost_per_Hire = Sourcing_Spend / Hires (S$, no decimals). Create a combo chart: Hire_Rate as
 clustered columns sorted highest first, Cost_per_Hire as a line on a secondary axis.
 Label both axes with units.
+
+FOLLOW-UP: Which source has the highest Hire_Rate, and which has the lowest Cost_per_Hire? Give both values.
 
 [Step 6]
 Make every chart title state the finding in one sentence.
@@ -71,5 +90,10 @@ Move all four charts to the Charts sheet in a 2 x 2 grid of equal size.
 Add alt text to each chart describing what it shows.
 
 [Step 7]
+CHAT ONLY:
 Review the four charts on the Charts sheet. For each, tell me which question at the top of the sheet
 it answers, whether the chart type suits that question, and one improvement. Do not change anything.
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.

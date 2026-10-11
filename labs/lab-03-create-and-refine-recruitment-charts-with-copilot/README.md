@@ -36,7 +36,7 @@ BrightPath_Recruitment_Metrics.xlsx with PivotTables and four refined charts on 
 
 ## Steps
 
-### 1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Recruitment_Metrics.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. Confirm the title bar shows the cloud location and AutoSave is On, and that Formulas > Calculation Options is set to Automatic. Read the About_This_Data sheet before you prompt. Write the four questions below at the top of the Charts sheet - each chart must answer one of them.
+### 1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Recruitment_Metrics.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. Confirm the title bar shows the cloud location and AutoSave is On, and that Formulas > Calculation Options is set to Automatic. Read the About_This_Data sheet before you prompt. Each chart you build must answer one of the four questions below.
 
 ```text
 Tables : tblMonthly (108 rows = 18 months x 6 sectors) | tblSources (7 rows)
@@ -47,15 +47,28 @@ Q3 Funnel     : Where do candidates drop out between application and hire in 202
 Q4 Efficiency : Which sources convert best, and at what cost per hire?
 ```
 
-### 2. Choose Allow editing. Ask Copilot for the trend PivotTable and line chart. Check the Pivot grand total against =SUM(tblMonthly[Hires]) and find the peak month.
+### 2. Choose Allow editing. Ask Copilot to write the four questions at the top of the Charts sheet, then ask for the trend PivotTable and line chart. Ask Copilot to check the Pivot grand total against =SUM(tblMonthly[Hires]) and name the peak month.
 
 ```text
+ALLOW EDITING:
+In Charts!A1:A4, type these four questions:
+Q1 Trend: How have total hires moved month by month since Jan 2025?
+Q2 Comparison: Which sector produced the most hires in Jan-Jun 2026?
+Q3 Funnel: Where do candidates drop out between application and hire in 2026?
+Q4 Efficiency: Which sources convert best, and at what cost per hire?
+
+ALLOW EDITING:
 Create a PivotTable from tblMonthly on a new sheet named Pivot_Trend with Month_Label in rows and
 Sum of Hires as values. Then create a line chart of total hires by month from that PivotTable.
 Show data labels and gridlines. Title: "Monthly hires, Jan 2025 - Jun 2026".
+
+CHECK (Allow editing):
+In an empty cell on Pivot_Trend, add this formula. Tell me whether it matches the PivotTable grand total,
+and which month had the most hires:
+=SUM(tblMonthly[Hires])
 ```
 
-### 3. Ask for the 2026 sector comparison. Then refine it with a follow-up prompt. Verify Technology's 2026 hires with the SUMIFS shown.
+### 3. Ask for the 2026 sector comparison. Then refine it with a follow-up prompt. Ask Copilot to add the SUMIFS check for Technology's 2026 hires.
 
 ```text
 Create a PivotTable on a new sheet Pivot_Sector from tblMonthly with Sector in rows and Sum of Hires,
@@ -63,24 +76,30 @@ filtered to months in 2026 only. Create a bar chart from it.
 
 FOLLOW-UP: Sort the bars from highest to lowest and change the title to state the leading sector.
 
-CHECK: =SUMIFS(tblMonthly[Hires],tblMonthly[Sector],"Technology",tblMonthly[Month],">="&DATE(2026,1,1))
+CHECK (Allow editing):
+In an empty cell on Pivot_Sector, add this formula and tell me if it matches Technology's bar:
+=SUMIFS(tblMonthly[Hires],tblMonthly[Sector],"Technology",tblMonthly[Month],">="&DATE(2026,1,1))
 ```
 
-### 4. Ask Copilot to build a 2026 funnel summary with formulas, then a funnel chart. Confirm the summary uses SUMIFS (not typed numbers) by clicking a value cell.
+### 4. Ask Copilot to build a 2026 funnel summary with formulas, then a funnel chart. Ask Copilot to show the formula in each value cell to confirm the summary uses SUMIFS, not typed numbers.
 
 ```text
 On the Charts sheet, build a small table of 2026 totals for Applications, Screened, Interviews, Offers
 and Hires from tblMonthly using SUMIFS on Month >= 1 Jan 2026. Then create a funnel chart from it
 with data labels. Add a column showing each stage as a % of Applications.
+
+FOLLOW-UP: Show the formula in each value cell of the funnel table.
 ```
 
-### 5. Ask Copilot to add rate columns to tblSources and a combo chart with two axes. Check the best hire rate and the lowest cost per hire.
+### 5. Ask Copilot to add rate columns to tblSources and a combo chart with two axes. Then ask it for the best hire rate and the lowest cost per hire.
 
 ```text
 In tblSources add Hire_Rate = Hires / Applications (percentage, 1 decimal) and
 Cost_per_Hire = Sourcing_Spend / Hires (S$, no decimals). Create a combo chart: Hire_Rate as
 clustered columns sorted highest first, Cost_per_Hire as a line on a secondary axis.
 Label both axes with units.
+
+FOLLOW-UP: Which source has the highest Hire_Rate, and which has the lowest Cost_per_Hire? Give both values.
 ```
 
 ### 6. Refine all four charts with short follow-up prompts, one change at a time, then move them onto the Charts sheet in a 2 x 2 grid. Add alt text to each chart.
@@ -92,11 +111,16 @@ Move all four charts to the Charts sheet in a 2 x 2 grid of equal size.
 Add alt text to each chart describing what it shows.
 ```
 
-### 7. Ask Copilot (Chat only) to review the charts against the four questions, then log your prompts and checks on Prompt_Log.
+### 7. Ask Copilot (Chat only) to review the charts against the four questions, then ask it to log your prompts and checks on Prompt_Log.
 
 ```text
+CHAT ONLY:
 Review the four charts on the Charts sheet. For each, tell me which question at the top of the sheet
 it answers, whether the chart type suits that question, and one improvement. Do not change anything.
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts

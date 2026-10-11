@@ -40,12 +40,17 @@ Add three columns to tblEmployees:
 2) Exit_In_Period = TRUE if Exit_Date is between 2025-07-01 and 2026-06-30 inclusive.
 3) Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if Exit_Date is blank, 1 decimal.
 
+FOLLOW-UP: Explain the Active_Start formula, and show one employee who exited before 2025-07-01
+with Hire_Date, Exit_Date and Active_Start.
+
 [Step 3]
+Create a sheet named Checks. Put these labels in column A and formulas in column B exactly as written,
+then tell me each result. Build the Attrition rate formula from the cells above it:
 Active headcount     =COUNTIFS(tblEmployees[Status],"Active")
 Headcount 2025-07-01 =COUNTIFS(tblEmployees[Active_Start],TRUE)
 Exits in period      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE)
 Voluntary exits      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE,tblEmployees[Exit_Type],"Voluntary")
-Attrition rate       =<exits> / ((<headcount 2025-07-01> + <active headcount>) / 2)
+Attrition rate       = Exits in period / ((Headcount 2025-07-01 + Active headcount) / 2)
 Hires in period      =COUNTIFS(tblEmployees[Hire_Date],">="&DATE(2025,7,1),tblEmployees[Hire_Date],"<="&DATE(2026,6,30))
 
 [Step 4]
@@ -58,6 +63,9 @@ Slicers: Location and Job_Level, connected to all PivotTables. Title and "Data a
 Do not show Employee_ID, salary or individual records on the dashboard.
 
 [Step 5]
+CHAT ONLY:
+Compare each KPI card on HR_Dashboard with the Checks sheet and tell me which, if any, do not match.
+
 FOLLOW-UP (if needed):
 The attrition rate must use average headcount = (Active_Start count + active count) / 2.
 
@@ -65,11 +73,21 @@ CHAT ONLY:
 Which combinations of Location, Job_Level and Department contain fewer than 5 active employees?
 
 [Step 6]
+ALLOW EDITING:
+Copy the 8 data rows in New_Joiners_Jul2026!A2:L9 to the first empty rows directly below tblEmployees
+so the table expands. Then refresh all PivotTables in the workbook and tell me the new Active headcount
+and the number of rows in tblEmployees.
+
 Expected after refresh:
 Active headcount : 237 -> 245
 tblEmployees rows: 420 -> 428
 New joiners by department: Recruitment +2, Sales & Client Services +2, IT +4
 
 [Step 7]
+CHAT ONLY:
 Review HR_Dashboard before I share it with the leadership team. Does any element expose individual
 employee data or a group smaller than 5? Is each KPI labelled with its period and definition?
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.

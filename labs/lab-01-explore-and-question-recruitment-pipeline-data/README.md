@@ -47,15 +47,15 @@ Calculation Options : Automatic
 Sheets    : About_This_Data | Applications | Prompt_Log
 ```
 
-### 2. Select cell A1 on the Applications sheet and press Ctrl+T (Home > Format as Table). Tick My table has headers and select OK. On the Table Design tab, set Table Name to tblApplications. Then select the Copilot button. If Copilot is unavailable, use the Troubleshooting table before continuing.
+### 2. Select the Copilot button and choose Allow editing. Ask Copilot to turn the Applications data into a named table. Its reply must confirm the table name tblApplications, 13 columns and 242 data rows. If Copilot is unavailable, use the Troubleshooting table before continuing.
 
 ```text
-Table name : tblApplications
-Grain      : one row = one candidate application (Application_ID)
-Expected   : 13 columns, 242 data rows
+Format the data on the Applications sheet (from A1 to the last row and column) as an Excel table
+with headers. Name the table tblApplications. Do not change, sort or delete any values.
+Then tell me the table name, the number of columns and the number of data rows.
 ```
 
-### 3. In the Copilot pane, choose Chat only (no workbook changes). Paste the prompt below. Compare Copilot's row count and date range with the table (select the Application_ID column and read Count on the status bar). Record the prompt, what Copilot said and your check on the Prompt_Log sheet.
+### 3. Switch to Chat only (no workbook changes). Paste the prompt below. Copilot's row count must match the 242 rows it reported in Step 2. You will log every prompt in Step 7.
 
 ```text
 GOAL: Describe this candidate pipeline before I analyse it.
@@ -81,28 +81,37 @@ ALLOW EDITING:
    to 'LinkedIn'. Do not delete or edit any existing values.
 ```
 
-### 5. Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it shows. Then verify the hires total in an empty cell on Prompt_Log with the formula below, and verify one source with COUNTIFS. Duplicate rows are Rejected applications, so they do not change the hire counts.
+### 5. Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it shows. Then ask Copilot (Allow editing) to add the two check formulas to Prompt_Log and compare the results with its answer. Duplicate rows are Rejected applications, so they do not change the hire counts.
 
 ```text
 PROMPT (Chat only):
 Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
 Show a table sorted by hires, highest first, with hire rate = hires / applications.
 
-CHECK FORMULAS:
+CHECK (Allow editing):
+In empty cells on Prompt_Log, add these check formulas with a label beside each, then tell me the results:
 =COUNTIFS(tblApplications[Stage],"Hired")
 =COUNTIFS(tblApplications[Source_Clean],"LinkedIn",tblApplications[Stage],"Hired")
 ```
 
-### 6. Switch to Allow editing and build a review view, one change at a time. After each change, inspect the sheet and keep it or Undo. Finally apply the filter, read the visible-row count on the status bar, record it, and clear the filter so all 242 rows return.
+### 6. Switch to Allow editing and build a review view, one change at a time. After each change, look at the sheet and keep it or select Undo in the Copilot pane. Finally ask Copilot how many rows the filter shows, then ask it to clear the filter so all 242 rows return.
 
 ```text
 1) Highlight entire rows of tblApplications where Stage is "Hired" with a light green fill.
 2) Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline
    from lowest to highest.
 3) Filter tblApplications to show only Client_Sector = "Technology" and Stage = "Interview".
+4) How many rows of tblApplications are visible with this filter?
+5) Clear all filters on tblApplications and confirm all 242 rows are visible.
 ```
 
-### 7. Complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how you verified it and your decision (Keep, Revise or Undo). Save - AutoSave keeps the cloud copy current.
+### 7. Ask Copilot to complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how it was verified and your decision (Keep, Revise or Undo). AutoSave keeps the cloud copy current.
+
+```text
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
+```
 
 ## Sample Prompts
 

@@ -259,7 +259,7 @@ TOPICS = [
                 ),
                 how=[
                     "Write the grain: 'one row = one candidate application identified by Application_ID'.",
-                    "Press Ctrl+T (Home > Format as Table), confirm headers, name it e.g. tblApplications.",
+                    "Ask Copilot (Allow editing) to format the range as a table with headers and name it, e.g. tblApplications.",
                     "Record row count and unique-ID count; list duplicates and label variants before analysing.",
                 ],
                 example=[
@@ -675,8 +675,8 @@ TOPICS = [
                 title="Interactivity, Refresh and Maintenance",
                 definition=(
                     "Slicers and timelines are on-sheet filter buttons that can control several PivotTables and charts at "
-                    "once. Because the source is an Excel table, new rows are included automatically; Data > Refresh All "
-                    "updates the PivotTables and charts. Copilot can also store structure, naming and formula conventions "
+                    "once. Because the source is an Excel table, new rows are included automatically; asking Copilot to "
+                    "refresh all PivotTables updates the PivotTables and charts. Copilot can also store structure, naming and formula conventions "
                     "as workbook rules, and reusable skills, so the dashboard is rebuilt the same way each month."
                 ),
                 why=(
@@ -686,12 +686,12 @@ TOPICS = [
                 ),
                 how=[
                     "Ask Copilot to connect slicers to all PivotTables on the dashboard.",
-                    "Append test rows to the source table, then Data > Refresh All.",
+                    "Ask Copilot to append test rows to the source table and refresh all PivotTables.",
                     "Confirm every KPI and chart changed by the expected amount; fix any that did not.",
                 ],
                 example=[
                     "Eight July 2026 new joiners are appended to tblEmployees.",
-                    "After Refresh All, active headcount rises by exactly 8 and every chart updates.",
+                    "After the refresh, active headcount rises by exactly 8 and every chart updates.",
                     "A pasted chart image did not update, so it is replaced with a linked PivotChart.",
                 ],
                 use_when=[

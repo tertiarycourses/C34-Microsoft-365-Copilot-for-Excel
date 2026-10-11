@@ -54,7 +54,7 @@ def folder_name(lab):
 # =========================================================================== parse step blocks
 # A step's code block holds prompts, check formulas or reference info. Labelled
 # paragraphs ("CHAT ONLY:", "CHECK:", "FOLLOW-UP:" ...) say which.
-LABEL = re.compile(r"^(CHAT ONLY|ALLOW EDITING|PROMPT|CHECK FORMULAS|CHECK|FOLLOW-UP EXAMPLE|FOLLOW-UP|"
+LABEL = re.compile(r"^(CHAT ONLY|ALLOW EDITING|PROMPT|CHECK FORMULAS|CHECK|LOG|FOLLOW-UP EXAMPLE|FOLLOW-UP|"
                    r"OPTION [A-Z]|Then|Expected after refresh)([^:\n]*):[ \t]*(.*)$")
 MODES = [("advanced analysis mode", "Advanced analysis"), ("Chat only", "Chat only"),
          ("Allow editing", "Allow editing"), (r"\bPlan\b", "Plan")]
@@ -63,7 +63,7 @@ FORMULA_LINE = re.compile(r"^(.*?\S)\s+(=\S.*)$")           # "Active headcount 
 CELL_PAIR = re.compile(r"^(A\d+)\s+(.*?)\s+(B\d+)\s+(=.*)$")  # "A3 Total fee   B3 =SUM(...)"
 
 
-STRUCT = re.compile(r"^(\(?\d+\)\s|[A-Z][A-Za-z_]*( \d+)?:|- |=)")
+STRUCT = re.compile(r"^(\(?\d+\)\s|[A-Z][A-Za-z0-9_]*( [A-Za-z0-9_]+)?:|- |=|[A-Z]\d+ )|\s=[A-Z<(]")
 
 
 def unwrap(body):
@@ -71,7 +71,7 @@ def unwrap(body):
     out = []
     for line in body.split("\n"):
         s, indent = line.lstrip(), len(line) - len(line.lstrip())
-        structural = (not out or not s or out[-1].rstrip().endswith(":") or STRUCT.match(s)
+        structural = (not out or not s or out[-1].rstrip().endswith(":") or STRUCT.search(s)
                       or (1 <= indent <= 4 and s[0].isupper()))
         if structural:
             out.append(line.rstrip())
@@ -155,6 +155,10 @@ def parse_step(num, instr, cmd, mode):
                 items.append(("prompt", "If needed · " + cond[3:].strip(" ,"), ask.rstrip('"')))
             else:
                 items.append(("prompt", step_mode, body))
+        elif label.startswith(("CHECK", "LOG")) and not body.lstrip().startswith("="):
+            # a check or log done by Copilot: "CHECK (Allow editing)" -> "Check · Allow editing"
+            pm = re.search(r"\(([^)]*)\)", label)
+            items.append(("prompt", label.split(" ")[0].capitalize() + (" · " + pm.group(1) if pm else ""), body))
         elif label.startswith("CHECK"):
             sub = label[len("CHECK FORMULAS") if label.startswith("CHECK FORMULAS") else len("CHECK"):].strip()
             items.append(("formulas", "Check " + sub if sub else "Check", split_formulas(body)))
@@ -242,9 +246,9 @@ def render_lab(lab):
 
     tables = list(dict.fromkeys(re.findall(r"\btbl[A-Z]\w+", " ".join(i + " " + c for i, c in lab["steps"]))))
     books = ", ".join(f"<b>{esc(os.path.basename(d))}</b>" for d in lab.get("data_files", []))
-    first = re.search(r"\btbl[A-Z]\w+", lab["steps"][1][0]) if len(lab["steps"]) > 1 else None
-    make = (f" Do Step 2 first: it turns the raw data into the table <code>{first.group(0)}</code>"
-            f" (Ctrl+T, then name it).") if first and "Table Name" in lab["steps"][1][0] else ""
+    first = re.search(r"Name the table (tbl\w+)", lab["steps"][1][1]) if len(lab["steps"]) > 1 else None
+    make = (f" Start with Prompt A: Copilot turns the raw data into the table <code>{first.group(1)}</code>,"
+            f" which every later prompt uses.") if first else ""
     banner = (f'<p class="open">Open {books} first. These prompts use '
               f'{", ".join(f"<code>{t}</code>" for t in tables)}.{make} '
               f"A prompt that names a different table belongs to another lab.</p>")

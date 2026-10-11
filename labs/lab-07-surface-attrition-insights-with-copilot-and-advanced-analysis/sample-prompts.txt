@@ -35,17 +35,24 @@ Outcome : Left_Company = Yes / No (left within 12 months)
 Template: Insight_Log sheet
 
 [Step 2]
+CHAT ONLY:
 What's interesting about tblAttrition in relation to Left_Company? Give up to five patterns, each with
 the numbers and group sizes behind it. Do not change the workbook.
 
+ALLOW EDITING:
+Copy the patterns you just gave me into Prompt_Log, one row each, marked "Unverified".
+
 [Step 3]
+CHAT ONLY:
 What is the overall attrition rate in tblAttrition (Left_Company = "Yes" divided by all employees)?
 
-CHECK:
+CHECK (Allow editing):
+In empty cells on Prompt_Log, add these formulas with a label beside each, and tell me the results:
 =COUNTIFS(tblAttrition[Left_Company],"Yes")
 =COUNTIFS(tblAttrition[Left_Company],"Yes")/ROWS(tblAttrition[Employee_ID])
 
 [Step 4]
+CHAT ONLY:
 Using tblAttrition, show attrition rate AND number of employees for:
 1) each Department;
 2) Engagement_Score below 3 vs 3 and above;
@@ -54,7 +61,8 @@ Using tblAttrition, show attrition rate AND number of employees for:
 5) Compa_Ratio below 0.9 vs 0.9 and above;
 6) each Work_Mode.
 
-CHECK (engagement < 3):
+CHECK (Allow editing):
+In an empty cell on Prompt_Log, add this formula for Engagement_Score below 3 and tell me if it matches:
 =COUNTIFS(tblAttrition[Engagement_Score],"<3",tblAttrition[Left_Company],"Yes")/COUNTIFS(tblAttrition[Engagement_Score],"<3")
 
 [Step 5]
@@ -63,15 +71,28 @@ Compare employees who left with those who stayed on Overtime_Hours_Month, Engage
 Years_Since_Promotion, Compa_Ratio and Training_Hours. Show the mean for each group, the group sizes,
 and the correlation between Overtime_Hours_Month and Engagement_Score. Explain the method.
 
-CHECK:
+FOLLOW-UP: Which rows and columns does your code use, and how does it handle blanks?
+
+CHECK (Allow editing):
+In empty cells on Prompt_Log, add these formulas and tell me if they match your means for leavers:
 =AVERAGEIFS(tblAttrition[Overtime_Hours_Month],tblAttrition[Left_Company],"Yes")
 =AVERAGEIFS(tblAttrition[Engagement_Score],tblAttrition[Left_Company],"Yes")
 
 [Step 6]
+CHAT ONLY:
 Here are my verified findings: <paste your checked rates and means>.
 For each, write one OBSERVED sentence with the numbers, one HYPOTHESIS that could explain it, and
 one limitation (sample size, correlation is not causation, overlapping factors). Keep each under 30 words.
 
+ALLOW EDITING:
+Write these four findings into the Insight_Log sheet, one per row, with the numbers, the OBSERVED or
+HYPOTHESIS label, the explanation to test and the limitation.
+
 [Step 7]
+CHAT ONLY:
 Review my Insight_Log. Which statement overstates the evidence or implies causation? How would
 you reword it?
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.

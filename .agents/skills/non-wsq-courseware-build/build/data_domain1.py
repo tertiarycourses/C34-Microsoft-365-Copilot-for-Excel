@@ -17,6 +17,12 @@ _SETUP_STEP = (
     "About_This_Data sheet before you prompt."
 )
 
+_LOG = (
+    "LOG (Allow editing):\n"
+    "Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,\n"
+    "How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo."
+)
+
 DOMAIN1 = [
     # ------------------------------------------------------------------ LAB 1
     dict(
@@ -60,17 +66,16 @@ DOMAIN1 = [
                 "Sheets    : About_This_Data | Applications | Prompt_Log",
             ),
             (
-                "Select cell A1 on the Applications sheet and press Ctrl+T (Home > Format as Table). Tick My table has headers "
-                "and select OK. On the Table Design tab, set Table Name to tblApplications. Then select the Copilot button. If "
+                "Select the Copilot button and choose Allow editing. Ask Copilot to turn the Applications data into a named "
+                f"table. Its reply must confirm the table name tblApplications, 13 columns and {E1['rows']} data rows. If "
                 "Copilot is unavailable, use the Troubleshooting table before continuing.",
-                "Table name : tblApplications\n"
-                "Grain      : one row = one candidate application (Application_ID)\n"
-                "Expected   : 13 columns, 242 data rows",
+                "Format the data on the Applications sheet (from A1 to the last row and column) as an Excel table\n"
+                "with headers. Name the table tblApplications. Do not change, sort or delete any values.\n"
+                "Then tell me the table name, the number of columns and the number of data rows.",
             ),
             (
-                "In the Copilot pane, choose Chat only (no workbook changes). Paste the prompt below. Compare Copilot's row count "
-                "and date range with the table (select the Application_ID column and read Count on the status bar). Record the "
-                "prompt, what Copilot said and your check on the Prompt_Log sheet.",
+                "Switch to Chat only (no workbook changes). Paste the prompt below. Copilot's row count must match the "
+                f"{E1['rows']} rows it reported in Step 2. You will log every prompt in Step 7.",
                 "GOAL: Describe this candidate pipeline before I analyse it.\n"
                 "CONTEXT: BrightPath recruitment desk, H1 2026. One row should be one application.\n"
                 "DATA: Use only tblApplications.\n"
@@ -95,28 +100,31 @@ DOMAIN1 = [
             ),
             (
                 "Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it "
-                "shows. Then verify the hires total in an empty cell on Prompt_Log with the formula below, and verify one source "
-                "with COUNTIFS. Duplicate rows are Rejected applications, so they do not change the hire counts.",
+                "shows. Then ask Copilot (Allow editing) to add the two check formulas to Prompt_Log and compare the results with "
+                "its answer. Duplicate rows are Rejected applications, so they do not change the hire counts.",
                 "PROMPT (Chat only):\n"
                 "Using tblApplications, count applications and hires (Stage = \"Hired\") by Source_Clean.\n"
                 "Show a table sorted by hires, highest first, with hire rate = hires / applications.\n\n"
-                "CHECK FORMULAS:\n"
+                "CHECK (Allow editing):\n"
+                "In empty cells on Prompt_Log, add these check formulas with a label beside each, then tell me the results:\n"
                 "=COUNTIFS(tblApplications[Stage],\"Hired\")\n"
                 "=COUNTIFS(tblApplications[Source_Clean],\"LinkedIn\",tblApplications[Stage],\"Hired\")",
             ),
             (
-                "Switch to Allow editing and build a review view, one change at a time. After each change, inspect the sheet and "
-                "keep it or Undo. Finally apply the filter, read the visible-row count on the status bar, record it, and clear the "
-                f"filter so all {E1['rows']} rows return.",
+                "Switch to Allow editing and build a review view, one change at a time. After each change, look at the sheet and "
+                "keep it or select Undo in the Copilot pane. Finally ask Copilot how many rows the filter shows, then ask it to "
+                f"clear the filter so all {E1['rows']} rows return.",
                 "1) Highlight entire rows of tblApplications where Stage is \"Hired\" with a light green fill.\n"
                 "2) Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline\n"
                 "   from lowest to highest.\n"
-                "3) Filter tblApplications to show only Client_Sector = \"Technology\" and Stage = \"Interview\".",
+                "3) Filter tblApplications to show only Client_Sector = \"Technology\" and Stage = \"Interview\".\n"
+                "4) How many rows of tblApplications are visible with this filter?\n"
+                f"5) Clear all filters on tblApplications and confirm all {E1['rows']} rows are visible.",
             ),
             (
-                "Complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how you verified it and your "
-                "decision (Keep, Revise or Undo). Save - AutoSave keeps the cloud copy current.",
-                "",
+                "Ask Copilot to complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how it was "
+                "verified and your decision (Keep, Revise or Undo). AutoSave keeps the cloud copy current.",
+                _LOG,
             ),
         ],
         sample_prompts=[
@@ -209,34 +217,41 @@ DOMAIN1 = [
                 "Control!B1 Report_Date = 2026-06-30",
             ),
             (
-                "Choose Allow editing. Ask Copilot to add the lookup column. Select a cell in the new column and ask Copilot to "
-                "explain the formula. Check one row by hand against tblRecruiters.",
+                "Choose Allow editing. Ask Copilot to add the lookup column, then ask it to explain the formula and show one row "
+                "next to the matching row in tblRecruiters.",
                 "In tblRequisitions, add a column Recruiter_Name that looks up Recruiter_Name from tblRecruiters\n"
                 "using Recruiter_ID. Use XLOOKUP and return \"Not found\" if there is no match.\n\n"
-                "Then: Explain the formula in the selected cell.",
+                "Then: Explain the Recruiter_Name formula, and show one row's Recruiter_ID and Recruiter_Name next to\n"
+                "the matching row in tblRecruiters.",
             ),
             (
-                "Ask for Days_Open with an explicit rule for open requisitions. Read the explanation. Test an open row (blank "
-                "Close_Date) and a closed row by subtracting the dates yourself.",
+                "Ask for Days_Open with an explicit rule for open requisitions. Read the explanation, then ask Copilot to show an "
+                "open row (blank Close_Date) and a closed row so you can confirm the rule.",
                 "Add a column Days_Open to tblRequisitions. If Close_Date is blank, use Control!B1 minus Open_Date;\n"
-                "otherwise use Close_Date minus Open_Date. Show whole numbers.",
+                "otherwise use Close_Date minus Open_Date. Show whole numbers.\n\n"
+                "FOLLOW-UP: Show one open requisition (blank Close_Date) and one closed requisition with Open_Date,\n"
+                "Close_Date and Days_Open, and the subtraction behind each.",
             ),
             (
                 "Ask for Fill_Rate and Est_Fee, one prompt each. Format Fill_Rate as a percentage and Est_Fee as S$ with no "
-                f"decimals. Hand-check {E2['sample_id']}: Filled {E2['sample_detail'][0]} x S${E2['sample_detail'][1]:,} x 12 x "
+                f"decimals. Then ask Copilot to show the calculation for {E2['sample_id']}: Filled {E2['sample_detail'][0]} x S${E2['sample_detail'][1]:,} x 12 x "
                 f"{E2['sample_detail'][2]:.0%} = {_money(E2['sample_fee'])}.",
                 "Add a column Fill_Rate = Filled divided by Openings, formatted as a percentage.\n\n"
                 "Add a column Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, formatted as S$ with no decimals.\n"
-                "Explain the formula.",
+                "Explain the formula.\n\n"
+                f"FOLLOW-UP: Show the Est_Fee calculation for {E2['sample_id']} step by step.",
             ),
             (
-                "Ask for the ageing flag and a highlight. Count the flags with the status bar or a COUNTIF.",
+                "Ask for the ageing flag and a highlight, then ask Copilot how many requisitions are flagged.",
                 "Add a column Ageing_Flag that shows \"Overdue\" when Status is \"Open\" and Days_Open is greater than 45,\n"
-                "otherwise leave it blank. Highlight rows where Ageing_Flag is \"Overdue\" with a light amber fill.",
+                "otherwise leave it blank. Highlight rows where Ageing_Flag is \"Overdue\" with a light amber fill.\n\n"
+                "FOLLOW-UP: How many rows have Ageing_Flag = \"Overdue\"?",
             ),
             (
-                "Build independent controls on the Control sheet using the formulas below (type them yourself - do not reuse "
-                "Copilot's columns for the control). Each pair must match.",
+                "Ask Copilot to build independent controls on the Control sheet with the exact formulas below. The independent "
+                "formulas recalculate from the raw columns, so they do not rely on Copilot's new columns. Each pair must match.",
+                "Enter these labels and formulas on the Control sheet exactly as written. Then tell me each result\n"
+                "and whether each pair (B3 and B4, B6 and B7) matches:\n"
                 "A3 Total Est_Fee (column)       B3 =SUM(tblRequisitions[Est_Fee])\n"
                 "A4 Total fee (independent)      B4 =SUMPRODUCT(tblRequisitions[Filled],tblRequisitions[Monthly_Salary_Budget],tblRequisitions[Fee_Rate])*12\n"
                 "A5 Avg days to fill (Filled)    B5 =AVERAGEIFS(tblRequisitions[Days_Open],tblRequisitions[Status],\"Filled\")\n"
@@ -244,10 +259,13 @@ DOMAIN1 = [
                 "A7 Overdue flags (column)       B7 =COUNTIF(tblRequisitions[Ageing_Flag],\"Overdue\")",
             ),
             (
-                "In Chat only, ask which recruiter generated the most estimated fees. Verify with SUMIFS on Control, then log all "
-                "prompts on Prompt_Log.",
+                "In Chat only, ask which recruiter generated the most estimated fees. Then ask Copilot (Allow editing) to add the "
+                "SUMIFS check to the Control sheet and to log all prompts on Prompt_Log.",
+                "CHAT ONLY:\n"
                 "Using tblRequisitions, which Recruiter_Name has the highest total Est_Fee? Show the total for every recruiter.\n\n"
-                "CHECK: =SUMIFS(tblRequisitions[Est_Fee],tblRequisitions[Recruiter_Name],\"<name>\")",
+                "CHECK (Allow editing):\n"
+                "On the Control sheet, add this check for the top recruiter and tell me if it matches your answer:\n"
+                "=SUMIFS(tblRequisitions[Est_Fee],tblRequisitions[Recruiter_Name],\"<name>\")\n\n" + _LOG,
             ),
         ],
         sample_prompts=[
