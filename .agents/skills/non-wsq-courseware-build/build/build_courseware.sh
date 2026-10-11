@@ -69,6 +69,7 @@ python3 "$HERE/build_lesson_plan.py"
 # Labs must exist before the LG: its parser deliberately imports the detailed
 # lab Markdown so both artifacts carry identical current step text.
 python3 "$HERE/build_labs.py"
+python3 "$HERE/build_prompts_page.py"   # docs/prompts/ — GitHub Pages copy-ready prompts
 python3 "$HERE/build_learner_guide.py"
 
 PPT="$(ls -t "$CW"/*.pptx | head -1)"

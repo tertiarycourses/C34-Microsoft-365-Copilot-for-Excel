@@ -4,6 +4,8 @@
 
 Every lab has its own folder containing an **instruction PDF with sample prompts**, the same instructions as `README.md`, a copy-ready `sample-prompts.txt`, and a `data/` folder with the **mock HR / recruitment workbook**. All data belongs to *BrightPath Talent Solutions*, a fictional Singapore recruitment and staffing firm.
 
+**Prompts web page:** every lab's prompts with one-click Copy buttons — [https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/)
+
 Work through the labs in order. Each lab opens its own workbook, so you can rejoin at any lab.
 
 

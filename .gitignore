@@ -7,3 +7,4 @@ courseware/assets/screenshots/_rendered/
 archive/
 .env
 .env.*
+.playwright-mcp/

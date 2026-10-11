@@ -10,6 +10,7 @@
 
 > 📄 **Instruction PDF (with sample prompts):** [Lab-01-Instructions.pdf](Lab-01-Instructions.pdf)  
 > 💬 **Copy-ready prompts:** [sample-prompts.txt](sample-prompts.txt)  
+> 🌐 **Prompts web page (one-click copy):** [Lab 1 prompts](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-1)  
 > 📊 **Mock data:** [data/BrightPath_Candidate_Pipeline.xlsx](data/BrightPath_Candidate_Pipeline.xlsx)  
 
 ---

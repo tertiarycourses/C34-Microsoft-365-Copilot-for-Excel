@@ -9,6 +9,7 @@ Use Copilot in Excel to analyse data, plot charts, build dashboards and draw evi
 | Duration | 1 day · 7.5 hours |
 | Format | Instructor-led, with 8 hands-on labs |
 | Registration | [View course details and register](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) |
+| Lab prompts | [Copy-ready prompts page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/) |
 | Courseware version | v2.0 · 8 October 2026 |
 
 ---
@@ -47,6 +48,8 @@ Each lab has its own folder containing:
 - the same instructions as `README.md`;
 - `sample-prompts.txt`, with prompts ready to copy;
 - the **mock-data workbook** in `data/`.
+
+All lab prompts are also on one web page with one-click **Copy** buttons: [Lab Prompts](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/).
 
 See the [labs index](labs/README.md).
 
