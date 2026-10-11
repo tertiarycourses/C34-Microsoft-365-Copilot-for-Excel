@@ -64,6 +64,12 @@ ALLOW EDITING:
 2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'
    to 'LinkedIn'. Do not delete or edit any existing values.
 
+FOLLOW-UP: For each duplicated Application_ID, give the row numbers of both copies and say whether the
+two rows are identical.
+
+FOLLOW-UP: Highlight the Source cells in tblApplications where Source_Clean is different from Source
+with a yellow fill. Tell me how many cells you highlighted and list their Application_IDs.
+
 FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In'
 and no value with a trailing space, and that tblApplications still has 242 rows.
 

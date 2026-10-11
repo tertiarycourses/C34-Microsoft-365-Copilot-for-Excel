@@ -1,8 +1,9 @@
 # Lab 1 — Explore and Question Recruitment Pipeline Data
 
+**Theme:** Data Prep & Data Quality  
 **Course:** Microsoft 365 Copilot for Excel  
 **Course Code:** C34  
-**Version:** v2.0 (8 October 2026)  
+**Version:** v2.1 (11 October 2026)  
 **Topic 1:** Use Copilot to Analyse Data  
 **Maps to:** LO1: confirm Copilot access, prepare a named table, and use Chat and Edit modes to question, check, highlight, sort and filter recruitment pipeline data  
 **Duration:** 35 minutes  
@@ -67,7 +68,7 @@ OUTPUT: What a row represents, each column with its data type, the number of row
 REVIEW: Tell me how you counted the rows.
 ```
 
-### 4. Still in Chat only, ask Copilot to check data quality. It should report 2 repeated Application_IDs and Source values that are not in the canonical list on About_This_Data. Then switch to Allow editing (Edit) and ask Copilot to highlight the duplicate IDs and add a Source_Clean column. Check that no row was deleted - the table must still have 242 rows.
+### 4. Still in Chat only, ask Copilot to check data quality. It should report 2 repeated Application_IDs and Source values that are not in the canonical list on About_This_Data. Then switch to Allow editing (Edit) and ask Copilot to highlight the duplicate IDs and add a Source_Clean column. Orange means 'this ID appears more than once': each duplicate ID is coloured in both places it occurs, so you see one orange cell near the top of the table and its twin further down (press Ctrl+End to jump to the last rows). Check that no row was deleted - the table must still have 242 rows.
 
 ```text
 CHAT ONLY:
@@ -79,6 +80,12 @@ ALLOW EDITING:
 1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.
 2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'
    to 'LinkedIn'. Do not delete or edit any existing values.
+
+FOLLOW-UP: For each duplicated Application_ID, give the row numbers of both copies and say whether the
+two rows are identical.
+
+FOLLOW-UP: Highlight the Source cells in tblApplications where Source_Clean is different from Source
+with a yellow fill. Tell me how many cells you highlighted and list their Application_IDs.
 
 FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In'
 and no value with a trailing space, and that tblApplications still has 242 rows.
@@ -133,7 +140,7 @@ How I verified, and set Decision to Keep. I will tell you any row to change to R
 
 ## Test It
 
-tblApplications exists with 242 data rows and =COUNTA(UNIQUE(tblApplications[Application_ID])) returns 240. The repeated IDs are APP-0018 and APP-0020 (both Rejected) and are orange. Copilot found 3 'Linked In' and 2 'JobStreet ' (trailing space) values; =COUNTIF(tblApplications[Source_Clean],"LinkedIn") returns 69. Hires total 22 and LinkedIn has the most hires (8). The Technology + Interview filter shows 9 rows. Technology received the most applications (49 unique). After clearing the filter all 242 rows are visible, and every Prompt_Log row you ran has What Copilot did, How I verified and a Decision.
+tblApplications exists with 242 data rows and =COUNTA(UNIQUE(tblApplications[Application_ID])) returns 240. The repeated IDs are APP-0018 and APP-0020 (both Rejected); all four of their cells are orange - two near the top and their copies in the last two rows. Copilot found 3 'Linked In' and 2 'JobStreet ' (trailing space) values, and those 5 Source cells are yellow; =COUNTIF(tblApplications[Source_Clean],"LinkedIn") returns 69. Hires total 22 and LinkedIn has the most hires (8). The Technology + Interview filter shows 9 rows. Technology received the most applications (49 unique). After clearing the filter all 242 rows are visible, and every Prompt_Log row you ran has What Copilot did, How I verified and a Decision.
 
 ## Checkpoint and Rejoin Point
 

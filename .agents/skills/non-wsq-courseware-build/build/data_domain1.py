@@ -29,6 +29,7 @@ DOMAIN1 = [
         num=1,
         topic=1,
         title="Explore and Question Recruitment Pipeline Data",
+        theme="Data Prep & Data Quality",
         duration=35,
         objective=(
             "LO1: confirm Copilot access, prepare a named table, and use Chat and Edit modes to question, check, "
@@ -88,8 +89,10 @@ DOMAIN1 = [
             (
                 "Still in Chat only, ask Copilot to check data quality. It should report 2 repeated Application_IDs and Source "
                 "values that are not in the canonical list on About_This_Data. Then switch to Allow editing (Edit) and ask Copilot "
-                "to highlight the duplicate IDs and add a Source_Clean column. Check that no row was deleted - the table must still "
-                f"have {E1['rows']} rows.",
+                "to highlight the duplicate IDs and add a Source_Clean column. Orange means 'this ID appears more than once': "
+                "each duplicate ID is coloured in both places it occurs, so you see one orange cell near the top of the table "
+                "and its twin further down (press Ctrl+End to jump to the last rows). Check that no row was deleted - the table "
+                f"must still have {E1['rows']} rows.",
                 "CHAT ONLY:\n"
                 "Check tblApplications for data-quality issues. List any Application_ID that appears more than once,\n"
                 "and any Source value that is not exactly one of: LinkedIn, JobStreet, MyCareersFuture, Referral,\n"
@@ -98,6 +101,10 @@ DOMAIN1 = [
                 "1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.\n"
                 "2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'\n"
                 "   to 'LinkedIn'. Do not delete or edit any existing values.\n\n"
+                "FOLLOW-UP: For each duplicated Application_ID, give the row numbers of both copies and say whether the\n"
+                "two rows are identical.\n\n"
+                "FOLLOW-UP: Highlight the Source cells in tblApplications where Source_Clean is different from Source\n"
+                "with a yellow fill. Tell me how many cells you highlighted and list their Application_IDs.\n\n"
                 "FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In'\n"
                 f"and no value with a trailing space, and that tblApplications still has {E1['rows']} rows.",
             ),
@@ -144,9 +151,10 @@ DOMAIN1 = [
         ],
         test=(
             f"tblApplications exists with {E1['rows']} data rows and =COUNTA(UNIQUE(tblApplications[Application_ID])) returns "
-            f"{E1['unique']}. The repeated IDs are {E1['dup_ids'][0]} and {E1['dup_ids'][1]} (both Rejected) and are orange. "
+            f"{E1['unique']}. The repeated IDs are {E1['dup_ids'][0]} and {E1['dup_ids'][1]} (both Rejected); all four of their cells are orange - two near the top and their copies in the last two rows. "
             f"Copilot found {E1['variants_linkedin']} 'Linked In' and {E1['variants_jobstreet']} 'JobStreet ' (trailing space) "
-            f"values; =COUNTIF(tblApplications[Source_Clean],\"LinkedIn\") returns {E1['linkedin_clean_all']}. Hires total "
+            f"values, and those {E1['variants_linkedin'] + E1['variants_jobstreet']} Source cells are yellow; "
+            f"=COUNTIF(tblApplications[Source_Clean],\"LinkedIn\") returns {E1['linkedin_clean_all']}. Hires total "
             f"{E1['hired']} and {E1['top_hire_source']} has the most hires ({E1['top_hire_source_n']}). The Technology + Interview "
             f"filter shows {E1['tech_interview_all']} rows. Technology received the most applications ({E1['top_sector_n']} unique). "
             f"After clearing the filter all {E1['rows']} rows are visible, and every Prompt_Log row you ran has What Copilot did, How I verified and a Decision."
@@ -187,6 +195,7 @@ DOMAIN1 = [
         num=2,
         topic=1,
         title="Generate and Verify Formula Columns and Lookups for Job Requisitions",
+        theme="Formulas & Lookups",
         duration=35,
         objective=(
             "LO1: use Copilot to generate lookup and calculated columns from plain-English rules, explain them, "
