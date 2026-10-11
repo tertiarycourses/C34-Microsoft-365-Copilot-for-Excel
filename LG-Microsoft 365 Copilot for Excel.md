@@ -1100,7 +1100,7 @@ BrightPath_Recruitment_Metrics.xlsx with PivotTables and four refined charts on 
 | Peak month | 2025-11 with 68 hires |
 | 2026 hires by sector | Technology first (84); Pivot total 361 |
 | Funnel | 6,616 > 3,229 > 1,385 > 495 > 361 |
-| Best source | Referral: highest hire rate (7.4%); MyCareersFuture: lowest cost per hire (S$186) |
+| Best source | Referral: highest hire rate (8.7%); MyCareersFuture: lowest cost per hire (S$126) |
 | Charts sheet | 2 PivotCharts + funnel + combo in a 2 x 2 grid (A1:Q37), clean style, finding-style titles, labelled axes and alt text |
 
 **Checkpoint and rejoin point**
