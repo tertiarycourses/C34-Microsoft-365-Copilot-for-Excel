@@ -134,9 +134,17 @@ def code_box(text, label=None):
     rows = []
     if label:
         rows.append([Paragraph(escape(label), ST["label"])])
+    room = 170 * mm - 14  # column width minus left/right padding
     for line in text.strip("\n").split("\n"):
         lead = len(line) - len(line.lstrip(" "))
-        rows.append([Paragraph("&nbsp;" * lead + escape(line.lstrip(" ")) if line.strip() else "&nbsp;", ST["code"])])
+        style = ST["code"]
+        # a formula has no spaces to wrap at, so a long one would split mid-token and break
+        # when copied: shrink it to fit on one line instead
+        width = pdfmetrics.stringWidth(line, MONO, style.fontSize)
+        if line.lstrip().startswith("=") and width > room:
+            size = max(6.0, style.fontSize * room / width * 0.95)  # margin: Paragraph wraps a little early
+            style = ParagraphStyle("cf", parent=style, fontSize=size, leading=max(style.leading, size + 2))
+        rows.append([Paragraph("&nbsp;" * lead + escape(line.lstrip(" ")) if line.strip() else "&nbsp;", style)])
     t = Table(rows, colWidths=[170 * mm])
     t.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), PROMPT_BG),

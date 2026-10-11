@@ -165,8 +165,9 @@ def cover():
     s=slide(); dark_bg(s)
     txt(s,Inches(0.9),Inches(1.5),Inches(8.5),Inches(0.4),
         [[(f"NON-WSQ COURSE  •  {C.COURSE_CODE}",14,ORANGE,True)]],font=BODY_FONT)
-    txt(s,Inches(9.6),Inches(1.5),Inches(3.13),Inches(0.4),
-        [[(f"Version {C.VERSION}  ·  {C.VERSION_DATE}",13,ON_DARK,False)]],align=PP_ALIGN.RIGHT)
+    # under the title on plain charcoal - top right sits on the orange circle and is hard to read
+    txt(s,Inches(0.9),Inches(4.75),Inches(8.5),Inches(0.4),
+        [[(f"Version {C.VERSION}  ·  {C.VERSION_DATE}",13,ON_DARK,False)]],font=BODY_FONT)
     txt(s,Inches(0.85),Inches(2.0),Inches(11.2),Inches(2.6),[[(C.TITLE,52,WHITE,True)]],font=TITLE_FONT)
     txt(s,Inches(0.9),Inches(5.7),Inches(11),Inches(0.8),
         [[("Tertiary Infotech Academy Pte Ltd",15,WHITE,True)],[(C.UEN,13,ON_DARK,False)]],font=BODY_FONT,space=2)

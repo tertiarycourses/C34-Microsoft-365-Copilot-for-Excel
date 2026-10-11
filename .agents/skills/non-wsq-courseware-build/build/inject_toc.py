@@ -36,21 +36,38 @@ def main():
             if lvl <= maxlevel and p.text.strip():
                 heads.append((lvl, p.text.strip()))
 
-    # 2) page text from the rendered PDF
+    # 2) page text from the rendered PDF (whole page, and line by line)
     reader = PdfReader(pdf_path)
-    pages = [norm(pg.extract_text() or "") for pg in reader.pages]
+    raw = [pg.extract_text() or "" for pg in reader.pages]
+    pages = [norm(t) for t in raw]
+    page_lines = [[norm(l) for l in t.split("\n")] for t in raw]
 
-    # 3) map each heading -> first page (>= cursor) whose text contains it
+    def starts_line(full, lines):
+        """The heading begins a line (possibly wrapping onto the next two), so a mention
+        inside a paragraph - e.g. a topic lead-in listing its concepts - does not count."""
+        for i, ln in enumerate(lines):
+            if len(ln) >= min(8, len(full)) and full.startswith(ln) and \
+                    "".join(lines[i:i + 3]).startswith(full):
+                return True
+        return False
+
+    # 3) map each heading -> first page (>= cursor) where it starts a line; else whose text contains it
     entries = []
     cursor = 0
     for lvl, text in heads:
         key = norm(text)[:24]
         page = None
         for i in range(cursor, len(pages)):
-            if key and key in pages[i]:
+            if key and starts_line(norm(text), page_lines[i]):
                 page = i + 1  # 1-based, matches footer "Page N"
                 cursor = i
                 break
+        if page is None:
+            for i in range(cursor, len(pages)):
+                if key and key in pages[i]:
+                    page = i + 1
+                    cursor = i
+                    break
         if page is None:  # fallback: search from start
             for i in range(len(pages)):
                 if key and key in pages[i]:

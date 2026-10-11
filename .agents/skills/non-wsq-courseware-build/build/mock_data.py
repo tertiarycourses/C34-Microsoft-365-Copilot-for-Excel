@@ -373,6 +373,15 @@ def _months(y0, m0, n):
     return out
 
 
+def _split_total(weights, total):
+    """Whole numbers in proportion to weights that add up exactly to total (largest remainder)."""
+    raw = [total * w / sum(weights) for w in weights]
+    out = [int(x) for x in raw]
+    for i in sorted(range(len(raw)), key=lambda i: raw[i] - out[i], reverse=True)[:total - sum(out)]:
+        out[i] += 1
+    return out
+
+
 def _lab3():
     rng = random.Random(3403)
     months = _months(2025, 1, 18)
@@ -396,14 +405,16 @@ def _lab3():
             rows.append([m, m.strftime("%Y-%m"), s, apps, screened, interviews, offers, hires, tth, cph])
     headers = ["Month", "Month_Label", "Sector", "Applications", "Screened", "Interviews", "Offers", "Hires",
                "Avg_Time_to_Hire_Days", "Cost_per_Hire"]
-    src_rows = []
-    rng2 = random.Random(34031)
-    for s in SOURCES:
-        apps = int(1400 * SOURCE_W[SOURCES.index(s)] / 100 * rng2.uniform(0.9, 1.1))
-        hires = int(round(apps * 0.045 * SOURCE_QUALITY[s] * rng2.uniform(0.9, 1.1)))
-        spend = int(round(apps * SOURCE_COST[s] * rng2.uniform(0.95, 1.05), -2))
-        src_rows.append([s, apps, hires, spend])
     h1 = [r for r in rows if r[0].year == 2026]
+    # Jan-Jun 2026 by source: applications and hires add up to tblMonthly's 2026 totals,
+    # so a learner who reconciles the two tables finds they agree
+    rng2 = random.Random(34031)
+    apps_w = [SOURCE_W[i] * rng2.uniform(0.9, 1.1) for i in range(len(SOURCES))]
+    src_apps = _split_total(apps_w, sum(r[3] for r in h1))
+    hires_w = [a * SOURCE_QUALITY[s] * rng2.uniform(0.9, 1.1) for s, a in zip(SOURCES, src_apps)]
+    src_hires = _split_total(hires_w, sum(r[7] for r in h1))
+    src_rows = [[s, a, h, int(round(a * SOURCE_COST[s] * rng2.uniform(0.95, 1.05), -2))]
+                for s, a, h in zip(SOURCES, src_apps, src_hires)]
     by_sector = {}
     for r in h1:
         by_sector[r[2]] = by_sector.get(r[2], 0) + r[7]
