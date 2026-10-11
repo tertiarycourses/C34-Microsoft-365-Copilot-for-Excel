@@ -445,9 +445,9 @@ DOMAIN1 = [
                 "Ask Copilot (Chat only) to review the charts against the four questions, then ask it to log your prompts and "
                 "checks on Prompt_Log.",
                 "CHAT ONLY:\n"
-                "Review the four charts on the Charts sheet. For each, tell me which question it answers (Q1 Trend,\n"
-                "Q2 Comparison, Q3 Funnel, Q4 Efficiency), whether the chart type suits that question, and one\n"
-                "improvement. Do not change anything.\n\n"
+                "Review the four charts on the Charts sheet. For each, tell me which question it answers\n"
+                "(Q1 Trend, Q2 Comparison, Q3 Funnel, Q4 Efficiency), whether the chart type suits that question,\n"
+                "and one improvement. Do not change anything.\n\n"
                 + _LOG,
             ),
         ],

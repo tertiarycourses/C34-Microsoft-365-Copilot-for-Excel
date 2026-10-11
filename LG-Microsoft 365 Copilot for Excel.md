@@ -1071,8 +1071,7 @@ BrightPath_Recruitment_Metrics.xlsx with PivotTables and four refined charts on 
 
    ```text
    CHAT ONLY:
-   Review the four charts on the Charts sheet. For each, tell me which question it answers (Q1 Trend,
-   Q2 Comparison, Q3 Funnel, Q4 Efficiency), whether the chart type suits that question, and one improvement. Do not change anything.
+   Review the four charts on the Charts sheet. For each, tell me which question it answers (Q1 Trend, Q2 Comparison, Q3 Funnel, Q4 Efficiency), whether the chart type suits that question, and one improvement. Do not change anything.
 
    LOG (Allow editing):
    Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
