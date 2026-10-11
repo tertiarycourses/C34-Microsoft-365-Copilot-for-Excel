@@ -38,8 +38,7 @@ Step prompts used in this lab
 
 [Step 1]
 Required state:
-File      : OneDrive/work-c34/BrightPath_Candidate_Pipeline.xlsx
-AutoSave  : On (recommended, not required)
+File      : work-c34/BrightPath_Candidate_Pipeline.xlsx (local copy)
 Calculation Options : Automatic
 Sheets    : About_This_Data | Applications | Prompt_Log
 

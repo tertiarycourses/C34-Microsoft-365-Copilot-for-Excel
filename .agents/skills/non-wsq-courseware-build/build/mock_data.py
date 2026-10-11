@@ -129,6 +129,8 @@ def _about_sheet(wb, title, purpose, dictionary):
         ws.cell(row=i, column=1, value=col)
         ws.cell(row=i, column=2, value=typ)
         ws.cell(row=i, column=3, value=meaning).alignment = Alignment(wrap_text=True)
+        if len(meaning) > 85:  # Excel does not auto-fit wrapped rows on open
+            ws.row_dimensions[i].height = 15 * -(-len(meaning) // 85)
     ws.column_dimensions["A"].width = 30
     ws.column_dimensions["B"].width = 14
     ws.column_dimensions["C"].width = 90
@@ -862,6 +864,11 @@ def build_lab6(folder):
                   ("Clash rule", "Rule", "A clash is two interviews that overlap in time with the same Interviewer, or "
                    "two Onsite interviews that overlap in the same Room.")])
     _prompt_log_sheet(wb)
+    # Open on the data: Copilot reads the active sheet first, so lead with tblInterviews, not the notes.
+    wb.move_sheet("Interviews", offset=-wb.sheetnames.index("Interviews"))
+    wb.active = wb["Interviews"]
+    for ws in wb.worksheets:
+        ws.sheet_view.tabSelected = ws.title == "Interviews"
     return [_save(wb, folder, "BrightPath_Interview_Schedule.xlsx")]
 
 

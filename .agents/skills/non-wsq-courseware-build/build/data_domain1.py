@@ -13,9 +13,8 @@ def _money(v):
 
 
 _SETUP_STEP = (
-    "Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload "
-    "{file} from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you "
-    "AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > "
+    "Copy {file} from this lab's data folder into a work-c34 folder on your computer and open it in Excel for "
+    "Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > "
     "Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot "
     "icon at the bottom right. Read the About_This_Data sheet before you prompt."
 )
@@ -42,7 +41,7 @@ DOMAIN1 = [
             "Turn a raw candidate-pipeline export into a named Excel table, find its data-quality issues with Copilot, "
             "and answer pipeline questions with checked numbers."
         ),
-        workflow=["Save to OneDrive", "Create the table", "Chat only: describe", "Plan: fix quality", "Ask, compare, filter"],
+        workflow=["Open locally", "Create the table", "Chat only: describe", "Plan: fix quality", "Ask, compare, filter"],
         desc=(
             "You are a talent analyst at BrightPath Talent Solutions, a fictional Singapore recruitment and staffing firm. "
             "You will meet Copilot's three modes on a real task: Allow editing turns the H1 2026 pipeline export into a named "
@@ -51,22 +50,21 @@ DOMAIN1 = [
             "question, and build a highlighted, sorted and filtered review view. Every number is checked with a formula."
         ),
         build=(
-            "BrightPath_Candidate_Pipeline.xlsx in OneDrive with table tblApplications, a Source_Clean column, duplicate "
+            "BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplications, a Source_Clean column, duplicate "
             "IDs highlighted, Hired rows highlighted, a verified source-by-hires answer and a filled Prompt_Log"
         ),
-        services="Excel for Microsoft 365 or Excel for the web · Copilot (Chat only, Plan, Allow editing, model picker) · BrightPath_Candidate_Pipeline.xlsx",
+        services="Excel for Microsoft 365 (desktop) · Copilot (Chat only, Plan, Allow editing, model picker) · BrightPath_Candidate_Pipeline.xlsx",
         data_files=["data/BrightPath_Candidate_Pipeline.xlsx"],
         prerequisites=[
-            "A Microsoft 365 account with Copilot in Excel enabled, signed in to Excel or Excel for the web.",
-            "A OneDrive or SharePoint folder named work-c34 that you can upload to.",
+            "A Microsoft 365 account with Copilot in Excel enabled, signed in to Excel for Microsoft 365 (desktop).",
+            "A folder named work-c34 on your computer for your working copies.",
             "This lab folder downloaded, including data/BrightPath_Candidate_Pipeline.xlsx.",
         ],
         steps=[
             (
                 _SETUP_STEP.format(file="BrightPath_Candidate_Pipeline.xlsx"),
                 "Required state:\n"
-                "File      : OneDrive/work-c34/BrightPath_Candidate_Pipeline.xlsx\n"
-                "AutoSave  : On (recommended, not required)\n"
+                "File      : work-c34/BrightPath_Candidate_Pipeline.xlsx (local copy)\n"
                 "Calculation Options : Automatic\n"
                 "Sheets    : About_This_Data | Applications | Prompt_Log",
             ),
@@ -145,7 +143,7 @@ DOMAIN1 = [
             ),
             (
                 "Prompt_Log already lists every prompt in this lab with its step and mode. Ask Copilot to fill in what it did, "
-                "how it was verified and your decision (Keep, Revise or Undo). With AutoSave on, the cloud copy and its version history stay current.",
+                "how it was verified and your decision (Keep, Revise or Undo). Save the workbook (Ctrl+S / Cmd+S) when it is done.",
                 _LOG,
             ),
         ],
@@ -178,7 +176,7 @@ DOMAIN1 = [
         troubleshooting=[
             (
                 "The Copilot button is missing or greyed out.",
-                "Save the file as .xlsx in OneDrive or SharePoint, close and reopen it. Check your licence in "
+                "Save the file as a normal .xlsx, close and reopen it, and update Excel. Check your licence in "
                 "your Microsoft 365 account and ask IT if Copilot is disabled for your tenant. Pair with a neighbour meanwhile.",
             ),
             (
@@ -188,8 +186,8 @@ DOMAIN1 = [
             ),
             (
                 "'Unsupported file state' message.",
-                "If the file is checked out in SharePoint, check it in and reopen it, or open it in Excel for the web. Strict "
-                "Open XML files are not supported - save as a normal .xlsx.",
+                "Save as a normal .xlsx (Strict Open XML files are not supported), close and reopen it. If the file is read-only, "
+                "copy it into work-c34 and open the copy.",
             ),
             (
                 "Copilot answers about the whole sheet instead of the table.",
@@ -236,7 +234,7 @@ DOMAIN1 = [
         services="Excel · Copilot (Allow editing, Chat only) · XLOOKUP · structured references · BrightPath_Job_Requisitions.xlsx",
         data_files=["data/BrightPath_Job_Requisitions.xlsx"],
         prerequisites=[
-            "Lab 1 completed, or Copilot access confirmed on a OneDrive .xlsx file.",
+            "Lab 1 completed, or Copilot access confirmed on a local .xlsx file.",
             "This lab folder's data/BrightPath_Job_Requisitions.xlsx.",
         ],
         steps=[
@@ -333,14 +331,14 @@ DOMAIN1 = [
             ),
             (
                 "Copilot cannot add a formula column.",
-                "Confirm Calculation Options is Automatic and the data is an Excel table; try Excel for the web if desktop fails.",
+                "Confirm Calculation Options is Automatic and the data is an Excel table; if it still fails, save, close and reopen the workbook.",
             ),
         ],
         challenge=(
             "Ask Copilot to add a Fee_Achieved column that is Est_Fee for Filled requisitions only, then build a small "
             "summary of Fee_Achieved by Sector with SUMIFS. Check that the sector totals add up to the grand total. Then bring in "
-            "other data: upload Lab 1's BrightPath_Candidate_Pipeline.xlsx to work-c34, select + (Add work content) and attach "
-            "it (or type / and its name), and ask: 'Add a sheet Sector_View that compares open requisitions by Sector in this "
+            "other data: select + (Add work content) and attach Lab 1's BrightPath_Candidate_Pipeline.xlsx (Copilot can only "
+            "attach files it can find in your OneDrive or SharePoint, so skip this part if you work locally only), and ask: 'Add a sheet Sector_View that compares open requisitions by Sector in this "
             "workbook with hires by Client_Sector in the attached pipeline.' Check one sector's hires with COUNTIFS in the "
             "pipeline workbook."
         ),
@@ -376,7 +374,7 @@ DOMAIN1 = [
         services="Excel · Copilot (Allow editing) · PivotTables, PivotCharts · line, bar, funnel and combo charts · BrightPath_Recruitment_Metrics.xlsx",
         data_files=["data/BrightPath_Recruitment_Metrics.xlsx"],
         prerequisites=[
-            "Labs 1-2 completed: you can open a OneDrive workbook, switch Copilot modes and verify with formulas.",
+            "Labs 1-2 completed: you can open a lab workbook, switch Copilot modes and verify with formulas.",
             "This lab folder's data/BrightPath_Recruitment_Metrics.xlsx.",
         ],
         steps=[

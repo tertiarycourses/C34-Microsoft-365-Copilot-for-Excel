@@ -70,15 +70,15 @@ Use the guide as a self-contained study text before, during and after class. Eac
 
 **What you need**
 
-- A Windows or Mac laptop with a current Excel for Microsoft 365, or a browser for Excel for the web.
+- A Windows or Mac laptop with a current Excel for Microsoft 365 (desktop).
 - A Microsoft 365 work account with a Microsoft 365 Copilot licence (personal and free accounts do not include every feature used in the labs).
-- Access to your OneDrive in a browser, with a folder named work-c34. Custom skills (Labs 6 and 8) are stored in a OneDrive skills folder.
+- A folder named work-c34 on your computer for your working copies. OneDrive is needed only for custom skills (Labs 6 and 8), which Excel reads from a OneDrive skills folder.
 - Office display language set to English: skills and workbook rules are fully supported in English only.
 - The course labs folder: one sub-folder per lab with its instruction PDF, sample-prompts.txt, data/ workbook and any rules-template.txt or skills/ files.
 
 **Verify your setup**
 
-Upload labs/lab-01-*/data/BrightPath_Candidate_Pipeline.xlsx to your OneDrive work-c34 folder and open it in Excel. Confirm that Formulas > Calculation Options is Automatic and open Copilot. Check the mode menu above the prompt box (Chat only, Plan, Allow editing), the model picker at the top, the + (Add work content) menu and Settings (...) > Personalization and Manage plugins & skills. Labels and availability may change as Microsoft updates the product.
+Copy labs/lab-01-*/data/BrightPath_Candidate_Pipeline.xlsx into your work-c34 folder and open it in Excel. Confirm that Formulas > Calculation Options is Automatic and open Copilot. Check the mode menu above the prompt box (Chat only, Plan, Allow editing), the model picker at the top, the + (Add work content) menu and Settings (...) > Personalization and Manage plugins & skills. Labels and availability may change as Microsoft updates the product.
 
 ```bash
 labs/
@@ -88,7 +88,7 @@ labs/
     data/BrightPath_<dataset>.xlsx
     rules-template.txt          (Labs 4, 7, 8) .Rules text to paste
     skills/<name>/SKILL.md      (Labs 6, 8) ready-made skill
-OneDrive/work-c34/              your cloud working copies
+work-c34/                       your local working copies
 OneDrive/.../skills/            your custom skills
 ```
 
@@ -256,13 +256,13 @@ Copilot is not just a chatbot: in Plan and Allow editing it works as an agent th
 
 ### Setup, Data Sources and the Model Picker
 
-Copilot appears in Excel for Microsoft 365 on Windows, Mac and the web when your account has an eligible plan, such as a Microsoft 365 Copilot licence on a work account. It needs an internet connection; saving the workbook to OneDrive or SharePoint adds AutoSave and version history, and recent builds also work on local files. From the + (Add work content) menu Copilot can use another file, web results or your work content as context, and the model picker at the top of the pane lets you choose Auto or a specific model.
+Copilot appears in Excel for Microsoft 365 on Windows, Mac and the web when your account has an eligible plan, such as a Microsoft 365 Copilot licence on a work account. It needs an internet connection and works on workbooks saved on your computer; OneDrive or SharePoint is optional and adds AutoSave and version history. From the + (Add work content) menu Copilot can use another file, web results or your work content as context, and the model picker at the top of the pane lets you choose Auto or a specific model.
 
 Most 'Copilot is missing' problems are setup problems: an old Excel build, a licence or tenant setting, or an unsupported file. Bringing in the right file gives Copilot facts it cannot guess - but naming the file beats letting it search. Models have different strengths: Auto suits most tasks, a deeper reasoning model can catch errors in a complex analysis, and premium models have fair-use limits.
 
 **How it works**
 
-- Save the workbook as .xlsx in OneDrive, set Formulas > Calculation Options to Automatic and open Copilot.
+- Save the workbook as .xlsx on your computer, set Formulas > Calculation Options to Automatic and open Copilot.
 - Use + > attach a file (or type / and the file name) to give Copilot another file as context.
 - Leave the model on Auto; switch model and start a New chat to compare answers on a hard question.
 
@@ -349,22 +349,21 @@ You are a talent analyst at BrightPath Talent Solutions, a fictional Singapore r
 
 **What you'll build**
 
-BrightPath_Candidate_Pipeline.xlsx in OneDrive with table tblApplications, a Source_Clean column, duplicate IDs highlighted, Hired rows highlighted, a verified source-by-hires answer and a filled Prompt_Log   (Tools: Excel for Microsoft 365 or Excel for the web · Copilot (Chat only, Plan, Allow editing, model picker) · BrightPath_Candidate_Pipeline.xlsx.)
+BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplications, a Source_Clean column, duplicate IDs highlighted, Hired rows highlighted, a verified source-by-hires answer and a filled Prompt_Log   (Tools: Excel for Microsoft 365 (desktop) · Copilot (Chat only, Plan, Allow editing, model picker) · BrightPath_Candidate_Pipeline.xlsx.)
 
 **Prerequisites**
 
-- A Microsoft 365 account with Copilot in Excel enabled, signed in to Excel or Excel for the web.
-- A OneDrive or SharePoint folder named work-c34 that you can upload to.
+- A Microsoft 365 account with Copilot in Excel enabled, signed in to Excel for Microsoft 365 (desktop).
+- A folder named work-c34 on your computer for your working copies.
 - This lab folder downloaded, including data/BrightPath_Candidate_Pipeline.xlsx.
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Candidate_Pipeline.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt.
+1. Copy BrightPath_Candidate_Pipeline.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt.
 
    ```text
    Required state:
-   File      : OneDrive/work-c34/BrightPath_Candidate_Pipeline.xlsx
-   AutoSave  : On (recommended, not required)
+   File      : work-c34/BrightPath_Candidate_Pipeline.xlsx (local copy)
    Calculation Options : Automatic
    Sheets    : About_This_Data | Applications | Prompt_Log
    ```
@@ -432,7 +431,7 @@ BrightPath_Candidate_Pipeline.xlsx in OneDrive with table tblApplications, a Sou
    5) Clear all filters on tblApplications and confirm all 242 rows are visible.
    ```
 
-7. Prompt_Log already lists every prompt in this lab with its step and mode. Ask Copilot to fill in what it did, how it was verified and your decision (Keep, Revise or Undo). With AutoSave on, the cloud copy and its version history stay current.
+7. Prompt_Log already lists every prompt in this lab with its step and mode. Ask Copilot to fill in what it did, how it was verified and your decision (Keep, Revise or Undo). Save the workbook (Ctrl+S / Cmd+S) when it is done.
 
    ```text
    LOG (Allow editing):
@@ -474,9 +473,9 @@ Keep this workbook in work-c34. Lab 2 uses a separate requisitions workbook, so 
 
 | If this happens | Fix |
 |---|---|
-| The Copilot button is missing or greyed out. | Save the file as .xlsx in OneDrive or SharePoint, close and reopen it. Check your licence in your Microsoft 365 account and ask IT if Copilot is disabled for your tenant. Pair with a neighbour meanwhile. |
+| The Copilot button is missing or greyed out. | Save the file as a normal .xlsx, close and reopen it, and update Excel. Check your licence in your Microsoft 365 account and ask IT if Copilot is disabled for your tenant. Pair with a neighbour meanwhile. |
 | There is no Plan option in the mode menu. | Some Excel builds show only Allow editing and Chat only. Use Chat only, end the prompt with 'Show me the plan; do not change anything yet', then switch to Allow editing to carry it out. |
-| 'Unsupported file state' message. | If the file is checked out in SharePoint, check it in and reopen it, or open it in Excel for the web. Strict Open XML files are not supported - save as a normal .xlsx. |
+| 'Unsupported file state' message. | Save as a normal .xlsx (Strict Open XML files are not supported), close and reopen it. If the file is read-only, copy it into work-c34 and open the copy. |
 | Copilot answers about the whole sheet instead of the table. | Name the table (tblApplications) and the exact columns in the prompt, and click inside the table before asking. |
 | Copilot's count differs from your formula. | Ask Copilot how it counted (rows vs unique IDs, which Stage values). Trust the formula, record the difference and refine the prompt. |
 
@@ -742,12 +741,12 @@ BrightPath_Job_Requisitions.xlsx with Recruiter_Name, Days_Open, Fill_Rate, Est_
 
 **Prerequisites**
 
-- Lab 1 completed, or Copilot access confirmed on a OneDrive .xlsx file.
+- Lab 1 completed, or Copilot access confirmed on a local .xlsx file.
 - This lab folder's data/BrightPath_Job_Requisitions.xlsx.
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Job_Requisitions.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Note the fee rule: Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, and the report date in Control!B1.
+1. Copy BrightPath_Job_Requisitions.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Note the fee rule: Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, and the report date in Control!B1.
 
    ```text
    Tables : tblRequisitions (60 rows) | tblRecruiters (6 rows)
@@ -851,11 +850,11 @@ Keep the workbook in work-c34. Lab 3 uses its own metrics workbook in the Lab 3 
 | Days_Open is negative or huge for open requisitions. | The formula used today's date or a blank as zero. Ask Copilot to use Control!B1 explicitly, or edit the formula. |
 | Est_Fee is 12 times too small or too large. | Re-read the rule: fee is on first-year salary (monthly x 12). Ask Copilot to explain the formula and correct it. |
 | The new column is outside the table. | Click inside tblRequisitions before prompting and name the table in the prompt; or drag the table's resize handle. |
-| Copilot cannot add a formula column. | Confirm Calculation Options is Automatic and the data is an Excel table; try Excel for the web if desktop fails. |
+| Copilot cannot add a formula column. | Confirm Calculation Options is Automatic and the data is an Excel table; if it still fails, save, close and reopen the workbook. |
 
 **Challenge**
 
-Ask Copilot to add a Fee_Achieved column that is Est_Fee for Filled requisitions only, then build a small summary of Fee_Achieved by Sector with SUMIFS. Check that the sector totals add up to the grand total. Then bring in other data: upload Lab 1's BrightPath_Candidate_Pipeline.xlsx to work-c34, select + (Add work content) and attach it (or type / and its name), and ask: 'Add a sheet Sector_View that compares open requisitions by Sector in this workbook with hires by Client_Sector in the attached pipeline.' Check one sector's hires with COUNTIFS in the pipeline workbook.
+Ask Copilot to add a Fee_Achieved column that is Est_Fee for Filled requisitions only, then build a small summary of Fee_Achieved by Sector with SUMIFS. Check that the sector totals add up to the grand total. Then bring in other data: select + (Add work content) and attach Lab 1's BrightPath_Candidate_Pipeline.xlsx (Copilot can only attach files it can find in your OneDrive or SharePoint, so skip this part if you work locally only), and ask: 'Add a sheet Sector_View that compares open requisitions by Sector in this workbook with hires by Client_Sector in the attached pipeline.' Check one sector's hires with COUNTIFS in the pipeline workbook.
 
 **Reflection**
 
@@ -1001,12 +1000,12 @@ BrightPath_Recruitment_Metrics.xlsx with PivotTables and four refined charts on 
 
 **Prerequisites**
 
-- Labs 1-2 completed: you can open a OneDrive workbook, switch Copilot modes and verify with formulas.
+- Labs 1-2 completed: you can open a lab workbook, switch Copilot modes and verify with formulas.
 - This lab folder's data/BrightPath_Recruitment_Metrics.xlsx.
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Recruitment_Metrics.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. The Charts sheet is empty: you will create each chart there with a prompt, in a 2 x 2 grid. The data is on Monthly_Metrics and Source_Summary. Each chart answers one of the four questions below.
+1. Copy BrightPath_Recruitment_Metrics.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. The Charts sheet is empty: you will create each chart there with a prompt, in a 2 x 2 grid. The data is on Monthly_Metrics and Source_Summary. Each chart answers one of the four questions below.
 
    ```text
    Tables : tblMonthly (108 rows = 18 months x 6 sectors) | tblSources (7 rows)
@@ -1262,7 +1261,7 @@ Your Personalization (saved to your account) and BrightPath_Client_Orders_Raw.xl
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Client_Orders_Raw.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Scroll through Orders_Raw and spot three ways the same status or region is written.
+1. Copy BrightPath_Client_Orders_Raw.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Scroll through Orders_Raw and spot three ways the same status or region is written.
 
    ```text
    Sheets : About_This_Data | Orders_Raw (64 orders, not a table) | Rate_Card (tblRateCard) | Prompt_Log
@@ -1510,7 +1509,7 @@ BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_E
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_HR_Outsourcing_Finance.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Read the Definitions row on About_This_Data - you will hold the finance skill to these.
+1. Copy BrightPath_HR_Outsourcing_Finance.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Read the Definitions row on About_This_Data - you will hold the finance skill to these.
 
    ```text
    Tables : tblClientMonths (18 months) | tblClients | tblSpend | Headcount_Budget (cost model)
@@ -1521,19 +1520,20 @@ BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_E
    Payback = CAC / (ARPA x gross margin), in months
    ```
 
-2. Find the skills. In the Copilot pane select Settings (...) > Manage plugins & skills and open each folder. Turn on chart-design (it is off by default), unit-economics and check-model. Close the dialog, type @ in the prompt box and confirm they are listed. A skill that is off can still be called with an @mention.
+2. Turn on the skills. In the Copilot pane select Settings (...) > Manage plugins & skills. Open the Finance folder and turn on unit-economics and check-model. Open the Visualisation folder and turn on chart-design (it is off by default). Leave every other skill as it is. Close the dialog, type @ in the prompt box and confirm all three are listed. theme-design (Step 7) sits in a Formatting folder that is still rolling out - if you have no Formatting folder, skip it; Step 7 shows what to do.
 
    ```text
-   Formatting    : brandkit, theme-design
-   Visualization : chart-design
-   Finance       : 3-statements, check-model, comps-analysis, unit-economics and more (20 skills)
+   Where         : Settings (...) > Manage plugins & skills - turn on only these
+   Finance       : unit-economics, check-model
+   Visualisation : chart-design (off by default)
+   Formatting    : theme-design - only if this folder is shown
    Call a skill  : type @ and its name, e.g. @chart-design
 
    CHAT ONLY:
    Which of your skills would help me analyse client acquisition cost and churn in this workbook, and which would help me audit the Headcount_Budget sheet? Do not change anything.
    ```
 
-3. Call @chart-design (Visualization) in Allow editing. It chooses and formats the chart using the Excel design team's guidance. Check the values: MRR grows from S$238,200 in Jan 2025 to S$482,200 in Jun 2026, with 131 active clients at the end.
+3. Call @chart-design (Visualisation) in Allow editing. It chooses and formats the chart using the Excel design team's guidance. Check the values: MRR grows from S$238,200 in Jan 2025 to S$482,200 in Jun 2026, with 131 active clients at the end.
 
    ```text
    ALLOW EDITING:
@@ -1579,7 +1579,7 @@ BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_E
    Fix the issues you found on Headcount_Budget and tell me the new Total FY2027 cost.
    ```
 
-7. Style the workbook with @theme-design (Formatting). It applies one coordinated theme to cells, tables and charts. If your organisation has set up a brand kit, try @brandkit instead. Then log your prompts.
+7. Style the workbook with @theme-design (Formatting). It applies one coordinated theme to cells, tables and charts. If theme-design is not in your @ list, your account does not have it yet: delete @theme-design and run the rest of the prompt as it is. If your organisation has set up a brand kit, try @brandkit instead. Then log your prompts.
 
    ```text
    ALLOW EDITING:
@@ -1616,7 +1616,7 @@ BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_E
 
 **Checkpoint and rejoin point**
 
-Keep the workbook in work-c34. Lab 6 needs your OneDrive, because custom skills are stored there.
+Keep the workbook in work-c34. Lab 6 needs your OneDrive for one thing only: custom skills are stored there.
 
 **Troubleshooting**
 
@@ -1744,7 +1744,7 @@ An interview-calendar skill in your OneDrive skills folder, and BrightPath_Inter
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Interview_Schedule.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. For this lab the OneDrive copy matters: Copilot finds custom skills in your OneDrive.
+1. Copy BrightPath_Interview_Schedule.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. The workbook stays local; only the skill file goes in OneDrive (Step 2).
 
    ```text
    Table  : tblInterviews (41 interviews, 6-17 July 2026)
@@ -1753,7 +1753,7 @@ An interview-calendar skill in your OneDrive skills folder, and BrightPath_Inter
    Clash  : same Interviewer overlapping, or two Onsite interviews in the same Room overlapping
    ```
 
-2. Create your skills folder. In the Copilot pane select Settings (...) > Manage plugins & skills > Custom skills > Create OneDrive folder, then Open skills folder. OneDrive opens a folder named skills, usually under Documents > Copilot > Microsoft Excel. Open the sample calendar skill folder (e.g. make-calendar.example) and read its SKILL.md: a front matter block between --- lines, then plain-English steps.
+2. Create your skills folder. In the Copilot pane select Settings (...) > Manage plugins & skills > Custom skills and turn the Custom skills switch on. Then select Add in OneDrive (in some versions: Create OneDrive folder, then Open skills folder). OneDrive opens a folder named skills, usually under Documents > Copilot > Microsoft Excel. Open the sample calendar skill folder (e.g. make-calendar.example) and read its SKILL.md: a front matter block between --- lines, then plain-English steps.
 
    ```text
    Folder      : skills/<skill-name>/   (folder name = the skill name, lower case with hyphens)
@@ -1789,8 +1789,8 @@ An interview-calendar skill in your OneDrive skills folder, and BrightPath_Inter
    Check    : the file is called SKILL.md (not SKILL.md.txt)
    ```
 
-5. Make Excel see the new skill: Settings (...) > Manage plugins & skills > Custom skills > Refresh, then turn interview-calendar on. Close the dialog and type @inter in the prompt box - the skill should appear.
-6. Run the skill in Allow editing with a one-line prompt. When it finishes, inspect the calendar and select Done. Then ask Copilot to add the check formula and compare it with the number of interviews on the calendar.
+5. Make Excel see the new skill: Settings (...) > Manage plugins & skills > Custom skills, check the Custom skills switch is on and select Refresh (the round arrow). Wait until the list loads, then turn interview-calendar on. Close the dialog and type @inter in the prompt box - the skill should appear.
+6. Run the skill in Allow editing with a one-line prompt. First check that the title bar shows BrightPath_Interview_Schedule: the skill is available in every workbook, but it only works where tblInterviews exists. When it finishes, inspect the calendar and select Done. Then ask Copilot to add the check formula and compare it with the number of interviews on the calendar.
 
    ```text
    ALLOW EDITING:
@@ -1851,7 +1851,8 @@ Keep the skill: it stays in your OneDrive and works in any workbook with an inte
 | If this happens | Fix |
 |---|---|
 | The skill does not appear after Refresh. | The folder name must match the name: line exactly (lower case, hyphens) and the file must be SKILL.md inside that folder. Select Refresh again. |
-| There is no Create OneDrive folder button. | Custom skills are rolling out and depend on your licence and update channel. Use the ready-made SKILL.md to read the format, and run the same steps as a normal prompt instead. |
+| There is no Add in OneDrive or Create OneDrive folder button. | Custom skills are rolling out and depend on your licence and update channel. Use the ready-made SKILL.md to read the format, and run the same steps as a normal prompt instead. |
+| Copilot says tblInterviews is not present in this workbook. | The skill ran in another lab's workbook. Open BrightPath_Interview_Schedule.xlsx and send the prompt again from its Copilot pane. |
 | The calendar misses a clash. | Ask: 'Check again for overlapping interviews with the same Interviewer or the same Onsite Room on each day.' Then add that wording to the skill's steps. |
 | The file saved as SKILL.md.txt or with formatting. | Save as plain text with the exact name SKILL.md. In TextEdit choose Format > Make Plain Text first. |
 
@@ -2039,7 +2040,7 @@ BrightPath_Recruitment_Dashboard_Data.xlsx with a .Rules sheet, a Checks sheet, 
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Recruitment_Dashboard_Data.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Read the KPI definitions on About_This_Data - they go into the rules next.
+1. Copy BrightPath_Recruitment_Dashboard_Data.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Read the KPI definitions on About_This_Data - they go into the rules next.
 
    ```text
    Tables : tblApps (600 applications, Jan-Jun 2026) | tblTargets (monthly hire targets)
@@ -2335,7 +2336,7 @@ An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.
 
 **Step-by-step**
 
-1. Go to onedrive.com (or your SharePoint site), open or create the folder work-c34 and select Upload > Files. Upload BrightPath_Workforce_Headcount.xlsx from this lab's data folder, then open it in Excel for the web or select Open in Desktop App. OneDrive gives you AutoSave and version history (recent Excel builds can also run Copilot on local files). Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Do not touch the New_Joiners_Jul2026 sheet until the refresh test.
+1. Copy BrightPath_Workforce_Headcount.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Do not touch the New_Joiners_Jul2026 sheet until the refresh test.
 
    ```text
    Table : tblEmployees (420 employees hired since 2019; Status Active or Exited)

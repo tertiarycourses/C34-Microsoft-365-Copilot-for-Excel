@@ -268,9 +268,8 @@ TOPICS = [
                 lab=1,
                 definition=(
                     "Copilot appears in Excel for Microsoft 365 on Windows, Mac and the web when your account has an eligible "
-                    "plan, such as a Microsoft 365 Copilot licence on a work account. It needs an internet connection; saving "
-                    "the workbook to OneDrive or SharePoint adds AutoSave and version history, and recent builds also work on "
-                    "local files. From the + (Add work content) menu Copilot can use another file, web results or your work "
+                    "plan, such as a Microsoft 365 Copilot licence on a work account. It needs an internet connection and works on "
+                    "workbooks saved on your computer; OneDrive or SharePoint is optional and adds AutoSave and version history. From the + (Add work content) menu Copilot can use another file, web results or your work "
                     "content as context, and the model picker at the top of the pane lets you choose Auto or a specific model."
                 ),
                 why=(
@@ -280,7 +279,7 @@ TOPICS = [
                     "can catch errors in a complex analysis, and premium models have fair-use limits."
                 ),
                 how=[
-                    "Save the workbook as .xlsx in OneDrive, set Formulas > Calculation Options to Automatic and open Copilot.",
+                    "Save the workbook as .xlsx on your computer, set Formulas > Calculation Options to Automatic and open Copilot.",
                     "Use + > attach a file (or type / and the file name) to give Copilot another file as context.",
                     "Leave the model on Auto; switch model and start a New chat to compare answers on a hard question.",
                 ],
@@ -1432,7 +1431,7 @@ SECTION_BRIEFS = {
         check="Leave the model on Auto. When you compare models, check both against the same formula.",
         try_head="SET IT UP",
         prompts=[
-            "Save as .xlsx in OneDrive; Calculation Options = Automatic.",
+            "Save as .xlsx locally; Calculation Options = Automatic.",
             "+ > attach a file, or type / and the file name.",
             "Model picker (top): Auto, or a Claude or GPT model.",
             "New chat, then ask the same question to compare.",
@@ -1790,17 +1789,17 @@ LG_INTRO2 = (
 
 LG_SETUP = dict(
     needs=[
-        "A Windows or Mac laptop with a current Excel for Microsoft 365, or a browser for Excel for the web.",
+        "A Windows or Mac laptop with a current Excel for Microsoft 365 (desktop).",
         "A Microsoft 365 work account with a Microsoft 365 Copilot licence (personal and free accounts do not include "
         "every feature used in the labs).",
-        "Access to your OneDrive in a browser, with a folder named work-c34. Custom skills (Labs 6 and 8) are stored in "
-        "a OneDrive skills folder.",
+        "A folder named work-c34 on your computer for your working copies. OneDrive is needed only for custom skills "
+        "(Labs 6 and 8), which Excel reads from a OneDrive skills folder.",
         "Office display language set to English: skills and workbook rules are fully supported in English only.",
         "The course labs folder: one sub-folder per lab with its instruction PDF, sample-prompts.txt, data/ workbook "
         "and any rules-template.txt or skills/ files.",
     ],
     verify_text=(
-        "Upload labs/lab-01-*/data/BrightPath_Candidate_Pipeline.xlsx to your OneDrive work-c34 folder and open it in "
+        "Copy labs/lab-01-*/data/BrightPath_Candidate_Pipeline.xlsx into your work-c34 folder and open it in "
         "Excel. Confirm that Formulas > Calculation Options is Automatic and open Copilot. Check the mode menu above the "
         "prompt box (Chat only, Plan, Allow editing), the model picker at the top, the + (Add work content) menu and "
         "Settings (...) > Personalization and Manage plugins & skills. Labels and availability may change as Microsoft "
@@ -1814,7 +1813,7 @@ LG_SETUP = dict(
         "    data/BrightPath_<dataset>.xlsx\n"
         "    rules-template.txt          (Labs 4, 7, 8) .Rules text to paste\n"
         "    skills/<name>/SKILL.md      (Labs 6, 8) ready-made skill\n"
-        "OneDrive/work-c34/              your cloud working copies\n"
+        "work-c34/                       your local working copies\n"
         "OneDrive/.../skills/            your custom skills"
     ),
     conventions=[

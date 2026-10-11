@@ -39,9 +39,10 @@ LTV     = ARPA x gross margin / monthly churn
 Payback = CAC / (ARPA x gross margin), in months
 
 [Step 2]
-Formatting    : brandkit, theme-design
-Visualization : chart-design
-Finance       : 3-statements, check-model, comps-analysis, unit-economics and more (20 skills)
+Where         : Settings (...) > Manage plugins & skills - turn on only these
+Finance       : unit-economics, check-model
+Visualisation : chart-design (off by default)
+Formatting    : theme-design - only if this folder is shown
 Call a skill  : type @ and its name, e.g. @chart-design
 
 CHAT ONLY:
