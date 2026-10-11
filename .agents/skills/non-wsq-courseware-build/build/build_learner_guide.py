@@ -138,6 +138,9 @@ def _lg_section(sec):
     p(sec["why"])
     h3("How it works")
     bullets(sec.get("how",[]))
+    if sec.get("compare"):
+        h3(sec["compare"].get("title","Side-by-side comparison"))
+        table(["Aspect"]+list(sec["compare"]["headers"][1:]),[tuple(r) for r in sec["compare"]["rows"]])
     h3("Worked example")
     bullets(sec.get("example",[]))
     h3("Decision guide")

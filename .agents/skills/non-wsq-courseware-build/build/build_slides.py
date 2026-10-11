@@ -618,10 +618,13 @@ def dark_pairs(tag,title_lines,sub,pairs):
         txt(s,x+Inches(0.22),yv,Inches(2.35),Inches(rh),[[(cmd,14,AMBER,True)]],anchor=MSO_ANCHOR.MIDDLE)
         txt(s,x+Inches(2.6),yv,cw-Inches(2.8),Inches(rh),[[(desc,12.5,IVORY,False)]],anchor=MSO_ANCHOR.MIDDLE)
     footer(s); return s
-def shot(title,img,kicker=None,caption=""):
-    """Screenshot slide — a framed, real UI capture with a caption (16:10 source)."""
-    s=head(slide(),title,kicker,TEAL)
-    H=Inches(4.5); W=int(H*1440/900)          # native 1440x900 aspect
+def shot(title,img,kicker=None,caption="",accent=TEAL):
+    """Screenshot slide — a framed, real UI capture with a caption, fitted to its own aspect."""
+    s=head(slide(),title,kicker,accent)
+    from PIL import Image as _Im
+    iw,ih=_Im.open(img).size
+    H=Inches(4.5); W=int(H*iw/ih)
+    if W>Inches(11.6): W=Inches(11.6); H=int(W*ih/iw)
     x=int((SW-W)/2); y=Inches(2.02)
     rect(s,x-Inches(0.06),y-Inches(0.06),W+Inches(0.12),H+Inches(0.12),_line())
     s.shapes.add_picture(img,x,y,height=H)
@@ -645,6 +648,37 @@ def shot_callouts(title,img,items,kicker=None,accent=BLUE):
         txt(s,rx+Inches(0.2),int(ty+th/2-bd/2),bd,bd,[[(str(i+1),14,WHITE,True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
         txt(s,rx+Inches(0.8),ty,rw-Inches(1.0),th,[[(label,14,_ink(),True)],[(cap,12,_grey(),False)]],
             anchor=MSO_ANCHOR.MIDDLE,space=2)
+    footer(s); return s
+def shot_pair(title,shots,kicker=None,accent=BLUE):
+    """Two portrait UI screenshots side by side, each with a bold label and caption under it."""
+    s=head(slide(),title,kicker,kcolor=accent)
+    from PIL import Image as _Im
+    H=Inches(4.1); y=Inches(1.95); gap=Inches(0.5); cw=int((Inches(11.63)-gap)/2)
+    for i,(img,label,cap) in enumerate(shots[:2]):
+        iw,ih=_Im.open(img).size; W=int(H*iw/ih)
+        cx=int(Inches(0.85)+i*(cw+gap)); x=int(cx+(cw-W)/2)
+        rect(s,x-Inches(0.05),y-Inches(0.05),W+Inches(0.1),H+Inches(0.1),_line())
+        s.shapes.add_picture(img,x,y,height=H)
+        txt(s,cx,y+H+Inches(0.12),cw,Inches(0.72),[[(label,14,_ink(),True)],[(cap,12,_grey(),False)]],
+            align=PP_ALIGN.CENTER,space=2)
+    footer(s); return s
+def compare_table(title,headers,rows,kicker=None,accent=BLUE):
+    """Side-by-side comparison: a label column plus one coloured column per option."""
+    s=head(slide(),title,kicker,kcolor=accent)
+    X0=Inches(0.85); TOTW=Inches(11.63); lw=Inches(1.75); y0=Inches(1.95)
+    n=len(headers)-1; cw=int((TOTW-lw)/n); hh=Inches(0.5)
+    rh=int((Inches(6.75)-y0-hh)/len(rows)); fs=12 if len(rows)<=6 else 11.5
+    for j,hd in enumerate(headers[1:]):
+        x=int(X0+lw+cw*j); col=PALETTE[j%len(PALETTE)]
+        rect(s,x+Inches(0.03),y0,cw-Inches(0.06),hh,col)
+        txt(s,x+Inches(0.03),y0,cw-Inches(0.06),hh,[[(hd,15,WHITE,True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
+    for i,row in enumerate(rows):
+        y=int(y0+hh+Inches(0.06)+rh*i)
+        if i%2==0: rect(s,X0,y,TOTW,rh,_panel())
+        txt(s,X0+Inches(0.12),y,lw-Inches(0.16),rh,[[(row[0],12.5,_ink(),True)]],anchor=MSO_ANCHOR.MIDDLE)
+        for j,cell in enumerate(row[1:]):
+            x=int(X0+lw+cw*j)
+            txt(s,x+Inches(0.12),y,cw-Inches(0.24),rh,[[(cell,fs,_ink(),False)]],anchor=MSO_ANCHOR.MIDDLE)
     footer(s); return s
 def test_slide(act_title,text,kicker):
     s=head(slide(),act_title,kicker,TEAL)
@@ -829,6 +863,9 @@ def _lab_extras(num):
 # section is taught right before lab n, else 'TOPIC nn'.
 def _render_section(t,sec,accent,tag):
     _b=sec.get("brief")
+    if _b and sec.get("compare"):
+        _c=sec["compare"]
+        compare_table(_c.get("title",sec["title"]),_c["headers"],_c["rows"],kicker=f"{tag} · COMPARE",accent=accent)
     if _b:
         # Slide-ready brief: one 3-card concept slide + one "Try it" slide.
         # The full definition/why/how/example text lives in the Learner Guide.
@@ -838,12 +875,29 @@ def _render_section(t,sec,accent,tag):
                                  (TEAL,"WHY IT MATTERS",[_b["why"]]),
                                  (VIOLET,"CHECK IT",[_b["check"]])],
                    kicker=f"{tag} · CONCEPT",size=19)
+        if _b.get("flow"):
+            flow_h(_b["flow"]["title"],_b["flow"]["steps"],kicker=f"{tag} · HOW IT WORKS",color=accent)
         _chars=sum(len(x) for x in _b["prompts"])
         _tt=sec["title"] if _b.get("single") else f"{_b.get('try_title','Try It in Copilot')} — {sec['title']}"
         two_col(_tt,_b["prompts"],_b.get("verify",[]),
                 kicker=f"{tag} · {_b.get('kicker','HOW TO USE IT')}",
                 lhead=_b.get("try_head","TYPE THIS IN COPILOT"),rhead=_b.get("check_head","THEN CHECK"),
                 size=16 if _chars<=330 else 15)
+        # Optional real UI screenshots for this sub-topic (files in courseware/assets/screenshots/).
+        for _sh in _b.get("shots",[]):
+            _k=f"{tag} · SCREENSHOT"
+            if _sh["kind"]=="pair":
+                _ps=[(os.path.join(_SHOTDIR,f),l,c) for f,l,c in _sh["images"]]
+                if all(os.path.isfile(p) for p,_l,_c in _ps):
+                    shot_pair(_sh["title"],_ps,kicker=_k,accent=accent)
+                continue
+            _img=os.path.join(_SHOTDIR,_sh["file"])
+            if not os.path.isfile(_img):
+                continue
+            if _sh["kind"]=="callouts":
+                shot_callouts(_sh["title"],_img,_sh["items"],kicker=_k,accent=accent)
+            else:
+                shot(_sh["title"],_img,kicker=_k,caption=_sh.get("caption",""),accent=accent)
         _tour=getattr(C,"INTERFACE_TOUR",None)
         if _tour and _tour.get("after")==sec["title"]:
             _img=os.path.join(_SHOTDIR,_tour.get("screenshot",""))
@@ -851,7 +905,11 @@ def _render_section(t,sec,accent,tag):
                 shot_callouts(_tour["title"],_img,_tour["items"],kicker=f"{tag} · INTERFACE",accent=accent)
             else:
                 tile_grid(_tour["title"],_tour["items"],kicker=f"{tag} · INTERFACE",cols=2,size=15,accent=accent)
-            if _tour.get("models"):
+            _mimg=os.path.join(_SHOTDIR,_tour.get("models_screenshot",""))
+            if _tour.get("models") and _tour.get("models_screenshot") and os.path.isfile(_mimg):
+                shot_callouts(_tour.get("models_title","Choosing a Model"),_mimg,_tour["models"],
+                              kicker=f"{tag} · INTERFACE",accent=accent)
+            elif _tour.get("models"):
                 tile_grid(_tour.get("models_title","Choosing a Model"),_tour["models"],
                           kicker=f"{tag} · INTERFACE",cols=2,size=16,accent=accent)
         return

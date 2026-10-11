@@ -29,6 +29,7 @@
 - [Topic 02 — Skills and Rules  (Labs 4-6)](#topic-02--skills-and-rules--labs-4-6)
   - [Personalisation: Preferences That Follow You](#personalisation-preferences-that-follow-you)
   - [Workbook Rules: The .Rules Sheet](#workbook-rules-the-rules-sheet)
+  - [Personalization, Rules and Skills Compared](#personalization-rules-and-skills-compared)
   - [Lab 4 · Workbook Rules & Personalisation — Clean Messy Client Orders with Cleanup, Personalisation and Rules](#lab-4--workbook-rules--personalisation--clean-messy-client-orders-with-cleanup-personalisation-and-rules)
   - [Key Finance Measures: CAC, LTV, Churn and Payback](#key-finance-measures-cac-ltv-churn-and-payback)
   - [Built-in Skills: Formatting, Visualisation and Finance](#built-in-skills-formatting-visualisation-and-finance)
@@ -38,6 +39,7 @@
   - [Lab 6 · Custom Skills: Calendar — Use Copilot to Build a Custom Interview-Calendar Skill](#lab-6--custom-skills-calendar--use-copilot-to-build-a-custom-interview-calendar-skill)
   - [Topic 02 Recap - Mapped to Learning Outcomes](#topic-02-recap---mapped-to-learning-outcomes)
 - [Topic 03 — Interactive Dashboards with Copilot, Skills and Rules  (Labs 7-8)](#topic-03--interactive-dashboards-with-copilot-skills-and-rules--labs-7-8)
+  - [What Is a Skill?](#what-is-a-skill)
   - [Designing a Highly Visual Dashboard](#designing-a-highly-visual-dashboard)
   - [Plan and Build with Rules and Skills](#plan-and-build-with-rules-and-skills)
   - [Interactivity: Slicers, Timelines and KPI Cards](#interactivity-slicers-timelines-and-kpi-cards)
@@ -1157,7 +1159,7 @@ Personalisation · workbook rules on a .Rules sheet · built-in formatting, visu
 - Let Copilot write your skill — Describe the task; Copilot writes the SKILL.md. Save it in its own OneDrive folder and select Refresh.
 - Still check the result — Rules and skills guide Copilot. They do not guarantee the numbers are right.
 
-Concepts for Lab 4: Personalisation: Preferences That Follow You, Workbook Rules: The .Rules Sheet.
+Concepts for Lab 4: Personalisation: Preferences That Follow You, Workbook Rules: The .Rules Sheet, Personalization, Rules and Skills Compared.
 
 
 ### Personalisation: Preferences That Follow You
@@ -1209,9 +1211,11 @@ Rules remove the need to repeat the same context in every prompt, so prompts get
 
 **How it works**
 
-- Select + > Create workbook rules (or create a sheet named .Rules) and keep it visible.
-- Write one rule per cell in column A, group them under ## headings and include an example.
-- Start a New chat and give a short prompt; check the result follows each rule.
+- Select + (Add work content) > Create workbook rules: Copilot adds a sheet named .Rules with suggested rules. You can also create the sheet yourself, copy one from another workbook, or ask Copilot to write it.
+- Write one rule per cell in column A, group them under ## headings (## NUMBERS, ## CHARTS) and add a short example.
+- Every time anyone prompts Copilot in this workbook, Copilot reads the visible .Rules sheet first and follows it.
+- Rules can be formulas, e.g. =IF(B1="Executive","Show KPI summary only","Include full tables"); Copilot reads the formula result on the next prompt.
+- Start a New chat and give a short prompt; check the result follows each rule. Share the file and the rules go with it.
 
 **Worked example**
 
@@ -1238,6 +1242,60 @@ Rules remove the need to repeat the same context in every prompt, so prompts get
 - https://techcommunity.microsoft.com/blog/excelblog/new-ways-to-customize-how-copilot-edits-your-workbooks/4527307
 - https://www.youtube.com/watch?v=4z4eIaEEH9A
 - https://www.youtube.com/watch?v=wZ8QAKiIfuo
+
+---
+
+
+### Personalization, Rules and Skills Compared
+
+Copilot in Excel has three places to keep instructions so you do not repeat them in every prompt. Personalization holds your own preferences and follows you to every workbook. A .Rules sheet holds the guidelines for one workbook and travels with that file. A skill holds the steps for one repeatable task and runs in any workbook when you call it with @.
+
+An instruction in the wrong place causes surprises. A personal colour choice in .Rules is forced on every colleague who opens the file; a workbook's definitions in Personalization leak into unrelated workbooks; a long recipe in either is hard to reuse. Ask two questions: who should it apply to, and is it a preference, a definition or a procedure?
+
+**How it works**
+
+- How you like results, in every file, for you only → Personalization (Settings (...) > Personalization).
+- Definitions, valid values and layout for this file, for everyone → .Rules (+ > Create workbook rules).
+- A multi-step task you repeat in many files → a skill (built-in, or a SKILL.md installed in OneDrive).
+- They work together: a skill run in a workbook follows that workbook's .Rules and your Personalization. A specific instruction in your prompt overrides Personalization.
+
+**Personalization vs .Rules vs Skills**
+
+| Aspect | Personalization | .Rules sheet | Skill |
+|---|---|---|---|
+| What it is | Your preferences for how Copilot works | Guidelines for one workbook | A recipe for one repeatable task |
+| Where it lives | Your Microsoft 365 account | A visible sheet named .Rules in the file | Built in, or SKILL.md in your OneDrive skills folder |
+| Applies to | You, in every workbook, on any device | Anyone using Copilot in this workbook | Any workbook, when you call @name |
+| Shared? | No - only you | Yes - it travels with the file | Only with people who install the same skill |
+| Set up | Settings (...) > Personalization | + > Create workbook rules | Manage plugins & skills; custom: OneDrive + Refresh |
+| Best for | Formats, colours, tone you always want | Definitions, valid values, layout | Multi-step tasks repeated across files |
+| Example | Use navy and teal for charts | WIP = In Progress | @interview-calendar week of 6 July |
+
+**Worked example**
+
+- Personalization: 'Use navy #1F4E79 and teal #2A9D8F as the main chart colours.'
+- .Rules: 'Offer acceptance rate = accepted / (accepted + declined); exclude Pending.'
+- Skill: '@interview-calendar Build the calendar for the week starting Monday 6 July 2026.'
+
+**Decision guide**
+
+| Use when | Avoid when |
+|---|---|
+| Personalization: a preference you want everywhere, just for you. | Personal taste in .Rules - it applies to every colleague who opens the file. |
+| .Rules: everyone working in this file must use the same definitions. | One file's definitions in Personalization - they leak into other workbooks. |
+| Skill: the same multi-step job comes back every week or month. | A skill for a one-off task - just write the prompt. |
+
+**Practitioner quality lens**
+
+- Right place: Each instruction sits in the layer that matches who it is for.
+- No conflicts: Personalization, .Rules and skills do not contradict each other.
+- Tested: A short prompt shows all three applied as expected.
+
+**Authoritative references**
+
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-personalization
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-rules
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-skills
 
 ---
 
@@ -1885,7 +1943,7 @@ Use this checkpoint to explain what you can now do and identify any lab evidence
 
 ## Topic 03 — Interactive Dashboards with Copilot, Skills and Rules  (Labs 7-8)
 
-Designing a highly visual dashboard · KPI definitions and style in .Rules · plan, build and polish with skills · slicers, timelines and refresh · a reusable dashboard skill · sharing people dashboards responsibly
+What a skill is: reusable, installed in OneDrive · designing a highly visual dashboard · KPI definitions and style in .Rules · plan, build and polish with skills · slicers, timelines and refresh · a reusable dashboard skill · sharing people dashboards responsibly
 
 **Key concepts**
 
@@ -1896,7 +1954,47 @@ Designing a highly visual dashboard · KPI definitions and style in .Rules · pl
 - Make it interactive — Slicers and a timeline filter every PivotTable and chart at once, and the KPI cards must follow.
 - Make it repeatable and safe — Save the recipe as a skill, test refresh with new rows, and hide groups under 5 people.
 
-Concepts for Lab 7: Designing a Highly Visual Dashboard, Plan and Build with Rules and Skills, Interactivity: Slicers, Timelines and KPI Cards.
+Concepts for Lab 7: What Is a Skill?, Designing a Highly Visual Dashboard, Plan and Build with Rules and Skills, Interactivity: Slicers, Timelines and KPI Cards.
+
+
+### What Is a Skill?
+
+A skill is a saved recipe: a set of instructions Copilot follows to do one task the same way every time. You call it by name with @ in any workbook, e.g. @chart-design. Built-in skills come with Copilot in Excel - you only turn them on. A custom skill is a SKILL.md file you write, and it works only after you install it: save it in its own folder inside your OneDrive skills folder, select Refresh and turn it on.
+
+A rule belongs to one workbook; a skill is reusable in every workbook and every month, so one line replaces a long brief and everyone who installs it gets the same steps. Excel reads custom skills only from your OneDrive skills folder: a SKILL.md left on your desktop or pasted into a chat does nothing. Your workbook can stay on your computer - the skill cannot.
+
+**How it works**
+
+- Built-in: Settings (...) > Manage plugins & skills; turn the skill on, then call it with @.
+- Custom: put SKILL.md in OneDrive > ... > skills > <skill-name>; the folder name must match the name: line.
+- Custom skills > Refresh, turn the skill on, then type @ to check it is listed.
+
+**Worked example**
+
+- @chart-design (built-in) polishes every chart on the recruitment dashboard in Lab 7.
+- hr-workforce-dashboard (custom) is installed as skills/hr-workforce-dashboard/SKILL.md in OneDrive.
+- Next month the same skill rebuilds the dashboard in a new workbook from one line.
+
+**Decision guide**
+
+| Use when | Avoid when |
+|---|---|
+| You repeat the same multi-step task in different workbooks or every period. | The instruction is only about one workbook's data - put it in .Rules instead. |
+| Several people must follow exactly the same steps. | It is a personal preference such as chart colours - use Personalization. |
+
+**Practitioner quality lens**
+
+- Reusable: Runs in any workbook that has the tables it names.
+- Installed: OneDrive skills/<name>/SKILL.md, refreshed and turned on.
+- Clearly named: Folder name = name: line; the description says when to use it.
+
+**Authoritative references**
+
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-skills
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-built-in-skills
+- https://www.youtube.com/watch?v=4z4eIaEEH9A
+
+---
 
 
 ### Designing a Highly Visual Dashboard

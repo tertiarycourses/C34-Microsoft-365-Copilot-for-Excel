@@ -782,9 +782,13 @@ TOPICS = [
                     "English, short and specific, with an example."
                 ),
                 how=[
-                    "Select + > Create workbook rules (or create a sheet named .Rules) and keep it visible.",
-                    "Write one rule per cell in column A, group them under ## headings and include an example.",
-                    "Start a New chat and give a short prompt; check the result follows each rule.",
+                    "Select + (Add work content) > Create workbook rules: Copilot adds a sheet named .Rules with suggested rules. "
+                    "You can also create the sheet yourself, copy one from another workbook, or ask Copilot to write it.",
+                    "Write one rule per cell in column A, group them under ## headings (## NUMBERS, ## CHARTS) and add a short example.",
+                    "Every time anyone prompts Copilot in this workbook, Copilot reads the visible .Rules sheet first and follows it.",
+                    "Rules can be formulas, e.g. =IF(B1=\"Executive\",\"Show KPI summary only\",\"Include full tables\"); Copilot "
+                    "reads the formula result on the next prompt.",
+                    "Start a New chat and give a short prompt; check the result follows each rule. Share the file and the rules go with it.",
                 ],
                 example=[
                     "'Status must be one of: Open, In Progress, On Hold, Completed, Cancelled. WIP = In Progress.'",
@@ -805,6 +809,63 @@ TOPICS = [
                     ("Tested", "A short prompt produces output that follows every rule."),
                 ],
                 sources=[S_RULES, S_TC, V_COURSE, V_FEATURES],
+            ),
+            dict(
+                title="Personalization, Rules and Skills Compared",
+                lab=4,
+                definition=(
+                    "Copilot in Excel has three places to keep instructions so you do not repeat them in every prompt. "
+                    "Personalization holds your own preferences and follows you to every workbook. A .Rules sheet holds the "
+                    "guidelines for one workbook and travels with that file. A skill holds the steps for one repeatable task "
+                    "and runs in any workbook when you call it with @."
+                ),
+                why=(
+                    "An instruction in the wrong place causes surprises. A personal colour choice in .Rules is forced on every "
+                    "colleague who opens the file; a workbook's definitions in Personalization leak into unrelated workbooks; a "
+                    "long recipe in either is hard to reuse. Ask two questions: who should it apply to, and is it a preference, "
+                    "a definition or a procedure?"
+                ),
+                how=[
+                    "How you like results, in every file, for you only → Personalization (Settings (...) > Personalization).",
+                    "Definitions, valid values and layout for this file, for everyone → .Rules (+ > Create workbook rules).",
+                    "A multi-step task you repeat in many files → a skill (built-in, or a SKILL.md installed in OneDrive).",
+                    "They work together: a skill run in a workbook follows that workbook's .Rules and your Personalization. A "
+                    "specific instruction in your prompt overrides Personalization.",
+                ],
+                example=[
+                    "Personalization: 'Use navy #1F4E79 and teal #2A9D8F as the main chart colours.'",
+                    ".Rules: 'Offer acceptance rate = accepted / (accepted + declined); exclude Pending.'",
+                    "Skill: '@interview-calendar Build the calendar for the week starting Monday 6 July 2026.'",
+                ],
+                use_when=[
+                    "Personalization: a preference you want everywhere, just for you.",
+                    ".Rules: everyone working in this file must use the same definitions.",
+                    "Skill: the same multi-step job comes back every week or month.",
+                ],
+                avoid_when=[
+                    "Personal taste in .Rules - it applies to every colleague who opens the file.",
+                    "One file's definitions in Personalization - they leak into other workbooks.",
+                    "A skill for a one-off task - just write the prompt.",
+                ],
+                quality=[
+                    ("Right place", "Each instruction sits in the layer that matches who it is for."),
+                    ("No conflicts", "Personalization, .Rules and skills do not contradict each other."),
+                    ("Tested", "A short prompt shows all three applied as expected."),
+                ],
+                compare=dict(
+                    title="Personalization vs .Rules vs Skills",
+                    headers=["", "Personalization", ".Rules sheet", "Skill"],
+                    rows=[
+                        ("What it is", "Your preferences for how Copilot works", "Guidelines for one workbook", "A recipe for one repeatable task"),
+                        ("Where it lives", "Your Microsoft 365 account", "A visible sheet named .Rules in the file", "Built in, or SKILL.md in your OneDrive skills folder"),
+                        ("Applies to", "You, in every workbook, on any device", "Anyone using Copilot in this workbook", "Any workbook, when you call @name"),
+                        ("Shared?", "No - only you", "Yes - it travels with the file", "Only with people who install the same skill"),
+                        ("Set up", "Settings (...) > Personalization", "+ > Create workbook rules", "Manage plugins & skills; custom: OneDrive + Refresh"),
+                        ("Best for", "Formats, colours, tone you always want", "Definitions, valid values, layout", "Multi-step tasks repeated across files"),
+                        ("Example", "Use navy and teal for charts", "WIP = In Progress", "@interview-calendar week of 6 July"),
+                    ],
+                ),
+                sources=[S_PERSONAL, S_RULES, S_SKILLS],
             ),
             dict(
                 title="Key Finance Measures: CAC, LTV, Churn and Payback",
@@ -976,7 +1037,7 @@ TOPICS = [
         code="03",
         title="Interactive Dashboards with Copilot, Skills and Rules",
         subtitle=(
-            "Designing a highly visual dashboard · KPI definitions and style in .Rules · plan, build and polish with skills · "
+            "What a skill is: reusable, installed in OneDrive · designing a highly visual dashboard · KPI definitions and style in .Rules · plan, build and polish with skills · "
             "slicers, timelines and refresh · a reusable dashboard skill · sharing people dashboards responsibly"
         ),
         weighting="Labs 7-8",
@@ -989,6 +1050,46 @@ TOPICS = [
             ("Make it repeatable and safe", "Save the recipe as a skill, test refresh with new rows, and hide groups under 5 people."),
         ],
         sections=[
+            dict(
+                title="What Is a Skill?",
+                lab=7,
+                definition=(
+                    "A skill is a saved recipe: a set of instructions Copilot follows to do one task the same way every time. "
+                    "You call it by name with @ in any workbook, e.g. @chart-design. Built-in skills come with Copilot in "
+                    "Excel - you only turn them on. A custom skill is a SKILL.md file you write, and it works only after you "
+                    "install it: save it in its own folder inside your OneDrive skills folder, select Refresh and turn it on."
+                ),
+                why=(
+                    "A rule belongs to one workbook; a skill is reusable in every workbook and every month, so one line "
+                    "replaces a long brief and everyone who installs it gets the same steps. Excel reads custom skills only from "
+                    "your OneDrive skills folder: a SKILL.md left on your desktop or pasted into a chat does nothing. Your "
+                    "workbook can stay on your computer - the skill cannot."
+                ),
+                how=[
+                    "Built-in: Settings (...) > Manage plugins & skills; turn the skill on, then call it with @.",
+                    "Custom: put SKILL.md in OneDrive > ... > skills > <skill-name>; the folder name must match the name: line.",
+                    "Custom skills > Refresh, turn the skill on, then type @ to check it is listed.",
+                ],
+                example=[
+                    "@chart-design (built-in) polishes every chart on the recruitment dashboard in Lab 7.",
+                    "hr-workforce-dashboard (custom) is installed as skills/hr-workforce-dashboard/SKILL.md in OneDrive.",
+                    "Next month the same skill rebuilds the dashboard in a new workbook from one line.",
+                ],
+                use_when=[
+                    "You repeat the same multi-step task in different workbooks or every period.",
+                    "Several people must follow exactly the same steps.",
+                ],
+                avoid_when=[
+                    "The instruction is only about one workbook's data - put it in .Rules instead.",
+                    "It is a personal preference such as chart colours - use Personalization.",
+                ],
+                quality=[
+                    ("Reusable", "Runs in any workbook that has the tables it names."),
+                    ("Installed", "OneDrive skills/<name>/SKILL.md, refreshed and turned on."),
+                    ("Clearly named", "Folder name = name: line; the description says when to use it."),
+                ],
+                sources=[S_SKILLS, S_BUILTIN, V_COURSE],
+            ),
             dict(
                 title="Designing a Highly Visual Dashboard",
                 lab=7,
@@ -1512,8 +1613,20 @@ SECTION_BRIEFS = {
             "Saved to your account, not the file.",
             "New chats follow them.",
         ],
+        shots=[dict(kind="callouts", file="personalization.png", title="Personalization in Copilot", items=[
+            ("Settings (...) > Personalization", "Opens Customise Copilot."),
+            ("One preference per line", "Charts, colours, layout and PivotTable field names."),
+            ("Save, then New chat", "The preferences now apply in every workbook you open."),
+        ])],
     ),
     "Workbook Rules: The .Rules Sheet": dict(
+        flow=dict(title="How .Rules Works", steps=[
+            "+ > Create workbook rules adds a sheet named .Rules with starter rules.",
+            "Write one rule per cell in column A, under ## headings, with an example.",
+            "On every prompt in this file, Copilot reads the visible .Rules sheet first.",
+            "Your short prompt + the rules = the same result every time.",
+            "Share the file: the rules travel with it - no setup for colleagues.",
+        ]),
         what="A visible sheet named .Rules, one rule per cell in column A. Copilot follows it in this workbook.",
         why="Short prompts, consistent results - and anyone who opens the file gets the same rules.",
         check="Give a one-line prompt and check the result follows every rule.",
@@ -1525,6 +1638,26 @@ SECTION_BRIEFS = {
         verify=[
             "Exactly 5 statuses and 5 regions.",
             "A hidden .Rules sheet is ignored.",
+        ],
+    ),
+    "Personalization, Rules and Skills Compared": dict(
+        single=True,
+        what="Personalization is for you, .Rules is for one file, a skill is for one task.",
+        why="The right place makes prompts short and results predictable.",
+        check="Ask: who should it apply to - me, this file, or this task?",
+        kicker="WHICH ONE?",
+        try_head="WHERE DOES IT GO?",
+        prompts=[
+            "'Always show currency as S$ with 2 decimals' → Personalization",
+            "'In this workbook, WIP means In Progress' → .Rules",
+            "'Build the weekly interview calendar' → Skill",
+            "'Charts in this client report use the client's colours' → .Rules",
+        ],
+        check_head="REMEMBER",
+        verify=[
+            "Your prompt overrides Personalization.",
+            "A hidden .Rules sheet is ignored.",
+            "A custom skill works only once installed in OneDrive.",
         ],
     ),
     "Built-in Skills: Formatting, Visualisation and Finance": dict(
@@ -1540,6 +1673,10 @@ SECTION_BRIEFS = {
             "CAC on Checks = the skill's CAC.",
             "Budget total fixed: 3 errors found.",
         ],
+        shots=[dict(kind="pair", title="Turning Built-in Skills On", images=[
+            ("manage-skills.png", "Manage plugins & skills", "Settings (...): switch a whole group on - Custom skills, Finance, Visualisation."),
+            ("finance-skills.png", "Inside a group", "Open Finance and turn on single skills, e.g. check-model."),
+        ])],
     ),
     "Custom Skills: The SKILL.md Recipe": dict(
         what="A SKILL.md file in its own OneDrive folder: name and description at the top, plain-English steps below.",
@@ -1556,6 +1693,9 @@ SECTION_BRIEFS = {
             "The skill appears when you type @.",
             "It runs from one line.",
         ],
+        shots=[dict(kind="wide", file="onedrive-skills-interview-calendar.png", title="A Custom Skill Installed in OneDrive",
+                    caption="OneDrive > Documents > Copilot > Microsoft Excel > skills: the new interview-calendar folder holds "
+                            "SKILL.md, next to the sample make-calendar.example.")],
     ),
     "Using Copilot to Write and Improve a Skill": dict(
         what="Describe the task in Chat only and Copilot writes the whole SKILL.md for you.",
@@ -1570,6 +1710,24 @@ SECTION_BRIEFS = {
             "Week 1: 23 interviews, 3 clashes.",
             "Week 2 needs only one short prompt.",
         ],
+    ),
+    "What Is a Skill?": dict(
+        what="A reusable recipe Copilot runs from one @mention in any workbook. A custom skill must be installed in OneDrive.",
+        why="Write the steps once; every workbook and every month gets the same result.",
+        check="Type @ in the prompt box: an installed, enabled skill appears in the list.",
+        try_head="INSTALL A SKILL",
+        prompts=[
+            "Settings (...) > Manage plugins & skills > Custom skills > Add in OneDrive.",
+            "OneDrive: skills > hr-workforce-dashboard > SKILL.md",
+            "Refresh, turn the skill on, then type @hr in the prompt box.",
+        ],
+        verify=[
+            "Folder name = the name: line.",
+            "Workbook local; skill in OneDrive.",
+        ],
+        shots=[dict(kind="wide", file="onedrive-skills-folder.png", title="Where Custom Skills Live",
+                    caption="Excel reads custom skills only from OneDrive > Documents > Copilot > Microsoft Excel > skills - "
+                            "one folder per skill. The workbook itself can stay on your computer.")],
     ),
     "Designing a Highly Visual Dashboard": dict(
         what="One page: KPI cards on top, charts in a grid, slicers at the side, colour that signals status.",
@@ -1656,6 +1814,7 @@ INTERFACE_TOUR = dict(
     after="Chat Only, Plan and Allow Editing",
     models_title="Choosing a Model",
     screenshot="copilot-pane.png",
+    models_screenshot="model-picker.png",
     items=[
         ("Copilot button or floating icon", "Home > Copilot, or the floating icon at the bottom right. Right-click the icon to dock it or move it to the ribbon."),
         ("Model picker (top)", "Auto picks the model for each task. Or choose a Claude (Anthropic) or GPT (OpenAI) model for this session."),

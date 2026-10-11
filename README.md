@@ -37,8 +37,8 @@ By the end of the course, you will be able to:
 | Topic | Content |
 |---|---|
 | **1. Excel Fundamentals with Copilot** | Chat only, Plan and Allow editing; the Copilot pane, data sources and the model picker; data prep and automated cleanup; formulas and XLOOKUP; PivotTables, PivotCharts and charts |
-| **2. Skills and Rules** | Personalisation; workbook rules on a `.Rules` sheet; built-in formatting, visualisation and finance skills; custom `SKILL.md` skills; using Copilot to write and improve a skill (e.g. an interview calendar) |
-| **3. Interactive Dashboards** | Highly visual dashboard design; KPI definitions and style in `.Rules`; Plan mode plus `@chart-design` and `@theme-design`; slicers, a timeline and KPI cards; a reusable dashboard skill; refresh testing and responsible sharing |
+| **2. Skills and Rules** | Personalisation; workbook rules on a `.Rules` sheet and how they work; Personalization vs `.Rules` vs skills compared; built-in formatting, visualisation and finance skills; custom `SKILL.md` skills; using Copilot to write and improve a skill (e.g. an interview calendar) |
+| **3. Interactive Dashboards** | What a skill is (reusable in any workbook, custom skills installed in your OneDrive skills folder); highly visual dashboard design; KPI definitions and style in `.Rules`; Plan mode plus `@chart-design` and `@theme-design`; slicers, a timeline and KPI cards; a reusable dashboard skill; refresh testing and responsible sharing |
 
 ## Labs
 
@@ -67,8 +67,8 @@ See the [labs index](labs/README.md).
 
 ### Before you start
 
-- You need a current Excel for Microsoft 365 (Windows, Mac or web) and a work account with a Microsoft 365 Copilot licence.
-- Upload each lab workbook to a **OneDrive** folder. OneDrive gives you AutoSave and version history, and custom skills (Labs 6 and 8) are stored in a OneDrive skills folder.
+- You need a current Excel for Microsoft 365 desktop app (Windows or Mac) and a work account with a Microsoft 365 Copilot licence.
+- Copy each lab workbook into a local `work-c34` folder and open it in Excel; no OneDrive upload is needed. OneDrive is used only for **custom skills** (Labs 6 and 8), which Excel reads from your OneDrive skills folder.
 - Skills and workbook rules are fully supported only when Excel's display language is **English**.
 - Copilot's menus and skills are still rolling out, so some labels may differ on your screen. Each lab includes troubleshooting tips.
 
