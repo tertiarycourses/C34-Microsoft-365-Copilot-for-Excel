@@ -75,7 +75,8 @@ DOMAIN1 = [
             ),
             (
                 "Switch to Chat only (no workbook changes). Paste the prompt below. Copilot's row count must match the "
-                f"{E1['rows']} rows it reported in Step 2. You will log every prompt in Step 7.",
+                f"{E1['rows']} rows it reported in Step 2. If Copilot already points out Source labels such as 'Linked In' or "
+                "'JobStreet ' (trailing space), note them - Step 4 checks and fixes them. You will log every prompt in Step 7.",
                 "GOAL: Describe this candidate pipeline before I analyse it.\n"
                 "CONTEXT: BrightPath recruitment desk, H1 2026. One row should be one application.\n"
                 "DATA: Use only tblApplications.\n"
@@ -96,7 +97,9 @@ DOMAIN1 = [
                 "ALLOW EDITING:\n"
                 "1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.\n"
                 "2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'\n"
-                "   to 'LinkedIn'. Do not delete or edit any existing values.",
+                "   to 'LinkedIn'. Do not delete or edit any existing values.\n\n"
+                "FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In'\n"
+                f"and no value with a trailing space, and that tblApplications still has {E1['rows']} rows.",
             ),
             (
                 "Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it "

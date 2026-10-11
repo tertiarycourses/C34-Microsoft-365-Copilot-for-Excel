@@ -55,7 +55,7 @@ with headers. Name the table tblApplications. Do not change, sort or delete any 
 Then tell me the table name, the number of columns and the number of data rows.
 ```
 
-### 3. Switch to Chat only (no workbook changes). Paste the prompt below. Copilot's row count must match the 242 rows it reported in Step 2. You will log every prompt in Step 7.
+### 3. Switch to Chat only (no workbook changes). Paste the prompt below. Copilot's row count must match the 242 rows it reported in Step 2. If Copilot already points out Source labels such as 'Linked In' or 'JobStreet ' (trailing space), note them - Step 4 checks and fixes them. You will log every prompt in Step 7.
 
 ```text
 GOAL: Describe this candidate pipeline before I analyse it.
@@ -79,6 +79,9 @@ ALLOW EDITING:
 1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.
 2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In'
    to 'LinkedIn'. Do not delete or edit any existing values.
+
+FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In'
+and no value with a trailing space, and that tblApplications still has 242 rows.
 ```
 
 ### 5. Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it shows. Then ask Copilot (Allow editing) to add the two check formulas to a Checks sheet and compare the results with its answer. Duplicate rows are Rejected applications, so they do not change the hire counts.
