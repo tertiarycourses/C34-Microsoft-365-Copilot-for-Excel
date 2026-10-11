@@ -54,6 +54,7 @@ def folder_name(lab):
 
 
 from lab_prompts import LETTERS, parse_step, unwrap  # noqa: E402
+from prompt_explanations import EXPLAIN  # noqa: E402
 
 
 # =========================================================================== render
@@ -85,6 +86,7 @@ def render_lab(lab):
     files += [f'<a href="{base_raw}/{d}">Download {esc(os.path.basename(d))}</a>' for d in lab.get("data_files", [])]
 
     mode, steps_html, blocks, has_ph, k = None, [], [], False, 0
+    what = EXPLAIN.get(n, {})
     for i, (instr, cmd) in enumerate(lab["steps"], 1):
         items, mode_next = parse_step(i, instr, cmd, mode)
         info = "".join(f'<pre class="info">{esc(t)}</pre>' for kind, _, t in items if kind == "info")
@@ -102,9 +104,12 @@ def render_lab(lab):
             if kind == "prompt":
                 body = unwrap(body)
                 has_ph |= "<mark>" in marked(body)
+                assert LETTERS[k] in what, f"prompt_explanations.py: no explanation for Lab {n} Prompt {LETTERS[k]}"
                 blocks.append(
                     f'<article class="prompt"><header><div><span class="pname">Lab {n} · Prompt {LETTERS[k]}</span>'
-                    f'<span class="ptool">Step {i} · {esc(tag)}</span></div>{copy_btn(body)}</header>'
+                    f'<span class="ptool">Step {i} · {esc(tag)}</span></div></header>'
+                    f'<p class="what"><b>What it does:</b> {esc(what[LETTERS[k]])}</p>'
+                    f'<div class="pbar"><span>Prompt</span>{copy_btn(body)}</div>'
                     f"<pre>{marked(body)}</pre></article>")
                 k += 1
             elif kind == "formulas":
@@ -118,6 +123,8 @@ def render_lab(lab):
                     f'<span class="ptool">{esc(tag)}{"" if tag.startswith("Option") else " — paste into an empty cell"}</span></div></header>'
                     f'<ul>{"".join(rows)}</ul></article>')
         mode = mode_next
+    extra = sorted(set(what) - set(LETTERS[:k]))
+    assert not extra, f"prompt_explanations.py: Lab {n} explains prompts it does not have: {extra}"
 
     tables = list(dict.fromkeys(re.findall(r"\btbl[A-Z]\w+", " ".join(i + " " + c for i, c in lab["steps"]))))
     books = ", ".join(f"<b>{esc(os.path.basename(d))}</b>" for d in lab.get("data_files", []))
@@ -190,6 +197,10 @@ padding:10px 14px;background:var(--accent-bg)}
 .pname{font-weight:700;margin-right:8px}.ptool{color:var(--muted);font-size:15px}
 pre{margin:0;padding:14px;white-space:pre-wrap;word-wrap:break-word;
 font:15px/1.5 ui-monospace,Menlo,Consolas,monospace}
+.what{margin:0;padding:12px 14px 0}
+.pbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px 0}
+.pbar span{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prompt>pre{margin:8px 14px 14px;background:var(--code);border-radius:8px}
 .copy{flex:none;font:inherit;font-weight:700;font-size:15px;color:var(--on-accent);background:var(--accent);
 border:0;border-radius:8px;padding:9px 18px;cursor:pointer;min-height:40px}
 .copy:hover{filter:brightness(1.08)}
