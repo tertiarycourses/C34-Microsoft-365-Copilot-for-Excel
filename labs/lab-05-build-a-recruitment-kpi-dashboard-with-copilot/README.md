@@ -48,9 +48,10 @@ KPI definitions:
   Cost per hire         = total Sourcing_Cost / hires
 ```
 
-### 2. Before Copilot builds anything, create a sheet named Checks and type these independent KPI formulas yourself. These are the numbers the dashboard must match.
+### 2. Before Copilot builds the dashboard, choose Allow editing and ask Copilot to create a Checks sheet with these independent KPI formulas, exactly as written. These are the numbers the dashboard must match.
 
 ```text
+Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:
 A1 Applications        B1 =ROWS(tblApps[Application_ID])
 A2 Hires               B2 =COUNTIFS(tblApps[Furthest_Stage],"Hired")
 A3 Offer acceptance    B3 =COUNTIFS(tblApps[Offer_Accepted],"Yes")/(COUNTIFS(tblApps[Offer_Accepted],"Yes")+COUNTIFS(tblApps[Offer_Accepted],"No"))
@@ -82,30 +83,45 @@ REVIEW: List each KPI formula you will use before building.
 The plan is approved. Build the dashboard exactly as planned.
 ```
 
-### 5. Compare each KPI card with Checks!B1:B5 (with no slicer selected). Click each card to see its formula. Fix any difference with a targeted follow-up prompt - the most common error is including Pending offers.
+### 5. Ask Copilot to compare each KPI card with Checks!B1:B5 (with no slicer selected) and show each card's formula. Fix any difference with a targeted follow-up prompt - the most common error is including Pending offers.
 
 ```text
+CHAT ONLY:
+Compare each KPI card on the Dashboard with Checks!B1:B5, with no slicer selected. Show each card's
+formula, its value, the Checks value and whether they match.
+
 FOLLOW-UP EXAMPLE:
 The Offer acceptance rate card must exclude Offer_Accepted = "Pending". Change its formula to
 accepted / (accepted + declined) and show it as a percentage with 1 decimal.
 ```
 
-### 6. Test interactivity. Select Technology on the Sector slicer and check that every chart and KPI card changes. Compare with COUNTIFS for Technology. Then clear the slicer.
+### 6. Test interactivity. Ask Copilot to set the Sector slicer to Technology and report every KPI card, then to add the COUNTIFS checks for Technology and compare. Finally ask it to clear the slicer.
 
 ```text
-CHECK (Technology):
+ALLOW EDITING:
+Set the Sector slicer on the Dashboard to Technology only, then tell me the value on every KPI card.
+
+CHECK (Allow editing):
+On the Checks sheet, add these formulas in D1:D2 with labels in C1:C2, and tell me if they match the cards:
 =COUNTIFS(tblApps[Sector],"Technology")
 =COUNTIFS(tblApps[Sector],"Technology",tblApps[Furthest_Stage],"Hired")
+
+ALLOW EDITING:
+Clear the Sector slicer so the dashboard shows all sectors.
 
 If a KPI card does not change, ask: "Make the KPI cards respond to the Sector and Recruiter slicers."
 ```
 
-### 7. Polish with one prompt per change, then ask Copilot (Chat only) to review the dashboard for clarity. Log all prompts on Prompt_Log.
+### 7. Polish with one prompt per change, then ask Copilot (Chat only) to review the dashboard for clarity. Ask Copilot to log all prompts on Prompt_Log.
 
 ```text
 Add a note under the title: "Source: tblApps; KPI definitions on About_This_Data".
 Use one consistent colour scheme and align the charts in a grid.
 CHAT ONLY: Review this dashboard for a Head of Recruitment. What is unclear or missing?
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts

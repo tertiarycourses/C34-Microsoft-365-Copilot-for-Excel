@@ -1,7 +1,7 @@
 """Topic 3 labs for C34: Use Copilot to Create Dashboards (BrightPath recruitment and workforce data)."""
 
 from mock_data import EXPECTED
-from data_domain1 import _SETUP_STEP
+from data_domain1 import _LOG, _SETUP_STEP
 
 E5 = EXPECTED[5]
 E6 = EXPECTED[6]
@@ -54,8 +54,9 @@ DOMAIN3 = [
                 "  Cost per hire         = total Sourcing_Cost / hires",
             ),
             (
-                "Before Copilot builds anything, create a sheet named Checks and type these independent KPI formulas yourself. "
-                "These are the numbers the dashboard must match.",
+                "Before Copilot builds the dashboard, choose Allow editing and ask Copilot to create a Checks sheet with these "
+                "independent KPI formulas, exactly as written. These are the numbers the dashboard must match.",
+                "Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:\n"
                 "A1 Applications        B1 =ROWS(tblApps[Application_ID])\n"
                 "A2 Hires               B2 =COUNTIFS(tblApps[Furthest_Stage],\"Hired\")\n"
                 "A3 Offer acceptance    B3 =COUNTIFS(tblApps[Offer_Accepted],\"Yes\")/(COUNTIFS(tblApps[Offer_Accepted],\"Yes\")+COUNTIFS(tblApps[Offer_Accepted],\"No\"))\n"
@@ -86,26 +87,34 @@ DOMAIN3 = [
                 "The plan is approved. Build the dashboard exactly as planned.",
             ),
             (
-                "Compare each KPI card with Checks!B1:B5 (with no slicer selected). Click each card to see its formula. Fix any "
-                "difference with a targeted follow-up prompt - the most common error is including Pending offers.",
+                "Ask Copilot to compare each KPI card with Checks!B1:B5 (with no slicer selected) and show each card's formula. "
+                "Fix any difference with a targeted follow-up prompt - the most common error is including Pending offers.",
+                "CHAT ONLY:\n"
+                "Compare each KPI card on the Dashboard with Checks!B1:B5, with no slicer selected. Show each card's\n"
+                "formula, its value, the Checks value and whether they match.\n\n"
                 "FOLLOW-UP EXAMPLE:\n"
                 "The Offer acceptance rate card must exclude Offer_Accepted = \"Pending\". Change its formula to\n"
                 "accepted / (accepted + declined) and show it as a percentage with 1 decimal.",
             ),
             (
-                "Test interactivity. Select Technology on the Sector slicer and check that every chart and KPI card changes. "
-                "Compare with COUNTIFS for Technology. Then clear the slicer.",
-                "CHECK (Technology):\n"
+                "Test interactivity. Ask Copilot to set the Sector slicer to Technology and report every KPI card, then to add "
+                "the COUNTIFS checks for Technology and compare. Finally ask it to clear the slicer.",
+                "ALLOW EDITING:\n"
+                "Set the Sector slicer on the Dashboard to Technology only, then tell me the value on every KPI card.\n\n"
+                "CHECK (Allow editing):\n"
+                "On the Checks sheet, add these formulas in D1:D2 with labels in C1:C2, and tell me if they match the cards:\n"
                 "=COUNTIFS(tblApps[Sector],\"Technology\")\n"
                 "=COUNTIFS(tblApps[Sector],\"Technology\",tblApps[Furthest_Stage],\"Hired\")\n\n"
+                "ALLOW EDITING:\n"
+                "Clear the Sector slicer so the dashboard shows all sectors.\n\n"
                 "If a KPI card does not change, ask: \"Make the KPI cards respond to the Sector and Recruiter slicers.\"",
             ),
             (
-                "Polish with one prompt per change, then ask Copilot (Chat only) to review the dashboard for clarity. Log all "
-                "prompts on Prompt_Log.",
+                "Polish with one prompt per change, then ask Copilot (Chat only) to review the dashboard for clarity. Ask "
+                "Copilot to log all prompts on Prompt_Log.",
                 "Add a note under the title: \"Source: tblApps; KPI definitions on About_This_Data\".\n"
                 "Use one consistent colour scheme and align the charts in a grid.\n"
-                "CHAT ONLY: Review this dashboard for a Head of Recruitment. What is unclear or missing?",
+                "CHAT ONLY: Review this dashboard for a Head of Recruitment. What is unclear or missing?\n\n" + _LOG,
             ),
         ],
         sample_prompts=[
@@ -180,7 +189,7 @@ DOMAIN3 = [
             "showing six KPI cards, headcount and attrition-rate charts by department, hires vs exits by quarter, and Location "
             "and Job_Level slicers - refresh-tested with new rows"
         ),
-        services="Excel · Copilot (Plan, Allow editing) · PivotTables, slicers, Refresh All · BrightPath_Workforce_Headcount.xlsx",
+        services="Excel · Copilot (Plan, Allow editing) · PivotTables, slicers, refresh · BrightPath_Workforce_Headcount.xlsx",
         data_files=["data/BrightPath_Workforce_Headcount.xlsx"],
         prerequisites=[
             "Lab 5 completed: you have built and verified a dashboard with Copilot.",
@@ -195,20 +204,25 @@ DOMAIN3 = [
                 "Attrition rate = exits in period / ((active on 2025-07-01 + active on 2026-06-30) / 2)",
             ),
             (
-                "Choose Allow editing and ask Copilot for three helper columns. Ask it to explain the Active_Start formula and "
-                "test one employee who exited before 2025-07-01 (Active_Start must be FALSE).",
+                "Choose Allow editing and ask Copilot for three helper columns. Then ask it to explain the Active_Start formula "
+                "and show one employee who exited before 2025-07-01 (Active_Start must be FALSE).",
                 "Add three columns to tblEmployees:\n"
                 "1) Active_Start = TRUE if Hire_Date <= 2025-07-01 and (Exit_Date is blank or Exit_Date > 2025-07-01).\n"
                 "2) Exit_In_Period = TRUE if Exit_Date is between 2025-07-01 and 2026-06-30 inclusive.\n"
-                "3) Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if Exit_Date is blank, 1 decimal.",
+                "3) Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if Exit_Date is blank, 1 decimal.\n\n"
+                "FOLLOW-UP: Explain the Active_Start formula, and show one employee who exited before 2025-07-01\n"
+                "with Hire_Date, Exit_Date and Active_Start.",
             ),
             (
-                "Create a sheet named Checks and type these independent checks in columns A:B (label in A, formula in B). These are the numbers the dashboard must match.",
+                "Ask Copilot to create a Checks sheet with these independent checks (label in column A, formula in column B), "
+                "exactly as written. These are the numbers the dashboard must match.",
+                "Create a sheet named Checks. Put these labels in column A and formulas in column B exactly as written,\n"
+                "then tell me each result. Build the Attrition rate formula from the cells above it:\n"
                 "Active headcount     =COUNTIFS(tblEmployees[Status],\"Active\")\n"
                 "Headcount 2025-07-01 =COUNTIFS(tblEmployees[Active_Start],TRUE)\n"
                 "Exits in period      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE)\n"
                 "Voluntary exits      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE,tblEmployees[Exit_Type],\"Voluntary\")\n"
-                "Attrition rate       =<exits> / ((<headcount 2025-07-01> + <active headcount>) / 2)\n"
+                "Attrition rate       = Exits in period / ((Headcount 2025-07-01 + Active headcount) / 2)\n"
                 "Hires in period      =COUNTIFS(tblEmployees[Hire_Date],\">=\"&DATE(2025,7,1),tblEmployees[Hire_Date],\"<=\"&DATE(2026,6,30))",
             ),
             (
@@ -222,17 +236,22 @@ DOMAIN3 = [
                 "Do not show Employee_ID, salary or individual records on the dashboard.",
             ),
             (
-                "Compare the KPI cards with Checks and fix any difference with a follow-up prompt. Then select single Location "
-                "and Job_Level slicer values and look for any department bar based on fewer than 5 people.",
+                "Ask Copilot to compare the KPI cards with Checks, and fix any difference with a follow-up prompt. Then ask "
+                "which Location, Job_Level and Department combinations contain fewer than 5 people.",
+                "CHAT ONLY:\n"
+                "Compare each KPI card on HR_Dashboard with the Checks sheet and tell me which, if any, do not match.\n\n"
                 "FOLLOW-UP (if needed):\n"
                 "The attrition rate must use average headcount = (Active_Start count + active count) / 2.\n\n"
                 "CHAT ONLY:\n"
                 "Which combinations of Location, Job_Level and Department contain fewer than 5 active employees?",
             ),
             (
-                "Refresh test: copy the 8 data rows (A2:L9) from New_Joiners_Jul2026 and paste them into the first empty row "
-                "directly below tblEmployees so the table expands. Select Data > Refresh All. Every KPI and chart that counts "
-                "active staff must update.",
+                "Refresh test: ask Copilot to append the 8 rows from New_Joiners_Jul2026 to tblEmployees and refresh every "
+                "PivotTable. Every KPI and chart that counts active staff must update.",
+                "ALLOW EDITING:\n"
+                "Copy the 8 data rows in New_Joiners_Jul2026!A2:L9 to the first empty rows directly below tblEmployees\n"
+                "so the table expands. Then refresh all PivotTables in the workbook and tell me the new Active headcount\n"
+                "and the number of rows in tblEmployees.\n\n"
                 "Expected after refresh:\n"
                 f"Active headcount : {E6['active']} -> {E6['active_after']}\n"
                 f"tblEmployees rows: {E6['rows']} -> {E6['rows_after']}\n"
@@ -240,10 +259,12 @@ DOMAIN3 = [
                 + ", ".join(f"{k} +{v}" for k, v in E6["nj_by_dept"].items()),
             ),
             (
-                "Ask Copilot (Chat only) to review the dashboard for privacy and clarity, act on its valid points, and log all "
-                "prompts on Prompt_Log.",
+                "Ask Copilot (Chat only) to review the dashboard for privacy and clarity, ask it to act on its valid points, and "
+                "ask it to log all prompts on Prompt_Log.",
+                "CHAT ONLY:\n"
                 "Review HR_Dashboard before I share it with the leadership team. Does any element expose individual\n"
-                "employee data or a group smaller than 5? Is each KPI labelled with its period and definition?",
+                "employee data or a group smaller than 5? Is each KPI labelled with its period and definition?\n\n"
+                + _LOG,
             ),
         ],
         sample_prompts=[
@@ -261,15 +282,15 @@ DOMAIN3 = [
             f"{E6['exits_12m']} ({E6['vol_exits']} voluntary), attrition rate {E6['attrition']}% and voluntary attrition "
             f"{E6['vol_attrition']}%, hires in period {E6['hires_12m']}, average tenure of active staff about "
             f"{E6['avg_tenure']} years. {E6['top_attr_dept']} has the highest attrition rate ({_RD['rate']}%, {_RD['exits']} exits) "
-            f"and the largest active headcount ({_RD['hc']}). After appending the July joiners and Refresh All, Active headcount "
+            f"and the largest active headcount ({_RD['hc']}). After appending the July joiners and refreshing, Active headcount "
             f"shows {E6['active_after']} and tblEmployees has {E6['rows_after']} rows. The dashboard shows no Employee_ID, salary "
             "or individual record."
         ),
         checkpoint="Keep the workbook in work-c34. Topic 4 starts from the attrition-analysis workbook in the Lab 7 folder.",
         troubleshooting=[
             (
-                "Pasted rows did not join the table and nothing changed on refresh.",
-                "Paste into the row directly under the last table row, or use Table Design > Resize Table to include them.",
+                "The new rows did not join the table and nothing changed on refresh.",
+                "Ask Copilot to resize tblEmployees to include the 8 new rows, then refresh all PivotTables again.",
             ),
             (
                 "Attrition rate is far too high (e.g. 29 / 237).",
@@ -280,7 +301,7 @@ DOMAIN3 = [
                 "Ask Copilot to treat blank Exit_Date explicitly, e.g. OR([@Exit_Date]=\"\",[@Exit_Date]>DATE(2025,7,1)).",
             ),
             (
-                "A chart did not update after Refresh All.",
+                "A chart did not update after the refresh.",
                 "It is a static picture or a range copy. Ask Copilot to replace it with a PivotChart linked to tblEmployees.",
             ),
         ],

@@ -45,26 +45,33 @@ Outcome : Left_Company = Yes / No (left within 12 months)
 Template: Insight_Log sheet
 ```
 
-### 2. Choose Chat only and ask the open question. Copy Copilot's candidate patterns into Prompt_Log - do not record them as insights yet; each must be verified first.
+### 2. Choose Chat only and ask the open question. Then ask Copilot (Allow editing) to copy its candidate patterns into Prompt_Log as unverified - do not record them as insights yet; each must be verified first.
 
 ```text
+CHAT ONLY:
 What's interesting about tblAttrition in relation to Left_Company? Give up to five patterns, each with
 the numbers and group sizes behind it. Do not change the workbook.
+
+ALLOW EDITING:
+Copy the patterns you just gave me into Prompt_Log, one row each, marked "Unverified".
 ```
 
-### 3. Set the baseline: ask for the overall rate, then check it with formulas in two empty cells.
+### 3. Set the baseline: ask for the overall rate, then ask Copilot to add the two check formulas in empty cells.
 
 ```text
+CHAT ONLY:
 What is the overall attrition rate in tblAttrition (Left_Company = "Yes" divided by all employees)?
 
-CHECK:
+CHECK (Allow editing):
+In empty cells on Prompt_Log, add these formulas with a label beside each, and tell me the results:
 =COUNTIFS(tblAttrition[Left_Company],"Yes")
 =COUNTIFS(tblAttrition[Left_Company],"Yes")/ROWS(tblAttrition[Employee_ID])
 ```
 
-### 4. Ask for specific comparisons with counts. Verify at least the engagement and overtime splits with COUNTIFS, and note which departments have fewer than 30 people.
+### 4. Ask for specific comparisons with counts. Ask Copilot to add the COUNTIFS check for the engagement split, and note which departments have fewer than 30 people.
 
 ```text
+CHAT ONLY:
 Using tblAttrition, show attrition rate AND number of employees for:
 1) each Department;
 2) Engagement_Score below 3 vs 3 and above;
@@ -73,11 +80,12 @@ Using tblAttrition, show attrition rate AND number of employees for:
 5) Compa_Ratio below 0.9 vs 0.9 and above;
 6) each Work_Mode.
 
-CHECK (engagement < 3):
+CHECK (Allow editing):
+In an empty cell on Prompt_Log, add this formula for Engagement_Score below 3 and tell me if it matches:
 =COUNTIFS(tblAttrition[Engagement_Score],"<3",tblAttrition[Left_Company],"Yes")/COUNTIFS(tblAttrition[Engagement_Score],"<3")
 ```
 
-### 5. Go deeper: ask Copilot to enter advanced analysis mode (or select 'Get deeper results using advanced analysis mode'). Copilot opens a new sheet with Python. Read the code: which rows, which columns, how blanks are handled. Verify two of the means with AVERAGEIFS, then select Stop advanced analysis.
+### 5. Go deeper: ask Copilot to enter advanced analysis mode (or select 'Get deeper results using advanced analysis mode'). Copilot opens a new sheet with Python. Ask Copilot which rows and columns the code uses and how blanks are handled. Select Stop advanced analysis, then ask Copilot to add two AVERAGEIFS checks of the means.
 
 ```text
 Enter advanced analysis mode.
@@ -85,24 +93,37 @@ Compare employees who left with those who stayed on Overtime_Hours_Month, Engage
 Years_Since_Promotion, Compa_Ratio and Training_Hours. Show the mean for each group, the group sizes,
 and the correlation between Overtime_Hours_Month and Engagement_Score. Explain the method.
 
-CHECK:
+FOLLOW-UP: Which rows and columns does your code use, and how does it handle blanks?
+
+CHECK (Allow editing):
+In empty cells on Prompt_Log, add these formulas and tell me if they match your means for leavers:
 =AVERAGEIFS(tblAttrition[Overtime_Hours_Month],tblAttrition[Left_Company],"Yes")
 =AVERAGEIFS(tblAttrition[Engagement_Score],tblAttrition[Left_Company],"Yes")
 ```
 
-### 6. Ask Copilot to help label your findings, then edit them yourself into four rows of the Insight_Log sheet. Each row needs the verified numbers, a label, a possible explanation to test and a limitation.
+### 6. Ask Copilot to help label your findings, then ask it to write them into four rows of the Insight_Log sheet. Each row needs the verified numbers, a label, a possible explanation to test and a limitation. Read every row and tell Copilot what to change.
 
 ```text
+CHAT ONLY:
 Here are my verified findings: <paste your checked rates and means>.
 For each, write one OBSERVED sentence with the numbers, one HYPOTHESIS that could explain it, and
 one limitation (sample size, correlation is not causation, overlapping factors). Keep each under 30 words.
+
+ALLOW EDITING:
+Write these four findings into the Insight_Log sheet, one per row, with the numbers, the OBSERVED or
+HYPOTHESIS label, the explanation to test and the limitation.
 ```
 
-### 7. Ask Copilot (Chat only) to challenge your Insight_Log, then log all prompts on Prompt_Log.
+### 7. Ask Copilot (Chat only) to challenge your Insight_Log, then ask it to log all prompts on Prompt_Log.
 
 ```text
+CHAT ONLY:
 Review my Insight_Log. Which statement overstates the evidence or implies causation? How would
 you reword it?
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts

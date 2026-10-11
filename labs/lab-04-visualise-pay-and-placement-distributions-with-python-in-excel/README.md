@@ -45,53 +45,75 @@ Levels : Junior | Mid | Senior | Lead
 Output sheet : Python_Charts
 ```
 
-### 2. Choose Allow editing and ask for the margin column. Check one row by hand and the average with AVERAGE.
+### 2. Choose Allow editing and ask for the margin column. Then ask Copilot to add the AVERAGE check and show one row's calculation.
 
 ```text
 Add a column Gross_Margin_Pct to tblPlacements = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly,
 formatted as a percentage with 1 decimal.
 
-CHECK: =AVERAGE(tblPlacements[Gross_Margin_Pct])
+CHECK (Allow editing):
+In an empty cell on Python_Charts, add this formula, tell me the result, and show the Gross_Margin_Pct
+calculation for the first row:
+=AVERAGE(tblPlacements[Gross_Margin_Pct])
 ```
 
-### 3. Ask Copilot to create the box plot with Python. Click the =PY cell and read the code: which table and columns it uses and the order of levels. Then verify the Lead median with a native formula in the cell beside it.
+### 3. Ask Copilot to create the box plot with Python. Ask it which table and columns the code uses and the order of levels. Then ask Copilot to add a native-formula check of the Lead median in the cell beside the chart.
 
 ```text
 Using Python in Excel, create a box plot of Bill_Rate_Hourly by Job_Level from tblPlacements,
 ordered Junior, Mid, Senior, Lead. Put it in Python_Charts!B2. Title it
 "Contract bill rate by job level (S$/hour)" and label both axes.
 
-CHECK: =MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]="Lead"))
+FOLLOW-UP: Which table and columns does the code in Python_Charts!B2 use, and in what order are the levels?
+
+CHECK (Allow editing):
+In the cell beside the box plot, add this formula and tell me if it matches the Lead median in the chart:
+=MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]="Lead"))
 ```
 
-### 4. Ask for a scatter plot with a trend line and the correlation coefficient. Verify r with CORREL.
+### 4. Ask for a scatter plot with a trend line and the correlation coefficient. Then ask Copilot to add the CORREL check.
 
 ```text
 Using Python, create a scatter plot of Years_Experience (x) against Pay_Rate_Hourly (y) from
 tblPlacements, coloured by Job_Level, with a linear trend line. Also return the Pearson correlation
 coefficient in the cell below the chart.
 
-CHECK: =CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])
+CHECK (Allow editing):
+In an empty cell below the scatter plot, add this formula and tell me if it matches the r you returned:
+=CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])
 ```
 
-### 5. Ask for a heatmap of average margin. Read the code to confirm it uses the mean of Gross_Margin_Pct per cell.
+### 5. Ask for a heatmap of average margin. Then ask Copilot to confirm the code uses the mean of Gross_Margin_Pct per cell.
 
 ```text
 Using Python, create a heatmap of the average Gross_Margin_Pct by Sector (rows) and Job_Level (columns,
 ordered Junior to Lead) with the values printed in each cell as percentages.
+
+FOLLOW-UP: Does the heatmap code use the mean of Gross_Margin_Pct for each Sector and Job_Level cell?
+Show that line of code.
 ```
 
-### 6. Ask Copilot (Chat only) to find outliers with a stated rule, then look at the highest pay rate row. Decide in Prompt_Log whether it is an error, a genuine specialist rate, or needs checking with the desk - an outlier is not automatically wrong.
+### 6. Ask Copilot (Chat only) to find outliers with a stated rule, then look at the highest pay rate row. Decide whether it is an error, a genuine specialist rate, or needs checking with the desk - an outlier is not automatically wrong - and ask Copilot (Allow editing) to record your decision in Prompt_Log.
 
 ```text
+CHAT ONLY:
 Using the IQR rule (above Q3 + 1.5 x IQR), list the Pay_Rate_Hourly outliers in tblPlacements with
 Placement_ID, Sector, Job_Level and Pay_Rate_Hourly. State Q1, Q3 and the upper fence. Show the code.
+
+ALLOW EDITING:
+Add a row to Prompt_Log for the highest Pay_Rate_Hourly outlier with my decision:
+<error / genuine specialist rate / check with the desk> and a one-line reason.
 ```
 
-### 7. Ask Copilot to explain what the Python code in the box-plot cell does, then record all prompts and checks in Prompt_Log.
+### 7. In Chat only, ask Copilot to explain what the Python code in the box-plot cell does, then ask it to record all prompts and checks in Prompt_Log.
 
 ```text
+CHAT ONLY:
 Explain the Python code in Python_Charts!B2 line by line in plain English.
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts

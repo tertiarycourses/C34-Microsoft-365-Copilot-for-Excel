@@ -44,26 +44,29 @@ eNPS  = % promoters (9-10) - % detractors (0-6)
 Templates: Recommendations | Executive_Summary
 ```
 
-### 2. Choose Chat only and ask for eNPS and the question averages. Then verify with the formulas below in an empty area of Executive_Summary (or a new Checks sheet).
+### 2. Choose Chat only and ask for eNPS and the question averages. Then ask Copilot (Allow editing) to add the check formulas on a new Checks sheet.
 
 ```text
+CHAT ONLY:
 Using tblSurvey, calculate the number of promoters (9-10), passives (7-8) and detractors (0-6) on
 eNPS_Score, and the eNPS. Then give the average of Q1 to Q6, lowest to highest.
 
-CHECK:
+CHECK (Allow editing):
+Create a sheet named Checks. Enter these formulas in B1:B4 with a label beside each in A1:A4,
+then tell me each result:
 =COUNTIFS(tblSurvey[eNPS_Score],">=9")
 =COUNTIFS(tblSurvey[eNPS_Score],"<=6")
 =(COUNTIFS(tblSurvey[eNPS_Score],">=9")-COUNTIFS(tblSurvey[eNPS_Score],"<=6"))/ROWS(tblSurvey[Response_ID])*100
 =AVERAGE(tblSurvey[Q3_Workload_Balance])
 ```
 
-### 3. Ask for eNPS by department with response counts. Mark any department with fewer than 10 responses as 'interpret with caution' and never report one with fewer than 5.
+### 3. In Chat only, ask for eNPS by department with response counts. Mark any department with fewer than 10 responses as 'interpret with caution' and never report one with fewer than 5.
 
 ```text
 Show eNPS and number of responses for each Department in tblSurvey, sorted lowest eNPS first.
 ```
 
-### 4. Choose Allow editing and ask Copilot to classify comments into a fixed list. If your Excel has the COPILOT function you may use the formula option instead. Keep the original Comment column unchanged.
+### 4. Choose Allow editing and ask Copilot to classify comments into a fixed list. If your Excel has the COPILOT function you may ask Copilot to use the formula option instead. Keep the original Comment column unchanged.
 
 ```text
 OPTION A (Copilot pane):
@@ -71,36 +74,54 @@ Add two columns to tblSurvey. Theme: classify each Comment into exactly one of W
 Manager Support, Pay & Benefits, Recognition, Tools & Systems, Flexibility, or Unclear. Sentiment:
 Positive, Negative or Mixed. Leave both blank where Comment is blank. Do not change Comment.
 
-OPTION B (COPILOT function, where available), in the first Theme cell:
+OPTION B (COPILOT function, where available):
+In tblSurvey, add a Theme column, enter this formula in its first cell and fill it down the column:
 =COPILOT("Classify this staff comment into exactly one theme from the list. Reply with the theme only.",
          [@Comment], "List:", "Workload, Career Growth, Manager Support, Pay & Benefits, Recognition,
          Tools & Systems, Flexibility, Unclear")
 ```
 
-### 5. Spot-check: read 10 classified comments yourself and count disagreements. If more than 1 in 10 is wrong, refine the prompt (for example, add an example per theme) and rerun. Then ask for theme counts and record the error rate on Prompt_Log.
+### 5. Spot-check: ask Copilot to show 10 classified comments, read them and count any you disagree with. If more than 1 in 10 is wrong, refine the prompt (for example, add an example per theme) and rerun. Then ask for theme counts, the COUNTIF check, and ask Copilot to record the error rate on Prompt_Log.
 
 ```text
+CHAT ONLY:
+Show me 10 random rows of tblSurvey with Comment, Theme and Sentiment only.
+
+CHAT ONLY:
 Count comments by Theme and by Sentiment in tblSurvey, highest first. For the top theme, summarise
 what staff are saying in three bullet points without quoting anything that could identify a person.
 
-CHECK: =COUNTIF(tblSurvey[Theme],"Workload")
+CHECK (Allow editing):
+On the Checks sheet, add this formula and tell me if it matches your Workload count:
+=COUNTIF(tblSurvey[Theme],"Workload")
+
+ALLOW EDITING:
+Add a row to Prompt_Log: "Theme spot-check: <number> of 10 disagreed".
 ```
 
-### 6. Fill the Recommendations sheet: ask Copilot to draft three rows from your verified findings, then edit the owners, targets and dates so they are realistic. Every Evidence cell must cite numbers you verified.
+### 6. Choose Allow editing to fill the Recommendations sheet: ask Copilot to draft three rows from your verified findings, then tell Copilot what to change so the owners, targets and dates are realistic. Every Evidence cell must cite numbers you verified.
 
 ```text
 Using only these verified findings: <paste eNPS, lowest question, top theme, department results>,
 draft three recommendations in the Recommendations sheet columns: Finding (OBSERVED), Evidence,
 Recommendation (a team, process or policy action - not about any individual), Owner (role),
 Priority, Success KPI and target, Review date (by Dec 2026).
+
+FOLLOW-UP: In the Recommendations sheet, change <row and column> to <new owner, target or date>.
 ```
 
-### 7. Ask Copilot to draft the executive summary on Executive_Summary. Check every number against your checks, edit the wording, and end with your decision: Share, Revise or Hold. Log all prompts. Optionally ask Copilot in Word or PowerPoint to turn the summary into a memo or two slides.
+### 7. Ask Copilot to draft the executive summary on Executive_Summary. Check every number against your Checks sheet, tell Copilot what wording to change, and ask it to add your decision: Share, Revise or Hold. Then ask Copilot to log all prompts. Optionally ask Copilot in Word or PowerPoint to turn the summary into a memo or two slides.
 
 ```text
 Draft a 150-word executive summary for BrightPath's leadership from the Recommendations sheet and the
 verified results. Include eNPS, the lowest-scoring question, the top comment theme and the three
 recommendations with owners. Use plain English, no jargon, and do not claim causes.
+
+FOLLOW-UP: Add a final line to Executive_Summary: "Decision: <Share / Revise / Hold> - <one-line reason>".
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts

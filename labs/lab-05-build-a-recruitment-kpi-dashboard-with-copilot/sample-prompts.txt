@@ -39,6 +39,7 @@ KPI definitions:
   Cost per hire         = total Sourcing_Cost / hires
 
 [Step 2]
+Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:
 A1 Applications        B1 =ROWS(tblApps[Application_ID])
 A2 Hires               B2 =COUNTIFS(tblApps[Furthest_Stage],"Hired")
 A3 Offer acceptance    B3 =COUNTIFS(tblApps[Offer_Accepted],"Yes")/(COUNTIFS(tblApps[Offer_Accepted],"Yes")+COUNTIFS(tblApps[Offer_Accepted],"No"))
@@ -64,14 +65,25 @@ REVIEW: List each KPI formula you will use before building.
 The plan is approved. Build the dashboard exactly as planned.
 
 [Step 5]
+CHAT ONLY:
+Compare each KPI card on the Dashboard with Checks!B1:B5, with no slicer selected. Show each card's
+formula, its value, the Checks value and whether they match.
+
 FOLLOW-UP EXAMPLE:
 The Offer acceptance rate card must exclude Offer_Accepted = "Pending". Change its formula to
 accepted / (accepted + declined) and show it as a percentage with 1 decimal.
 
 [Step 6]
-CHECK (Technology):
+ALLOW EDITING:
+Set the Sector slicer on the Dashboard to Technology only, then tell me the value on every KPI card.
+
+CHECK (Allow editing):
+On the Checks sheet, add these formulas in D1:D2 with labels in C1:C2, and tell me if they match the cards:
 =COUNTIFS(tblApps[Sector],"Technology")
 =COUNTIFS(tblApps[Sector],"Technology",tblApps[Furthest_Stage],"Hired")
+
+ALLOW EDITING:
+Clear the Sector slicer so the dashboard shows all sectors.
 
 If a KPI card does not change, ask: "Make the KPI cards respond to the Sector and Recruiter slicers."
 
@@ -79,3 +91,7 @@ If a KPI card does not change, ask: "Make the KPI cards respond to the Sector an
 Add a note under the title: "Source: tblApps; KPI definitions on About_This_Data".
 Use one consistent colour scheme and align the charts in a grid.
 CHAT ONLY: Review this dashboard for a Head of Recruitment. What is unclear or missing?
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.

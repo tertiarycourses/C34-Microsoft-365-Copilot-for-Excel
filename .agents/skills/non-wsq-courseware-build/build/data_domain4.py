@@ -1,7 +1,7 @@
 """Topic 4 labs for C34: Use Copilot to Draw Insights and Recommendations (BrightPath workforce data)."""
 
 from mock_data import EXPECTED
-from data_domain1 import _SETUP_STEP
+from data_domain1 import _LOG, _SETUP_STEP
 
 E7 = EXPECTED[7]
 E8 = EXPECTED[8]
@@ -54,21 +54,27 @@ DOMAIN4 = [
                 "Template: Insight_Log sheet",
             ),
             (
-                "Choose Chat only and ask the open question. Copy Copilot's candidate patterns into Prompt_Log - do not record "
-                "them as insights yet; each must be verified first.",
+                "Choose Chat only and ask the open question. Then ask Copilot (Allow editing) to copy its candidate patterns into "
+                "Prompt_Log as unverified - do not record them as insights yet; each must be verified first.",
+                "CHAT ONLY:\n"
                 "What's interesting about tblAttrition in relation to Left_Company? Give up to five patterns, each with\n"
-                "the numbers and group sizes behind it. Do not change the workbook.",
+                "the numbers and group sizes behind it. Do not change the workbook.\n\n"
+                "ALLOW EDITING:\n"
+                "Copy the patterns you just gave me into Prompt_Log, one row each, marked \"Unverified\".",
             ),
             (
-                "Set the baseline: ask for the overall rate, then check it with formulas in two empty cells.",
+                "Set the baseline: ask for the overall rate, then ask Copilot to add the two check formulas in empty cells.",
+                "CHAT ONLY:\n"
                 "What is the overall attrition rate in tblAttrition (Left_Company = \"Yes\" divided by all employees)?\n\n"
-                "CHECK:\n"
+                "CHECK (Allow editing):\n"
+                "In empty cells on Prompt_Log, add these formulas with a label beside each, and tell me the results:\n"
                 "=COUNTIFS(tblAttrition[Left_Company],\"Yes\")\n"
                 "=COUNTIFS(tblAttrition[Left_Company],\"Yes\")/ROWS(tblAttrition[Employee_ID])",
             ),
             (
-                "Ask for specific comparisons with counts. Verify at least the engagement and overtime splits with COUNTIFS, and "
+                "Ask for specific comparisons with counts. Ask Copilot to add the COUNTIFS check for the engagement split, and "
                 "note which departments have fewer than 30 people.",
+                "CHAT ONLY:\n"
                 "Using tblAttrition, show attrition rate AND number of employees for:\n"
                 "1) each Department;\n"
                 "2) Engagement_Score below 3 vs 3 and above;\n"
@@ -76,32 +82,41 @@ DOMAIN4 = [
                 "4) Years_Since_Promotion 3 or more vs below 3;\n"
                 "5) Compa_Ratio below 0.9 vs 0.9 and above;\n"
                 "6) each Work_Mode.\n\n"
-                "CHECK (engagement < 3):\n"
+                "CHECK (Allow editing):\n"
+                "In an empty cell on Prompt_Log, add this formula for Engagement_Score below 3 and tell me if it matches:\n"
                 "=COUNTIFS(tblAttrition[Engagement_Score],\"<3\",tblAttrition[Left_Company],\"Yes\")/COUNTIFS(tblAttrition[Engagement_Score],\"<3\")",
             ),
             (
                 "Go deeper: ask Copilot to enter advanced analysis mode (or select 'Get deeper results using advanced analysis "
-                "mode'). Copilot opens a new sheet with Python. Read the code: which rows, which columns, how blanks are handled. "
-                "Verify two of the means with AVERAGEIFS, then select Stop advanced analysis.",
+                "mode'). Copilot opens a new sheet with Python. Ask Copilot which rows and columns the code uses and how blanks "
+                "are handled. Select Stop advanced analysis, then ask Copilot to add two AVERAGEIFS checks of the means.",
                 "Enter advanced analysis mode.\n"
                 "Compare employees who left with those who stayed on Overtime_Hours_Month, Engagement_Score,\n"
                 "Years_Since_Promotion, Compa_Ratio and Training_Hours. Show the mean for each group, the group sizes,\n"
                 "and the correlation between Overtime_Hours_Month and Engagement_Score. Explain the method.\n\n"
-                "CHECK:\n"
+                "FOLLOW-UP: Which rows and columns does your code use, and how does it handle blanks?\n\n"
+                "CHECK (Allow editing):\n"
+                "In empty cells on Prompt_Log, add these formulas and tell me if they match your means for leavers:\n"
                 "=AVERAGEIFS(tblAttrition[Overtime_Hours_Month],tblAttrition[Left_Company],\"Yes\")\n"
                 "=AVERAGEIFS(tblAttrition[Engagement_Score],tblAttrition[Left_Company],\"Yes\")",
             ),
             (
-                "Ask Copilot to help label your findings, then edit them yourself into four rows of the Insight_Log sheet. Each "
-                "row needs the verified numbers, a label, a possible explanation to test and a limitation.",
+                "Ask Copilot to help label your findings, then ask it to write them into four rows of the Insight_Log sheet. Each "
+                "row needs the verified numbers, a label, a possible explanation to test and a limitation. Read every row and "
+                "tell Copilot what to change.",
+                "CHAT ONLY:\n"
                 "Here are my verified findings: <paste your checked rates and means>.\n"
                 "For each, write one OBSERVED sentence with the numbers, one HYPOTHESIS that could explain it, and\n"
-                "one limitation (sample size, correlation is not causation, overlapping factors). Keep each under 30 words.",
+                "one limitation (sample size, correlation is not causation, overlapping factors). Keep each under 30 words.\n\n"
+                "ALLOW EDITING:\n"
+                "Write these four findings into the Insight_Log sheet, one per row, with the numbers, the OBSERVED or\n"
+                "HYPOTHESIS label, the explanation to test and the limitation.",
             ),
             (
-                "Ask Copilot (Chat only) to challenge your Insight_Log, then log all prompts on Prompt_Log.",
+                "Ask Copilot (Chat only) to challenge your Insight_Log, then ask it to log all prompts on Prompt_Log.",
+                "CHAT ONLY:\n"
                 "Review my Insight_Log. Which statement overstates the evidence or implies causation? How would\n"
-                "you reword it?",
+                "you reword it?\n\n" + _LOG,
             ),
         ],
         sample_prompts=[
@@ -193,56 +208,71 @@ DOMAIN4 = [
                 "Templates: Recommendations | Executive_Summary",
             ),
             (
-                "Choose Chat only and ask for eNPS and the question averages. Then verify with the formulas below in an empty "
-                "area of Executive_Summary (or a new Checks sheet).",
+                "Choose Chat only and ask for eNPS and the question averages. Then ask Copilot (Allow editing) to add the check "
+                "formulas on a new Checks sheet.",
+                "CHAT ONLY:\n"
                 "Using tblSurvey, calculate the number of promoters (9-10), passives (7-8) and detractors (0-6) on\n"
                 "eNPS_Score, and the eNPS. Then give the average of Q1 to Q6, lowest to highest.\n\n"
-                "CHECK:\n"
+                "CHECK (Allow editing):\n"
+                "Create a sheet named Checks. Enter these formulas in B1:B4 with a label beside each in A1:A4,\n"
+                "then tell me each result:\n"
                 "=COUNTIFS(tblSurvey[eNPS_Score],\">=9\")\n"
                 "=COUNTIFS(tblSurvey[eNPS_Score],\"<=6\")\n"
                 "=(COUNTIFS(tblSurvey[eNPS_Score],\">=9\")-COUNTIFS(tblSurvey[eNPS_Score],\"<=6\"))/ROWS(tblSurvey[Response_ID])*100\n"
                 "=AVERAGE(tblSurvey[Q3_Workload_Balance])",
             ),
             (
-                "Ask for eNPS by department with response counts. Mark any department with fewer than 10 responses as "
+                "In Chat only, ask for eNPS by department with response counts. Mark any department with fewer than 10 responses as "
                 "'interpret with caution' and never report one with fewer than 5.",
                 "Show eNPS and number of responses for each Department in tblSurvey, sorted lowest eNPS first.",
             ),
             (
                 "Choose Allow editing and ask Copilot to classify comments into a fixed list. If your Excel has the COPILOT "
-                "function you may use the formula option instead. Keep the original Comment column unchanged.",
+                "function you may ask Copilot to use the formula option instead. Keep the original Comment column unchanged.",
                 "OPTION A (Copilot pane):\n"
                 "Add two columns to tblSurvey. Theme: classify each Comment into exactly one of Workload, Career Growth,\n"
                 "Manager Support, Pay & Benefits, Recognition, Tools & Systems, Flexibility, or Unclear. Sentiment:\n"
                 "Positive, Negative or Mixed. Leave both blank where Comment is blank. Do not change Comment.\n\n"
-                "OPTION B (COPILOT function, where available), in the first Theme cell:\n"
+                "OPTION B (COPILOT function, where available):\n"
+                "In tblSurvey, add a Theme column, enter this formula in its first cell and fill it down the column:\n"
                 "=COPILOT(\"Classify this staff comment into exactly one theme from the list. Reply with the theme only.\",\n"
                 "         [@Comment], \"List:\", \"Workload, Career Growth, Manager Support, Pay & Benefits, Recognition,\n"
                 "         Tools & Systems, Flexibility, Unclear\")",
             ),
             (
-                "Spot-check: read 10 classified comments yourself and count disagreements. If more than 1 in 10 is wrong, refine "
-                "the prompt (for example, add an example per theme) and rerun. Then ask for theme counts and record the error rate "
-                "on Prompt_Log.",
+                "Spot-check: ask Copilot to show 10 classified comments, read them and count any you disagree with. If more than "
+                "1 in 10 is wrong, refine the prompt (for example, add an example per theme) and rerun. Then ask for theme counts, "
+                "the COUNTIF check, and ask Copilot to record the error rate on Prompt_Log.",
+                "CHAT ONLY:\n"
+                "Show me 10 random rows of tblSurvey with Comment, Theme and Sentiment only.\n\n"
+                "CHAT ONLY:\n"
                 "Count comments by Theme and by Sentiment in tblSurvey, highest first. For the top theme, summarise\n"
                 "what staff are saying in three bullet points without quoting anything that could identify a person.\n\n"
-                "CHECK: =COUNTIF(tblSurvey[Theme],\"Workload\")",
+                "CHECK (Allow editing):\n"
+                "On the Checks sheet, add this formula and tell me if it matches your Workload count:\n"
+                "=COUNTIF(tblSurvey[Theme],\"Workload\")\n\n"
+                "ALLOW EDITING:\n"
+                "Add a row to Prompt_Log: \"Theme spot-check: <number> of 10 disagreed\".",
             ),
             (
-                "Fill the Recommendations sheet: ask Copilot to draft three rows from your verified findings, then edit the "
-                "owners, targets and dates so they are realistic. Every Evidence cell must cite numbers you verified.",
+                "Choose Allow editing to fill the Recommendations sheet: ask Copilot to draft three rows from your verified "
+                "findings, then tell Copilot what to change so the owners, targets and dates are realistic. Every Evidence cell "
+                "must cite numbers you verified.",
                 "Using only these verified findings: <paste eNPS, lowest question, top theme, department results>,\n"
                 "draft three recommendations in the Recommendations sheet columns: Finding (OBSERVED), Evidence,\n"
                 "Recommendation (a team, process or policy action - not about any individual), Owner (role),\n"
-                "Priority, Success KPI and target, Review date (by Dec 2026).",
+                "Priority, Success KPI and target, Review date (by Dec 2026).\n\n"
+                "FOLLOW-UP: In the Recommendations sheet, change <row and column> to <new owner, target or date>.",
             ),
             (
-                "Ask Copilot to draft the executive summary on Executive_Summary. Check every number against your checks, edit "
-                "the wording, and end with your decision: Share, Revise or Hold. Log all prompts. Optionally ask Copilot in Word "
-                "or PowerPoint to turn the summary into a memo or two slides.",
+                "Ask Copilot to draft the executive summary on Executive_Summary. Check every number against your Checks sheet, "
+                "tell Copilot what wording to change, and ask it to add your decision: Share, Revise or Hold. Then ask Copilot to "
+                "log all prompts. Optionally ask Copilot in Word or PowerPoint to turn the summary into a memo or two slides.",
                 "Draft a 150-word executive summary for BrightPath's leadership from the Recommendations sheet and the\n"
                 "verified results. Include eNPS, the lowest-scoring question, the top comment theme and the three\n"
-                "recommendations with owners. Use plain English, no jargon, and do not claim causes.",
+                "recommendations with owners. Use plain English, no jargon, and do not claim causes.\n\n"
+                "FOLLOW-UP: Add a final line to Executive_Summary: \"Decision: <Share / Revise / Hold> - <one-line reason>\".\n\n"
+                + _LOG,
             ),
         ],
         sample_prompts=[

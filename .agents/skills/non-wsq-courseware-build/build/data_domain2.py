@@ -1,7 +1,7 @@
 """Topic 2 labs for C34: Use Copilot to Plot Charts (BrightPath recruitment and placement data)."""
 
 from mock_data import EXPECTED
-from data_domain1 import _SETUP_STEP
+from data_domain1 import _LOG, _SETUP_STEP
 
 E3 = EXPECTED[3]
 E4 = EXPECTED[4]
@@ -42,7 +42,7 @@ DOMAIN2 = [
         steps=[
             (
                 _SETUP_STEP.format(file="BrightPath_Recruitment_Metrics.xlsx")
-                + " Write the four questions below at the top of the Charts sheet - each chart must answer one of them.",
+                + " Each chart you build must answer one of the four questions below.",
                 "Tables : tblMonthly (108 rows = 18 months x 6 sectors) | tblSources (7 rows)\n\n"
                 "Q1 Trend      : How have total hires moved month by month since Jan 2025?\n"
                 "Q2 Comparison : Which sector produced the most hires in Jan-Jun 2026?\n"
@@ -50,34 +50,50 @@ DOMAIN2 = [
                 "Q4 Efficiency : Which sources convert best, and at what cost per hire?",
             ),
             (
-                "Choose Allow editing. Ask Copilot for the trend PivotTable and line chart. Check the Pivot grand total against "
-                "=SUM(tblMonthly[Hires]) and find the peak month.",
+                "Choose Allow editing. Ask Copilot to write the four questions at the top of the Charts sheet, then ask for the "
+                "trend PivotTable and line chart. Ask Copilot to check the Pivot grand total against =SUM(tblMonthly[Hires]) "
+                "and name the peak month.",
+                "ALLOW EDITING:\n"
+                "In Charts!A1:A4, type these four questions:\n"
+                "Q1 Trend: How have total hires moved month by month since Jan 2025?\n"
+                "Q2 Comparison: Which sector produced the most hires in Jan-Jun 2026?\n"
+                "Q3 Funnel: Where do candidates drop out between application and hire in 2026?\n"
+                "Q4 Efficiency: Which sources convert best, and at what cost per hire?\n\n"
+                "ALLOW EDITING:\n"
                 "Create a PivotTable from tblMonthly on a new sheet named Pivot_Trend with Month_Label in rows and\n"
                 "Sum of Hires as values. Then create a line chart of total hires by month from that PivotTable.\n"
-                "Show data labels and gridlines. Title: \"Monthly hires, Jan 2025 - Jun 2026\".",
+                "Show data labels and gridlines. Title: \"Monthly hires, Jan 2025 - Jun 2026\".\n\n"
+                "CHECK (Allow editing):\n"
+                "In an empty cell on Pivot_Trend, add this formula. Tell me whether it matches the PivotTable grand total,\n"
+                "and which month had the most hires:\n"
+                "=SUM(tblMonthly[Hires])",
             ),
             (
-                "Ask for the 2026 sector comparison. Then refine it with a follow-up prompt. Verify Technology's 2026 hires "
-                "with the SUMIFS shown.",
+                "Ask for the 2026 sector comparison. Then refine it with a follow-up prompt. Ask Copilot to add the SUMIFS check "
+                "for Technology's 2026 hires.",
                 "Create a PivotTable on a new sheet Pivot_Sector from tblMonthly with Sector in rows and Sum of Hires,\n"
                 "filtered to months in 2026 only. Create a bar chart from it.\n\n"
                 "FOLLOW-UP: Sort the bars from highest to lowest and change the title to state the leading sector.\n\n"
-                "CHECK: =SUMIFS(tblMonthly[Hires],tblMonthly[Sector],\"Technology\",tblMonthly[Month],\">=\"&DATE(2026,1,1))",
+                "CHECK (Allow editing):\n"
+                "In an empty cell on Pivot_Sector, add this formula and tell me if it matches Technology's bar:\n"
+                "=SUMIFS(tblMonthly[Hires],tblMonthly[Sector],\"Technology\",tblMonthly[Month],\">=\"&DATE(2026,1,1))",
             ),
             (
-                "Ask Copilot to build a 2026 funnel summary with formulas, then a funnel chart. Confirm the summary uses SUMIFS "
-                "(not typed numbers) by clicking a value cell.",
+                "Ask Copilot to build a 2026 funnel summary with formulas, then a funnel chart. Ask Copilot to show the formula "
+                "in each value cell to confirm the summary uses SUMIFS, not typed numbers.",
                 "On the Charts sheet, build a small table of 2026 totals for Applications, Screened, Interviews, Offers\n"
                 "and Hires from tblMonthly using SUMIFS on Month >= 1 Jan 2026. Then create a funnel chart from it\n"
-                "with data labels. Add a column showing each stage as a % of Applications.",
+                "with data labels. Add a column showing each stage as a % of Applications.\n\n"
+                "FOLLOW-UP: Show the formula in each value cell of the funnel table.",
             ),
             (
-                "Ask Copilot to add rate columns to tblSources and a combo chart with two axes. Check the best hire rate and the "
-                "lowest cost per hire.",
+                "Ask Copilot to add rate columns to tblSources and a combo chart with two axes. Then ask it for the best hire "
+                "rate and the lowest cost per hire.",
                 "In tblSources add Hire_Rate = Hires / Applications (percentage, 1 decimal) and\n"
                 "Cost_per_Hire = Sourcing_Spend / Hires (S$, no decimals). Create a combo chart: Hire_Rate as\n"
                 "clustered columns sorted highest first, Cost_per_Hire as a line on a secondary axis.\n"
-                "Label both axes with units.",
+                "Label both axes with units.\n\n"
+                "FOLLOW-UP: Which source has the highest Hire_Rate, and which has the lowest Cost_per_Hire? Give both values.",
             ),
             (
                 "Refine all four charts with short follow-up prompts, one change at a time, then move them onto the Charts sheet "
@@ -88,10 +104,12 @@ DOMAIN2 = [
                 "Add alt text to each chart describing what it shows.",
             ),
             (
-                "Ask Copilot (Chat only) to review the charts against the four questions, then log your prompts and checks on "
-                "Prompt_Log.",
+                "Ask Copilot (Chat only) to review the charts against the four questions, then ask it to log your prompts and "
+                "checks on Prompt_Log.",
+                "CHAT ONLY:\n"
                 "Review the four charts on the Charts sheet. For each, tell me which question at the top of the sheet\n"
-                "it answers, whether the chart type suits that question, and one improvement. Do not change anything.",
+                "it answers, whether the chart type suits that question, and one improvement. Do not change anything.\n\n"
+                + _LOG,
             ),
         ],
         sample_prompts=[
@@ -179,42 +197,60 @@ DOMAIN2 = [
                 "Output sheet : Python_Charts",
             ),
             (
-                "Choose Allow editing and ask for the margin column. Check one row by hand and the average with AVERAGE.",
+                "Choose Allow editing and ask for the margin column. Then ask Copilot to add the AVERAGE check and show one "
+                "row's calculation.",
                 "Add a column Gross_Margin_Pct to tblPlacements = (Bill_Rate_Hourly - Pay_Rate_Hourly) / Bill_Rate_Hourly,\n"
                 "formatted as a percentage with 1 decimal.\n\n"
-                "CHECK: =AVERAGE(tblPlacements[Gross_Margin_Pct])",
+                "CHECK (Allow editing):\n"
+                "In an empty cell on Python_Charts, add this formula, tell me the result, and show the Gross_Margin_Pct\n"
+                "calculation for the first row:\n"
+                "=AVERAGE(tblPlacements[Gross_Margin_Pct])",
             ),
             (
-                "Ask Copilot to create the box plot with Python. Click the =PY cell and read the code: which table and columns it "
-                "uses and the order of levels. Then verify the Lead median with a native formula in the cell beside it.",
+                "Ask Copilot to create the box plot with Python. Ask it which table and columns the code uses and the order of "
+                "levels. Then ask Copilot to add a native-formula check of the Lead median in the cell beside the chart.",
                 "Using Python in Excel, create a box plot of Bill_Rate_Hourly by Job_Level from tblPlacements,\n"
                 "ordered Junior, Mid, Senior, Lead. Put it in Python_Charts!B2. Title it\n"
                 "\"Contract bill rate by job level (S$/hour)\" and label both axes.\n\n"
-                "CHECK: =MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]=\"Lead\"))",
+                "FOLLOW-UP: Which table and columns does the code in Python_Charts!B2 use, and in what order are the levels?\n\n"
+                "CHECK (Allow editing):\n"
+                "In the cell beside the box plot, add this formula and tell me if it matches the Lead median in the chart:\n"
+                "=MEDIAN(FILTER(tblPlacements[Bill_Rate_Hourly],tblPlacements[Job_Level]=\"Lead\"))",
             ),
             (
-                "Ask for a scatter plot with a trend line and the correlation coefficient. Verify r with CORREL.",
+                "Ask for a scatter plot with a trend line and the correlation coefficient. Then ask Copilot to add the CORREL "
+                "check.",
                 "Using Python, create a scatter plot of Years_Experience (x) against Pay_Rate_Hourly (y) from\n"
                 "tblPlacements, coloured by Job_Level, with a linear trend line. Also return the Pearson correlation\n"
                 "coefficient in the cell below the chart.\n\n"
-                "CHECK: =CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])",
+                "CHECK (Allow editing):\n"
+                "In an empty cell below the scatter plot, add this formula and tell me if it matches the r you returned:\n"
+                "=CORREL(tblPlacements[Years_Experience],tblPlacements[Pay_Rate_Hourly])",
             ),
             (
-                "Ask for a heatmap of average margin. Read the code to confirm it uses the mean of Gross_Margin_Pct per cell.",
+                "Ask for a heatmap of average margin. Then ask Copilot to confirm the code uses the mean of Gross_Margin_Pct per "
+                "cell.",
                 "Using Python, create a heatmap of the average Gross_Margin_Pct by Sector (rows) and Job_Level (columns,\n"
-                "ordered Junior to Lead) with the values printed in each cell as percentages.",
+                "ordered Junior to Lead) with the values printed in each cell as percentages.\n\n"
+                "FOLLOW-UP: Does the heatmap code use the mean of Gross_Margin_Pct for each Sector and Job_Level cell?\n"
+                "Show that line of code.",
             ),
             (
-                "Ask Copilot (Chat only) to find outliers with a stated rule, then look at the highest pay rate row. Decide in "
-                "Prompt_Log whether it is an error, a genuine specialist rate, or needs checking with the desk - an outlier is not "
-                "automatically wrong.",
+                "Ask Copilot (Chat only) to find outliers with a stated rule, then look at the highest pay rate row. Decide "
+                "whether it is an error, a genuine specialist rate, or needs checking with the desk - an outlier is not "
+                "automatically wrong - and ask Copilot (Allow editing) to record your decision in Prompt_Log.",
+                "CHAT ONLY:\n"
                 "Using the IQR rule (above Q3 + 1.5 x IQR), list the Pay_Rate_Hourly outliers in tblPlacements with\n"
-                "Placement_ID, Sector, Job_Level and Pay_Rate_Hourly. State Q1, Q3 and the upper fence. Show the code.",
+                "Placement_ID, Sector, Job_Level and Pay_Rate_Hourly. State Q1, Q3 and the upper fence. Show the code.\n\n"
+                "ALLOW EDITING:\n"
+                "Add a row to Prompt_Log for the highest Pay_Rate_Hourly outlier with my decision:\n"
+                "<error / genuine specialist rate / check with the desk> and a one-line reason.",
             ),
             (
-                "Ask Copilot to explain what the Python code in the box-plot cell does, then record all prompts and checks in "
-                "Prompt_Log.",
-                "Explain the Python code in Python_Charts!B2 line by line in plain English.",
+                "In Chat only, ask Copilot to explain what the Python code in the box-plot cell does, then ask it to record all "
+                "prompts and checks in Prompt_Log.",
+                "CHAT ONLY:\n"
+                "Explain the Python code in Python_Charts!B2 line by line in plain English.\n\n" + _LOG,
             ),
         ],
         sample_prompts=[

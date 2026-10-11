@@ -6,7 +6,7 @@
 **Topic 3:** Use Copilot to Create Dashboards  
 **Maps to:** LO3: use Copilot to build a refreshable HR workforce dashboard with helper columns, KPI cards, charts and slicers, prove it refreshes with new rows, and check it for responsible sharing  
 **Duration:** 35 minutes  
-**Tools:** Excel · Copilot (Plan, Allow editing) · PivotTables, slicers, Refresh All · BrightPath_Workforce_Headcount.xlsx
+**Tools:** Excel · Copilot (Plan, Allow editing) · PivotTables, slicers, refresh · BrightPath_Workforce_Headcount.xlsx
 
 > 📄 **Instruction PDF (with sample prompts):** [Lab-06-Instructions.pdf](Lab-06-Instructions.pdf)  
 > 💬 **Copy-ready prompts:** [sample-prompts.txt](sample-prompts.txt)  
@@ -44,23 +44,28 @@ Period: 2025-07-01 to 2026-06-30
 Attrition rate = exits in period / ((active on 2025-07-01 + active on 2026-06-30) / 2)
 ```
 
-### 2. Choose Allow editing and ask Copilot for three helper columns. Ask it to explain the Active_Start formula and test one employee who exited before 2025-07-01 (Active_Start must be FALSE).
+### 2. Choose Allow editing and ask Copilot for three helper columns. Then ask it to explain the Active_Start formula and show one employee who exited before 2025-07-01 (Active_Start must be FALSE).
 
 ```text
 Add three columns to tblEmployees:
 1) Active_Start = TRUE if Hire_Date <= 2025-07-01 and (Exit_Date is blank or Exit_Date > 2025-07-01).
 2) Exit_In_Period = TRUE if Exit_Date is between 2025-07-01 and 2026-06-30 inclusive.
 3) Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if Exit_Date is blank, 1 decimal.
+
+FOLLOW-UP: Explain the Active_Start formula, and show one employee who exited before 2025-07-01
+with Hire_Date, Exit_Date and Active_Start.
 ```
 
-### 3. Create a sheet named Checks and type these independent checks in columns A:B (label in A, formula in B). These are the numbers the dashboard must match.
+### 3. Ask Copilot to create a Checks sheet with these independent checks (label in column A, formula in column B), exactly as written. These are the numbers the dashboard must match.
 
 ```text
+Create a sheet named Checks. Put these labels in column A and formulas in column B exactly as written,
+then tell me each result. Build the Attrition rate formula from the cells above it:
 Active headcount     =COUNTIFS(tblEmployees[Status],"Active")
 Headcount 2025-07-01 =COUNTIFS(tblEmployees[Active_Start],TRUE)
 Exits in period      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE)
 Voluntary exits      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE,tblEmployees[Exit_Type],"Voluntary")
-Attrition rate       =<exits> / ((<headcount 2025-07-01> + <active headcount>) / 2)
+Attrition rate       = Exits in period / ((Headcount 2025-07-01 + Active headcount) / 2)
 Hires in period      =COUNTIFS(tblEmployees[Hire_Date],">="&DATE(2025,7,1),tblEmployees[Hire_Date],"<="&DATE(2026,6,30))
 ```
 
@@ -76,9 +81,12 @@ Slicers: Location and Job_Level, connected to all PivotTables. Title and "Data a
 Do not show Employee_ID, salary or individual records on the dashboard.
 ```
 
-### 5. Compare the KPI cards with Checks and fix any difference with a follow-up prompt. Then select single Location and Job_Level slicer values and look for any department bar based on fewer than 5 people.
+### 5. Ask Copilot to compare the KPI cards with Checks, and fix any difference with a follow-up prompt. Then ask which Location, Job_Level and Department combinations contain fewer than 5 people.
 
 ```text
+CHAT ONLY:
+Compare each KPI card on HR_Dashboard with the Checks sheet and tell me which, if any, do not match.
+
 FOLLOW-UP (if needed):
 The attrition rate must use average headcount = (Active_Start count + active count) / 2.
 
@@ -86,20 +94,30 @@ CHAT ONLY:
 Which combinations of Location, Job_Level and Department contain fewer than 5 active employees?
 ```
 
-### 6. Refresh test: copy the 8 data rows (A2:L9) from New_Joiners_Jul2026 and paste them into the first empty row directly below tblEmployees so the table expands. Select Data > Refresh All. Every KPI and chart that counts active staff must update.
+### 6. Refresh test: ask Copilot to append the 8 rows from New_Joiners_Jul2026 to tblEmployees and refresh every PivotTable. Every KPI and chart that counts active staff must update.
 
 ```text
+ALLOW EDITING:
+Copy the 8 data rows in New_Joiners_Jul2026!A2:L9 to the first empty rows directly below tblEmployees
+so the table expands. Then refresh all PivotTables in the workbook and tell me the new Active headcount
+and the number of rows in tblEmployees.
+
 Expected after refresh:
 Active headcount : 237 -> 245
 tblEmployees rows: 420 -> 428
 New joiners by department: Recruitment +2, Sales & Client Services +2, IT +4
 ```
 
-### 7. Ask Copilot (Chat only) to review the dashboard for privacy and clarity, act on its valid points, and log all prompts on Prompt_Log.
+### 7. Ask Copilot (Chat only) to review the dashboard for privacy and clarity, ask it to act on its valid points, and ask it to log all prompts on Prompt_Log.
 
 ```text
+CHAT ONLY:
 Review HR_Dashboard before I share it with the leadership team. Does any element expose individual
 employee data or a group smaller than 5? Is each KPI labelled with its period and definition?
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts
@@ -117,7 +135,7 @@ employee data or a group smaller than 5? Is each KPI labelled with its period an
 
 ## Test It
 
-Before the refresh: Active headcount 237, headcount on 2025-07-01 210, exits in period 29 (25 voluntary), attrition rate 13.0% and voluntary attrition 11.2%, hires in period 56, average tenure of active staff about 3.1 years. Recruitment has the highest attrition rate (21.8%, 12 exits) and the largest active headcount (60). After appending the July joiners and Refresh All, Active headcount shows 245 and tblEmployees has 428 rows. The dashboard shows no Employee_ID, salary or individual record.
+Before the refresh: Active headcount 237, headcount on 2025-07-01 210, exits in period 29 (25 voluntary), attrition rate 13.0% and voluntary attrition 11.2%, hires in period 56, average tenure of active staff about 3.1 years. Recruitment has the highest attrition rate (21.8%, 12 exits) and the largest active headcount (60). After appending the July joiners and refreshing, Active headcount shows 245 and tblEmployees has 428 rows. The dashboard shows no Employee_ID, salary or individual record.
 
 ## Checkpoint and Rejoin Point
 
@@ -127,10 +145,10 @@ Keep the workbook in work-c34. Topic 4 starts from the attrition-analysis workbo
 
 | If this happens | Fix |
 |---|---|
-| Pasted rows did not join the table and nothing changed on refresh. | Paste into the row directly under the last table row, or use Table Design > Resize Table to include them. |
+| The new rows did not join the table and nothing changed on refresh. | Ask Copilot to resize tblEmployees to include the 8 new rows, then refresh all PivotTables again. |
 | Attrition rate is far too high (e.g. 29 / 237). | The card divides by closing headcount only. Ask Copilot to use the average of opening and closing headcount. |
 | Helper columns show #VALUE! for blank Exit_Date. | Ask Copilot to treat blank Exit_Date explicitly, e.g. OR([@Exit_Date]="",[@Exit_Date]>DATE(2025,7,1)). |
-| A chart did not update after Refresh All. | It is a static picture or a range copy. Ask Copilot to replace it with a PivotChart linked to tblEmployees. |
+| A chart did not update after the refresh. | It is a static picture or a range copy. Ask Copilot to replace it with a PivotChart linked to tblEmployees. |
 
 ## Challenge
 

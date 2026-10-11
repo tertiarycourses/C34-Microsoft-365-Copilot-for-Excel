@@ -43,41 +43,51 @@ Tables : tblRequisitions (60 rows) | tblRecruiters (6 rows)
 Control!B1 Report_Date = 2026-06-30
 ```
 
-### 2. Choose Allow editing. Ask Copilot to add the lookup column. Select a cell in the new column and ask Copilot to explain the formula. Check one row by hand against tblRecruiters.
+### 2. Choose Allow editing. Ask Copilot to add the lookup column, then ask it to explain the formula and show one row next to the matching row in tblRecruiters.
 
 ```text
 In tblRequisitions, add a column Recruiter_Name that looks up Recruiter_Name from tblRecruiters
 using Recruiter_ID. Use XLOOKUP and return "Not found" if there is no match.
 
-Then: Explain the formula in the selected cell.
+Then: Explain the Recruiter_Name formula, and show one row's Recruiter_ID and Recruiter_Name next to
+the matching row in tblRecruiters.
 ```
 
-### 3. Ask for Days_Open with an explicit rule for open requisitions. Read the explanation. Test an open row (blank Close_Date) and a closed row by subtracting the dates yourself.
+### 3. Ask for Days_Open with an explicit rule for open requisitions. Read the explanation, then ask Copilot to show an open row (blank Close_Date) and a closed row so you can confirm the rule.
 
 ```text
 Add a column Days_Open to tblRequisitions. If Close_Date is blank, use Control!B1 minus Open_Date;
 otherwise use Close_Date minus Open_Date. Show whole numbers.
+
+FOLLOW-UP: Show one open requisition (blank Close_Date) and one closed requisition with Open_Date,
+Close_Date and Days_Open, and the subtraction behind each.
 ```
 
-### 4. Ask for Fill_Rate and Est_Fee, one prompt each. Format Fill_Rate as a percentage and Est_Fee as S$ with no decimals. Hand-check JOB-2002: Filled 4 x S$4,900 x 12 x 25% = S$58,800.
+### 4. Ask for Fill_Rate and Est_Fee, one prompt each. Format Fill_Rate as a percentage and Est_Fee as S$ with no decimals. Then ask Copilot to show the calculation for JOB-2002: Filled 4 x S$4,900 x 12 x 25% = S$58,800.
 
 ```text
 Add a column Fill_Rate = Filled divided by Openings, formatted as a percentage.
 
 Add a column Est_Fee = Filled x Monthly_Salary_Budget x 12 x Fee_Rate, formatted as S$ with no decimals.
 Explain the formula.
+
+FOLLOW-UP: Show the Est_Fee calculation for JOB-2002 step by step.
 ```
 
-### 5. Ask for the ageing flag and a highlight. Count the flags with the status bar or a COUNTIF.
+### 5. Ask for the ageing flag and a highlight, then ask Copilot how many requisitions are flagged.
 
 ```text
 Add a column Ageing_Flag that shows "Overdue" when Status is "Open" and Days_Open is greater than 45,
 otherwise leave it blank. Highlight rows where Ageing_Flag is "Overdue" with a light amber fill.
+
+FOLLOW-UP: How many rows have Ageing_Flag = "Overdue"?
 ```
 
-### 6. Build independent controls on the Control sheet using the formulas below (type them yourself - do not reuse Copilot's columns for the control). Each pair must match.
+### 6. Ask Copilot to build independent controls on the Control sheet with the exact formulas below. The independent formulas recalculate from the raw columns, so they do not rely on Copilot's new columns. Each pair must match.
 
 ```text
+Enter these labels and formulas on the Control sheet exactly as written. Then tell me each result
+and whether each pair (B3 and B4, B6 and B7) matches:
 A3 Total Est_Fee (column)       B3 =SUM(tblRequisitions[Est_Fee])
 A4 Total fee (independent)      B4 =SUMPRODUCT(tblRequisitions[Filled],tblRequisitions[Monthly_Salary_Budget],tblRequisitions[Fee_Rate])*12
 A5 Avg days to fill (Filled)    B5 =AVERAGEIFS(tblRequisitions[Days_Open],tblRequisitions[Status],"Filled")
@@ -85,12 +95,19 @@ A6 Overdue (independent)        B6 =COUNTIFS(tblRequisitions[Status],"Open",tblR
 A7 Overdue flags (column)       B7 =COUNTIF(tblRequisitions[Ageing_Flag],"Overdue")
 ```
 
-### 7. In Chat only, ask which recruiter generated the most estimated fees. Verify with SUMIFS on Control, then log all prompts on Prompt_Log.
+### 7. In Chat only, ask which recruiter generated the most estimated fees. Then ask Copilot (Allow editing) to add the SUMIFS check to the Control sheet and to log all prompts on Prompt_Log.
 
 ```text
+CHAT ONLY:
 Using tblRequisitions, which Recruiter_Name has the highest total Est_Fee? Show the total for every recruiter.
 
-CHECK: =SUMIFS(tblRequisitions[Est_Fee],tblRequisitions[Recruiter_Name],"<name>")
+CHECK (Allow editing):
+On the Control sheet, add this check for the top recruiter and tell me if it matches your answer:
+=SUMIFS(tblRequisitions[Est_Fee],tblRequisitions[Recruiter_Name],"<name>")
+
+LOG (Allow editing):
+Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
+How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts
