@@ -234,6 +234,14 @@ def render_lab(lab):
                     f'<ul>{"".join(rows)}</ul></article>')
         mode = mode_next
 
+    tables = list(dict.fromkeys(re.findall(r"\btbl[A-Z]\w+", " ".join(i + " " + c for i, c in lab["steps"]))))
+    books = ", ".join(f"<b>{esc(os.path.basename(d))}</b>" for d in lab.get("data_files", []))
+    first = re.search(r"\btbl[A-Z]\w+", lab["steps"][1][0]) if len(lab["steps"]) > 1 else None
+    make = (f" Do Step 2 first: it turns the raw data into the table <code>{first.group(0)}</code>"
+            f" (Ctrl+T, then name it).") if first and "Table Name" in lab["steps"][1][0] else ""
+    banner = (f'<p class="open">Open {books} first. These prompts use '
+              f'{", ".join(f"<code>{t}</code>" for t in tables)}.{make} '
+              f"A prompt that names a different table belongs to another lab.</p>")
     asks = "".join(
         f'<li><span class="when">{esc(lbl)}</span><span class="q">{esc(p)}</span>{copy_btn(p, True)}</li>'
         for lbl, p in lab.get("sample_prompts", []))
@@ -244,7 +252,7 @@ def render_lab(lab):
         f'<h2>{esc(lab["title"])}</h2>'
         f'<p class="use"><b>Topic {lab["topic"]}:</b> {esc(topic.get("title", ""))}<br>'
         f'<b>Use:</b> {esc(lab["services"])}</p>'
-        f'<p class="files">{" · ".join(files)}</p>'
+        f'<p class="files">{" · ".join(files)}</p>{banner}'
         f'<details><summary>The steps</summary><ol>{"".join(steps_html)}</ol></details>'
         f"<h3>The prompts</h3>{hint}{''.join(blocks)}"
         f'<section class="ask"><h3>More prompts to try</h3><p>Copy one at a time, adapt it, and verify '
@@ -311,6 +319,9 @@ border:1px solid var(--rule);border-radius:10px;padding:10px 14px;margin:0 0 8px
 .when{flex-basis:100%;font-size:13px;font-weight:700;color:var(--accent)}
 .ask p{color:var(--muted);margin:0 0 10px;font-size:15px}
 footer{margin-top:40px;color:var(--muted);font-size:14px}
+.open{margin:0 0 12px;padding:10px 14px;border-radius:10px;background:var(--accent-bg);
+border:1.5px solid var(--accent);font-size:15px}
+.open code{font:14px ui-monospace,Menlo,Consolas,monospace;font-weight:700}
 .pick{margin:28px 0;padding:18px 20px;border:2px dashed var(--accent);border-radius:12px}
 .pick p{font-size:18px;font-weight:600;margin:0 0 10px}
 .pick h4{margin:14px 0 4px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
