@@ -60,14 +60,16 @@ DOMAIN4 = [
                 "What's interesting about tblAttrition in relation to Left_Company? Give up to five patterns, each with\n"
                 "the numbers and group sizes behind it. Do not change the workbook.\n\n"
                 "ALLOW EDITING:\n"
-                "Copy the patterns you just gave me into Prompt_Log, one row each, marked \"Unverified\".",
+                "Add the patterns you just gave me below the last row of Prompt_Log, one row each, with Decision\n"
+                "set to \"Unverified\".",
             ),
             (
                 "Set the baseline: ask for the overall rate, then ask Copilot to add the two check formulas in empty cells.",
                 "CHAT ONLY:\n"
                 "What is the overall attrition rate in tblAttrition (Left_Company = \"Yes\" divided by all employees)?\n\n"
                 "CHECK (Allow editing):\n"
-                "In empty cells on Prompt_Log, add these formulas with a label beside each, and tell me the results:\n"
+                "On a sheet named Checks (create it if needed), add these formulas with a label beside each,\n"
+                "and tell me the results:\n"
                 "=COUNTIFS(tblAttrition[Left_Company],\"Yes\")\n"
                 "=COUNTIFS(tblAttrition[Left_Company],\"Yes\")/ROWS(tblAttrition[Employee_ID])",
             ),
@@ -83,7 +85,7 @@ DOMAIN4 = [
                 "5) Compa_Ratio below 0.9 vs 0.9 and above;\n"
                 "6) each Work_Mode.\n\n"
                 "CHECK (Allow editing):\n"
-                "In an empty cell on Prompt_Log, add this formula for Engagement_Score below 3 and tell me if it matches:\n"
+                "On the Checks sheet, add this formula for Engagement_Score below 3 and tell me if it matches:\n"
                 "=COUNTIFS(tblAttrition[Engagement_Score],\"<3\",tblAttrition[Left_Company],\"Yes\")/COUNTIFS(tblAttrition[Engagement_Score],\"<3\")",
             ),
             (
@@ -96,7 +98,7 @@ DOMAIN4 = [
                 "and the correlation between Overtime_Hours_Month and Engagement_Score. Explain the method.\n\n"
                 "FOLLOW-UP: Which rows and columns does your code use, and how does it handle blanks?\n\n"
                 "CHECK (Allow editing):\n"
-                "In empty cells on Prompt_Log, add these formulas and tell me if they match your means for leavers:\n"
+                "On the Checks sheet, add these formulas and tell me if they match your means for leavers:\n"
                 "=AVERAGEIFS(tblAttrition[Overtime_Hours_Month],tblAttrition[Left_Company],\"Yes\")\n"
                 "=AVERAGEIFS(tblAttrition[Engagement_Score],tblAttrition[Left_Company],\"Yes\")",
             ),

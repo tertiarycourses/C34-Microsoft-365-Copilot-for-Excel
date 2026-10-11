@@ -19,6 +19,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import course_data as C
 import mock_data
+from lab_prompts import prompt_rows
+from openpyxl import load_workbook
+from openpyxl.styles import Alignment
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
@@ -309,6 +312,26 @@ def build_prompts_txt(lab):
     return "\n".join(out)
 
 
+# =========================================================================== Prompt_Log
+def fill_prompt_log(path, lab):
+    """Pre-fill the workbook's Prompt_Log with every prompt of the lab, in order (Step, Mode, Prompt).
+    The learner asks Copilot to fill in What Copilot did, How I verified and Decision."""
+    wb = load_workbook(path)
+    if "Prompt_Log" not in wb.sheetnames:
+        return
+    ws = wb["Prompt_Log"]
+    rows = [(f"{r['step']} · {r['letter']}", r["mode"], r["text"]) for r in prompt_rows(lab)]
+    rows += [(f"Extra {i}", "Any", pr) for i, (_lbl, pr) in enumerate(lab.get("sample_prompts", []), 1)]
+    top = Alignment(wrap_text=True, vertical="top")
+    for r, vals in enumerate(rows, 2):
+        for c, v in enumerate(vals, 1):
+            ws.cell(row=r, column=c, value=v).alignment = top
+    ws.column_dimensions["A"].width = 10
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 80
+    wb.save(path)
+
+
 # =========================================================================== build
 written = []
 names = [folder_name(l) for l in labs]
@@ -320,6 +343,7 @@ for idx, lab in enumerate(labs):
     mock_data.build_lab_data(lab["num"], folder)
     for rel in lab.get("data_files", []):
         assert os.path.exists(os.path.join(folder, rel)), f"missing mock data {rel} for lab {lab['num']}"
+        fill_prompt_log(os.path.join(folder, rel), lab)
     with open(os.path.join(folder, "README.md"), "w", encoding="utf-8") as f:
         f.write(build_md(lab, topic, names[idx - 1] if idx else None, names[idx + 1] if idx + 1 < len(names) else None))
     with open(os.path.join(folder, "sample-prompts.txt"), "w", encoding="utf-8") as f:

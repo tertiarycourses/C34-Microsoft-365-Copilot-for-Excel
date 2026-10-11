@@ -116,8 +116,8 @@ Review HR_Dashboard before I share it with the leadership team. Does any element
 employee data or a group smaller than 5? Is each KPI labelled with its period and definition?
 
 LOG (Allow editing):
-Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
-How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and
+How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts
