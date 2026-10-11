@@ -251,7 +251,8 @@ def build_pdf(lab, topic, path):
             S += [KeepTogether(block[:lead])] + block[lead:]
 
     S.append(Paragraph("Sample Prompts", ST["h2"]))
-    S.append(P("Use these prompts in the Copilot pane (or adapt them). Name the table and columns, state the output, and "
+    S.append(P(("Use the app labelled for each prompt (or adapt it). " if n == 8 else "Use these prompts in the Copilot pane (or adapt them). ")
+               + "Name the table and columns, state the output, and "
                "always verify the result. The same prompts are in sample-prompts.txt in this lab folder."))
     url = f"{C.PROMPTS_PAGE}#lab-{n}"
     S.append(Paragraph(f'<b>Copy-ready prompts online:</b> <link href="{url}" color="#1F6FEB"><u>{escape(url)}</u></link>',
