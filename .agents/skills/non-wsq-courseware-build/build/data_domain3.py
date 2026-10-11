@@ -1,249 +1,342 @@
-"""Topic 3 labs for C34: Use Copilot to Create Dashboards (BrightPath recruitment and workforce data)."""
+"""Topic 3 labs for C34: Interactive Dashboards with Copilot, Skills and Rules (BrightPath recruitment and workforce data)."""
 
-from mock_data import EXPECTED
+from mock_data import EXPECTED, _lab7
 from data_domain1 import _LOG, _SETUP_STEP
 
-E5 = EXPECTED[5]
-E6 = EXPECTED[6]
-_BM = E5["by_month"]
-_RD = E6["by_dept"]["Recruitment"]
+E7 = EXPECTED[7]
+E8 = EXPECTED[8]
+_BM = E7["by_month"]
+_RD = E8["by_dept"]["Recruitment"]
+_TARGET = sum(t for _m, t in _lab7()[2])
+_HVT = round(E7["hires"] / _TARGET * 100, 1)
+_Q2 = sum(v for k, v in _BM.items() if k >= "2026-04")
+
+RULES_LAB7 = """## DASHBOARD STANDARDS
+This workbook builds BrightPath's H1 2026 recruitment dashboard. Never change tblApps or tblTargets.
+Applications = rows of tblApps. Hires = Furthest_Stage "Hired", counted by Hire_Date month.
+Offer acceptance rate = accepted / (accepted + declined). Pending offers are excluded.
+Avg time to hire = average Time_to_Hire_Days of hires. Cost per hire = total Sourcing_Cost / hires.
+KPI cards are formulas linked to the PivotTables (GETPIVOTDATA) so they respond to slicers - never typed numbers.
+## LAYOUT
+Dashboard sheet: title in A1, "Data as at 2026-06-30" in A2, KPI cards in row 4, charts in a grid below, slicers and the timeline on the right.
+Put every PivotTable on a sheet named Dash_Data.
+Never merge cells. Hide gridlines on the Dashboard sheet.
+## VISUAL STYLE
+Colours: navy #1F4E79 for hires, teal #2A9D8F for targets and comparisons, amber #F4A261 for warnings.
+Every chart title states the finding, e.g. Technology led H1 hiring.
+Money as S$ with no decimals, except Cost per hire with 2 decimals. Rates as % with 1 decimal. Days with 1 decimal."""
+
+RULES_LAB8 = """## WORKFORCE DASHBOARD STANDARDS
+Never change or delete existing rows of tblEmployees.
+Never show Employee_ID, Monthly_Salary or any individual record on a dashboard.
+The 12-month period is 2025-07-01 to 2026-06-30. Active on a date = Hire_Date on or before it and Exit_Date blank or after it.
+Active headcount = employees with Status Active now, so new joiners count as soon as they are added to tblEmployees.
+Attrition rate = exits in the period / ((active on 2025-07-01 + active on 2026-06-30) / 2). New joiners after 2026-06-30 do not change it.
+Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if still active; use 0 for anyone hired after 2026-06-30.
+Do not show any group of fewer than 5 employees. Group it into Other or leave it out.
+## LAYOUT
+Dashboard sheet HR_Dashboard: title in A1, "Data as at 2026-06-30" in A2, KPI cards in row 4, charts in a grid below, slicers on the right.
+Put every PivotTable on a sheet named Dash_Data. Never merge cells. Hide gridlines on HR_Dashboard.
+## VISUAL STYLE
+Colours: navy #1F4E79 for headcount, teal #2A9D8F for hires, amber #F4A261 for exits and attrition.
+Every chart title states the finding. Rates as % with 1 decimal. Years with 1 decimal."""
+
+SKILL_DASHBOARD = """---
+name: hr-workforce-dashboard
+description: Use when I ask for a workforce, headcount or attrition dashboard from an employee table. Builds checks, helper columns, PivotTables, KPI cards, charts and slicers, and verifies every KPI.
+---
+
+# HR workforce dashboard
+
+Build a one-page, interactive workforce dashboard that HR leaders can trust and safely share.
+
+## Before you start
+1. Read the .Rules sheet and follow it. If there is no .Rules sheet, ask me for the period and the KPI definitions.
+2. Find the employee table (e.g. tblEmployees) with Department, Location, Job_Level, Hire_Date, Exit_Date, Exit_Type and Status.
+3. Never change or delete existing rows. Never show Employee_ID, salary or individual records on the dashboard.
+
+## Steps
+1. Add helper columns to the employee table, using the period in the rules:
+   - Active_Start = TRUE if the employee was active on the first day of the period.
+   - Exit_In_Period = TRUE if Exit_Date falls inside the period.
+   - Tenure_Years = years from Hire_Date to Exit_Date, or to the last day of the period if still active, 1 decimal; 0 for anyone hired after the period.
+2. Create a Checks sheet with independent COUNTIFS formulas, label in column A and formula in column B: active headcount (Status Active), headcount at period start, headcount at period end, exits in period, voluntary exits, attrition rate (exits / average of start and end headcount) and hires in period.
+3. Put all PivotTables on a sheet named Dash_Data.
+4. Build the dashboard sheet named in the rules:
+   - Six KPI cards: Active headcount, Exits, Attrition rate, Voluntary attrition rate, Avg tenure of active staff, Hires.
+   - Four charts: active headcount by Department (bar, sorted), attrition rate by Department (bar), hires vs exits by quarter (clustered column), active headcount by Location (bar).
+   - Slicers for Location and Job_Level connected to every PivotTable.
+5. Follow the layout and colours in the rules. Give every chart a title that states the finding.
+
+## Verify before you finish
+- Compare every KPI card with the Checks sheet, with no slicer selected, and report any difference.
+- List any slicer combination that shows fewer than 5 employees.
+- In your reply, give each KPI value and say which checks passed.
+"""
 
 DOMAIN3 = [
-    # ------------------------------------------------------------------ LAB 5
+    # ------------------------------------------------------------------ LAB 7
     dict(
-        num=5,
+        num=7,
         topic=3,
-        title="Build a Recruitment KPI Dashboard with Copilot",
-        duration=45,
+        title="Build an Interactive Recruitment Dashboard with Rules and Skills",
+        theme="Interactive Dashboard",
+        duration=50,
         objective=(
-            "LO3: define recruitment KPIs, use Copilot Plan and Allow editing modes to build a dashboard of KPI cards, "
-            "PivotTables, charts and slicers, and verify every KPI against an independent check"
+            "LO3: combine a .Rules sheet, Plan mode and the chart-design and theme-design skills to build a highly visual "
+            "recruitment dashboard with KPI cards, PivotCharts, slicers and a timeline, and verify every KPI"
         ),
         goal=(
-            "Deliver a one-page H1 2026 recruitment dashboard whose five KPI cards, three charts and two slicers all agree "
-            "with independently calculated checks."
+            "Deliver a one-page H1 2026 recruitment dashboard that looks professional, responds to slicers and a timeline, "
+            "and agrees with independent checks."
         ),
-        workflow=["Define KPIs", "Build checks", "Plan with Copilot", "Build in Edit", "Verify & slice"],
+        workflow=["Write .Rules", "Build checks", "Plan mode", "Skills make it visual", "Slice & verify"],
         desc=(
-            "BrightPath's Head of Recruitment wants one page that shows H1 2026 applications, hires, offer acceptance rate, "
-            "time to hire and cost per hire, by month, sector, source and recruiter. You will write the checks first, ask "
-            "Copilot to plan the dashboard, review the plan against the KPI definitions, let Copilot build it in Allow "
-            "editing mode, and then prove each KPI and slicer works."
+            "BrightPath's Head of Recruitment wants one page that shows H1 2026 applications, hires, offer acceptance, time "
+            "to hire, cost per hire and hires against target, and can be filtered by sector, source, recruiter and date. You "
+            "will put the KPI definitions, layout and colours in a .Rules sheet, so the build prompt stays short. Copilot "
+            "plans the dashboard in Plan mode, builds it, then @chart-design and @theme-design make it look professional. "
+            "Finally you prove that every KPI, slicer and the timeline give the right numbers."
         ),
         build=(
-            "BrightPath_Recruitment_Dashboard_Data.xlsx with a Checks sheet and a Dashboard sheet holding five formula-driven "
-            "KPI cards, charts for hires vs target by month, hires by sector and applications by source, and Sector and "
-            "Recruiter slicers connected to every PivotTable"
+            "BrightPath_Recruitment_Dashboard_Data.xlsx with a .Rules sheet, a Checks sheet, PivotTables on Dash_Data and a "
+            "Dashboard sheet with six formula-driven KPI cards (one with traffic-light colours), four PivotCharts, Sector, "
+            "Source and Recruiter slicers and a Hire_Date timeline"
         ),
-        services="Excel · Copilot (Plan, Allow editing) · PivotTables, PivotCharts, slicers · BrightPath_Recruitment_Dashboard_Data.xlsx",
+        services="Excel · Copilot (Plan, Allow editing, Chat only) · .Rules · @chart-design · @theme-design · PivotCharts, slicers, timeline",
         data_files=["data/BrightPath_Recruitment_Dashboard_Data.xlsx"],
+        extra_files=[("rules-template.txt", RULES_LAB7 + "\n", "the .Rules text to paste into column A")],
         prerequisites=[
-            "Topic 2 completed: you can build and verify PivotTables and charts with Copilot.",
-            "This lab folder's data/BrightPath_Recruitment_Dashboard_Data.xlsx.",
+            "Topic 2 completed: you can write .Rules and call skills with @.",
+            "This lab folder's data workbook and rules-template.txt.",
         ],
         steps=[
             (
                 _SETUP_STEP.format(file="BrightPath_Recruitment_Dashboard_Data.xlsx")
-                + " Read the KPI definitions row on About_This_Data carefully - the dashboard must follow them exactly.",
+                + " Read the KPI definitions on About_This_Data - they go into the rules next.",
                 "Tables : tblApps (600 applications, Jan-Jun 2026) | tblTargets (monthly hire targets)\n"
                 "KPI definitions:\n"
                 "  Applications          = number of rows\n"
-                "  Hires                 = Furthest_Stage = \"Hired\"\n"
+                "  Hires                 = Furthest_Stage = \"Hired\", by Hire_Date month\n"
                 "  Offer acceptance rate = accepted / (accepted + declined)   (Pending excluded)\n"
                 "  Avg time to hire      = average Time_to_Hire_Days of hires\n"
                 "  Cost per hire         = total Sourcing_Cost / hires",
             ),
             (
-                "Before Copilot builds the dashboard, choose Allow editing and ask Copilot to create a Checks sheet with these "
-                "independent KPI formulas, exactly as written. These are the numbers the dashboard must match.",
+                "Write the dashboard's rules first. Select + (Add work content) > Create workbook rules, then replace the "
+                "suggested rules with BrightPath's: paste rules-template.txt into .Rules!A1, or send the prompt below. From now "
+                "on every prompt in this workbook follows these definitions, the layout and the colours.",
+                "ALLOW EDITING:\n"
+                "On the .Rules sheet, replace everything in column A with these rules, one per cell from A1 down.\n"
+                "Keep each ## heading in its own cell. Do not change any other sheet.\n" + RULES_LAB7,
+            ),
+            (
+                "Build the independent checks before the dashboard. These are the numbers the KPI cards must match.",
+                "CHECK (Allow editing):\n"
                 "Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:\n"
                 "A1 Applications        B1 =ROWS(tblApps[Application_ID])\n"
                 "A2 Hires               B2 =COUNTIFS(tblApps[Furthest_Stage],\"Hired\")\n"
                 "A3 Offer acceptance    B3 =COUNTIFS(tblApps[Offer_Accepted],\"Yes\")/(COUNTIFS(tblApps[Offer_Accepted],\"Yes\")+COUNTIFS(tblApps[Offer_Accepted],\"No\"))\n"
                 "A4 Avg time to hire    B4 =AVERAGEIFS(tblApps[Time_to_Hire_Days],tblApps[Furthest_Stage],\"Hired\")\n"
-                "A5 Cost per hire       B5 =SUM(tblApps[Sourcing_Cost])/B2",
+                "A5 Cost per hire       B5 =SUM(tblApps[Sourcing_Cost])/B2\n"
+                "A6 Hires vs target     B6 =B2/SUM(tblTargets[Hire_Target])",
             ),
             (
-                "Choose Plan. Paste the dashboard brief below. Read Copilot's plan: does it use the same KPI definitions (especially "
-                "excluding Pending offers) and count hires by Hire_Date month? Reply with corrections until the plan matches. "
-                "Do not approve yet.",
-                "GOAL: Build a one-page H1 2026 recruitment KPI dashboard on the Dashboard sheet.\n"
-                "CONTEXT: For BrightPath's Head of Recruitment; monthly review meeting.\n"
-                "DATA: tblApps and tblTargets only. Use the KPI definitions on About_This_Data.\n"
-                "CONSTRAINTS: Do not change tblApps or tblTargets. KPI cards must be formulas, not typed numbers.\n"
-                "OUTPUT:\n"
-                "  Row 1: title \"Recruitment Dashboard - Jan to Jun 2026\" and \"Data as at 2026-06-30\".\n"
-                "  Row 3: five KPI cards - Applications, Hires, Offer acceptance rate, Avg time to hire (days),\n"
-                "         Cost per hire (S$).\n"
-                "  Below: (1) column chart of hires by Hire_Date month with a line for Hire_Target from tblTargets,\n"
-                "         (2) bar chart of hires by Sector sorted highest first,\n"
-                "         (3) bar chart of applications by Source.\n"
-                "  Slicers for Sector and Recruiter connected to all PivotTables. Put PivotTables on a sheet Dash_Data.\n"
-                "REVIEW: List each KPI formula you will use before building.",
+                "Switch to Plan mode and send the brief. Because the rules hold the definitions, layout and colours, the brief "
+                "only says what to show. Read the plan: does it exclude Pending offers, count hires by Hire_Date month and put "
+                "PivotTables on Dash_Data? Reply with corrections until it does, then approve it. Watch the steps, and select "
+                "Done when Copilot finishes.",
+                "PLAN MODE:\n"
+                "Build a one-page, highly visual H1 2026 recruitment dashboard on the Dashboard sheet for BrightPath's\n"
+                "Head of Recruitment, following the workbook rules.\n"
+                "KPI cards: Applications, Hires, Offer acceptance rate, Avg time to hire, Cost per hire, Hires vs target %.\n"
+                "Charts: hires by Hire_Date month vs Hire_Target (columns + line); hires by Sector (bar, sorted);\n"
+                "applications by Source (bar, sorted); hires by Recruiter (column).\n"
+                "Interactivity: slicers for Sector, Source and Recruiter and a timeline on Hire_Date, connected to every\n"
+                "PivotTable.",
             ),
             (
-                "When the plan is right, switch to Allow editing and tell Copilot to carry it out. Watch the steps in the pane; "
-                "you can select Stop if it goes off track. When it finishes, open Dash_Data and the Dashboard and review what was created.",
-                "The plan is approved. Build the dashboard exactly as planned.",
+                "Make it visual with skills, one prompt at a time, and keep or undo each change. @chart-design polishes every "
+                "chart; the traffic-light rule makes the target card readable at a glance; @theme-design pulls the page together "
+                "while keeping the rule colours.",
+                "ALLOW EDITING:\n"
+                "@chart-design Review every chart on the Dashboard: titles that state the finding, axis titles, data labels\n"
+                "where they help, and the colours in the workbook rules.\n\n"
+                "FOLLOW-UP:\n"
+                "Colour the Hires vs target % card green at 100% or more, amber from 90% to 99.9% and red below 90%.\n\n"
+                "FOLLOW-UP:\n"
+                "@theme-design Apply a clean, modern theme to the Dashboard that keeps the colours in the workbook rules.",
             ),
             (
-                "Ask Copilot to compare each KPI card with Checks!B1:B5 (with no slicer selected) and show each card's formula. "
-                "Fix any difference with a targeted follow-up prompt - the most common error is including Pending offers.",
+                "Verify. With no slicer or timeline selection, ask Copilot to compare each card with the Checks sheet and show "
+                "the card formulas. Fix any difference with a targeted prompt - the most common error is including Pending offers.",
                 "CHAT ONLY:\n"
-                "Compare each KPI card on the Dashboard with Checks!B1:B5, with no slicer selected. Show each card's\n"
+                "Compare each KPI card on the Dashboard with Checks!B1:B6, with no slicer selected. Show each card's\n"
                 "formula, its value, the Checks value and whether they match.\n\n"
-                "FOLLOW-UP EXAMPLE:\n"
-                "The Offer acceptance rate card must exclude Offer_Accepted = \"Pending\". Change its formula to\n"
-                "accepted / (accepted + declined) and show it as a percentage with 1 decimal.",
+                "ALLOW EDITING (if needed):\n"
+                "The Offer acceptance rate card must exclude Offer_Accepted = \"Pending\", as the workbook rules say.\n"
+                "Fix the card formula.",
             ),
             (
-                "Test interactivity. Ask Copilot to set the Sector slicer to Technology and report every KPI card, then to add "
-                "the COUNTIFS checks for Technology and compare. Finally ask it to clear the slicer.",
-                "ALLOW EDITING:\n"
-                "Set the Sector slicer on the Dashboard to Technology only, then tell me the value on every KPI card.\n\n"
+                "Test the interactivity. Set the Sector slicer to Technology and read the cards, then clear it. Then select "
+                "April to June 2026 on the Hire_Date timeline and read the Hires card, then clear it. Ask Copilot to add the "
+                "checks and compare.",
                 "CHECK (Allow editing):\n"
-                "On the Checks sheet, add these formulas in D1:D2 with labels in C1:C2, and tell me if they match the cards:\n"
+                "On the Checks sheet, add these formulas in D1:D3 with labels in C1:C3, and tell me if they match the\n"
+                "cards when Sector = Technology, and the Hires card when the timeline shows Apr-Jun 2026:\n"
                 "=COUNTIFS(tblApps[Sector],\"Technology\")\n"
-                "=COUNTIFS(tblApps[Sector],\"Technology\",tblApps[Furthest_Stage],\"Hired\")\n\n"
-                "ALLOW EDITING:\n"
-                "Clear the Sector slicer so the dashboard shows all sectors.\n\n"
-                "If a KPI card does not change, ask: \"Make the KPI cards respond to the Sector and Recruiter slicers.\"",
+                "=COUNTIFS(tblApps[Sector],\"Technology\",tblApps[Furthest_Stage],\"Hired\")\n"
+                "=COUNTIFS(tblApps[Hire_Date],\">=\"&DATE(2026,4,1),tblApps[Hire_Date],\"<=\"&DATE(2026,6,30))\n\n"
+                "If a KPI card does not change, ask: \"Link the KPI cards to the PivotTables with GETPIVOTDATA so they respond to the slicers and timeline.\"",
             ),
             (
-                "Polish with one prompt per change, then ask Copilot (Chat only) to review the dashboard for clarity. Ask "
-                "Copilot to log all prompts on Prompt_Log.",
-                "Add a note under the title: \"Source: tblApps; KPI definitions on About_This_Data\".\n"
-                "Use one consistent colour scheme and align the charts in a grid.\n"
-                "CHAT ONLY: Review this dashboard for a Head of Recruitment. What is unclear or missing?\n\n" + _LOG,
+                "Ask Copilot (Chat only) to review the dashboard as the Head of Recruitment would, act on the valid points, and "
+                "log your prompts.",
+                "CHAT ONLY:\n"
+                "Review this dashboard for a Head of Recruitment. What is unclear, missing or potentially misleading?\n"
+                "Does it follow every rule on the .Rules sheet?\n\n" + _LOG,
             ),
         ],
         sample_prompts=[
-            ("Plan", "Plan a recruitment KPI dashboard on the Dashboard sheet from tblApps with KPI cards for applications, hires, offer acceptance rate, average time to hire and cost per hire. List the formulas before building."),
-            ("KPI card", "Create a KPI card that shows Cost per hire = total Sourcing_Cost / hires, formatted as S$ with 2 decimals."),
-            ("Chart vs target", "Create a column chart of hires by Hire_Date month with Hire_Target from tblTargets as a line."),
-            ("Slicers", "Add slicers for Sector and Recruiter and connect them to all PivotTables on Dash_Data."),
-            ("Fix a KPI", "The offer acceptance rate must exclude Pending offers. Update the formula and explain it."),
-            ("Layout", "Arrange the KPI cards in one row and the three charts in a grid below them with equal sizes."),
-            ("Review", "Review this dashboard for a Head of Recruitment. What is unclear, missing or potentially misleading?"),
+            ("Plan", "Plan a recruitment dashboard following the workbook rules. Show me the plan first."),
+            ("KPI card", "Create a KPI card for Cost per hire linked to the PivotTable with GETPIVOTDATA, formatted as S$."),
+            ("Chart skill", "@chart-design Turn the hires-by-month chart into columns for hires and a line for Hire_Target."),
+            ("Timeline", "Add a timeline on Hire_Date and connect it to every PivotTable on Dash_Data."),
+            ("Visual cue", "Add data bars to the hires-by-recruiter table and traffic-light colours to the target card."),
+            ("Theme skill", "@theme-design Apply a modern theme that keeps the colours in the workbook rules."),
+            ("Review", "Does this dashboard follow every rule on the .Rules sheet? List any that it breaks."),
             ("Question", "Which recruiter made the most hires in H1 2026, and what was their average time to hire?"),
         ],
         test=(
-            f"With no slicer selected the KPI cards match Checks: Applications {E5['apps']}, Hires {E5['hires']}, Offer "
-            f"acceptance {E5['oar']}% ({E5['accepted']} accepted of {E5['decided']} decided; {E5['pending']} pending excluded), "
-            f"Avg time to hire {E5['avg_tth']} days, Cost per hire S${E5['cph']:.2f}. Hires by month: "
+            f"With no slicer selected the KPI cards match Checks: Applications {E7['apps']}, Hires {E7['hires']}, Offer "
+            f"acceptance {E7['oar']}% ({E7['accepted']} accepted of {E7['decided']} decided; {E7['pending']} pending excluded), "
+            f"Avg time to hire {E7['avg_tth']} days, Cost per hire S${E7['cph']:.2f}, Hires vs target {_HVT}% "
+            f"({E7['hires']} of {_TARGET}, amber). Hires by month: "
             + ", ".join(f"{k} = {v}" for k, v in _BM.items())
-            + f" (none in 2026-01). {E5['top_sector']} has the most hires ({E5['by_sector'][E5['top_sector']]}). With Sector = "
-            f"Technology, Applications = {E5['tech_apps']}, Hires = {E5['tech_hires']} and Avg time to hire = "
-            f"{E5['tech_avg_tth']:.1f} days. {E5['top_rec']} made the most hires ({E5['top_rec_n']}). No KPI card contains a "
-            "typed number."
+            + f" (none in 2026-01). {E7['top_sector']} has the most hires ({E7['by_sector'][E7['top_sector']]}). With Sector = "
+            f"Technology, Applications = {E7['tech_apps']}, Hires = {E7['tech_hires']} and Avg time to hire = "
+            f"{E7['tech_avg_tth']:.1f} days. With the timeline at Apr-Jun 2026, Hires = {_Q2}. {E7['top_rec']} made the most "
+            f"hires ({E7['top_rec_n']}). No KPI card contains a typed number, and the colours follow the rules."
         ),
-        checkpoint="Keep the workbook in work-c34. Lab 6 builds a second dashboard from the workforce workbook in its own folder.",
+        checkpoint="Keep the workbook in work-c34. Lab 8 turns this dashboard recipe into a reusable skill for workforce data.",
         troubleshooting=[
             (
                 "Copilot builds before you approve the plan.",
-                "You were in Allow editing mode. Undo (Ctrl+Z) or restore from version history, switch to Plan and resubmit.",
+                "You were in Allow editing. Select Undo, switch to Plan mode and resubmit.",
             ),
             (
-                "KPI cards do not change when a slicer is used.",
-                "Cards built with COUNTIFS on tblApps ignore slicers. Ask Copilot to base them on the PivotTables (GETPIVOTDATA) "
-                "or accept that cards show the H1 total and label them so.",
+                "KPI cards do not change with the slicers or timeline.",
+                "Cards built with COUNTIFS on tblApps ignore slicers. Ask Copilot to link them to the PivotTables with GETPIVOTDATA.",
+            ),
+            (
+                "The timeline cannot be added.",
+                "A timeline needs a date field in a PivotTable. Ask Copilot to make sure Hire_Date is a date column and is in "
+                "a PivotTable on Dash_Data.",
             ),
             (
                 "Hires appear in January.",
-                "The chart is counting by Applied_Month. Ask Copilot to group hires by Hire_Date month as the KPI definition says.",
-            ),
-            (
-                "Copilot stops part-way or times out.",
-                "Ask it to continue from the last completed step, or split the build into KPI cards, then charts, then slicers.",
+                "The chart counts by Applied_Month. Ask Copilot to group hires by Hire_Date month, as the rules say.",
             ),
         ],
         challenge=(
-            "Ask Copilot to add a sixth KPI card for 'Hires vs target %' (hires / sum of targets) and conditional formatting "
-            "that turns it red below 90%. Verify it with your own formula."
+            "Ask Copilot to add a small 'What changed' panel under the KPI cards with two sentences that use formulas (for "
+            "example =\"Hires: \"&Checks!B2&\" of \"&SUM(tblTargets[Hire_Target])&\" target\"), so the text updates with the data."
         ),
-        reflection="Which KPI definition was easiest to get subtly wrong, and how would you stop that happening next month?",
+        reflection="Which rule on your .Rules sheet saved you the most prompting, and which visual element makes the dashboard easiest to read?",
     ),
-    # ------------------------------------------------------------------ LAB 6
+    # ------------------------------------------------------------------ LAB 8
     dict(
-        num=6,
+        num=8,
         topic=3,
-        title="Build an Interactive Workforce and Attrition Dashboard",
-        duration=35,
+        title="Turn the Dashboard into a Reusable Skill, Refresh It and Share It Safely",
+        theme="Dashboard Skill, Refresh & Share",
+        duration=45,
         objective=(
-            "LO3: use Copilot to build a refreshable HR workforce dashboard with helper columns, KPI cards, charts and "
-            "slicers, prove it refreshes with new rows, and check it for responsible sharing"
+            "LO3: use Copilot to write a dashboard skill, run it on a workforce workbook with rules, prove the dashboard "
+            "refreshes with new rows, and check it is safe to share"
         ),
         goal=(
-            "Show headcount, 12-month attrition, new hires and tenure by department and location on one interactive page "
-            "that updates correctly when new employees are added."
+            "Build BrightPath's workforce and attrition dashboard from a one-line skill call, prove it updates when new "
+            "joiners arrive, and make sure no small group can be identified."
         ),
-        workflow=["Helper columns", "Checks", "Build dashboard", "Refresh test", "Privacy check"],
+        workflow=["Write .Rules", "Copilot writes the skill", "@hr-workforce-dashboard", "Refresh test", "Privacy & summary"],
         desc=(
-            "BrightPath's HR Director needs a workforce dashboard for the July leadership meeting. You will ask Copilot to add "
-            "period helper columns, type independent checks for headcount and attrition, have Copilot plan and build the "
-            "dashboard with slicers, then append eight July new joiners and refresh to prove the dashboard is live. Finally "
-            "you will check that no slicer combination exposes a group too small to stay anonymous."
+            "BrightPath's HR Director needs the same kind of dashboard every month. Instead of repeating a long brief, you will "
+            "ask Copilot to write an hr-workforce-dashboard skill, save it to OneDrive and run it on the workforce workbook, "
+            "whose .Rules sheet holds the period, the attrition definition and the privacy rule. Then you will append eight "
+            "July joiners and refresh to prove the dashboard is live, check that no slicer combination exposes fewer than 5 "
+            "people, and ask Copilot for a short leadership summary."
         ),
         build=(
-            "BrightPath_Workforce_Headcount.xlsx with helper columns in tblEmployees, a Checks area, and an HR_Dashboard sheet "
-            "showing six KPI cards, headcount and attrition-rate charts by department, hires vs exits by quarter, and Location "
-            "and Job_Level slicers - refresh-tested with new rows"
+            "An hr-workforce-dashboard skill in OneDrive, and BrightPath_Workforce_Headcount.xlsx with a .Rules sheet, helper "
+            "columns, a Checks sheet and an HR_Dashboard with six KPI cards, four charts and Location and Job_Level slicers - "
+            "refresh-tested and privacy-checked"
         ),
-        services="Excel · Copilot (Plan, Allow editing) · PivotTables, slicers, refresh · BrightPath_Workforce_Headcount.xlsx",
+        services="Excel · Copilot (Chat only, Plan, Allow editing) · .Rules · custom skill · PivotTables, slicers, refresh",
         data_files=["data/BrightPath_Workforce_Headcount.xlsx"],
+        extra_files=[("rules-template.txt", RULES_LAB8 + "\n", "the .Rules text to paste into column A"),
+                     ("skills/hr-workforce-dashboard/SKILL.md", SKILL_DASHBOARD,
+                      "ready-made skill to upload if you run short of time")],
         prerequisites=[
-            "Lab 5 completed: you have built and verified a dashboard with Copilot.",
-            "This lab folder's data/BrightPath_Workforce_Headcount.xlsx.",
+            "Lab 6 and Lab 7 completed: you can save a custom skill to OneDrive and build a dashboard with rules.",
+            "This lab folder's data workbook, rules-template.txt and skills/hr-workforce-dashboard/SKILL.md (fallback).",
         ],
         steps=[
             (
                 _SETUP_STEP.format(file="BrightPath_Workforce_Headcount.xlsx")
-                + " Do not touch the New_Joiners_Jul2026 sheet until Step 6.",
+                + " Do not touch the New_Joiners_Jul2026 sheet until the refresh test.",
                 "Table : tblEmployees (420 employees hired since 2019; Status Active or Exited)\n"
                 "Period: 2025-07-01 to 2026-06-30\n"
                 "Attrition rate = exits in period / ((active on 2025-07-01 + active on 2026-06-30) / 2)",
             ),
             (
-                "Choose Allow editing and ask Copilot for three helper columns. Then ask it to explain the Active_Start formula "
-                "and show one employee who exited before 2025-07-01 (Active_Start must be FALSE).",
-                "Add three columns to tblEmployees:\n"
-                "1) Active_Start = TRUE if Hire_Date <= 2025-07-01 and (Exit_Date is blank or Exit_Date > 2025-07-01).\n"
-                "2) Exit_In_Period = TRUE if Exit_Date is between 2025-07-01 and 2026-06-30 inclusive.\n"
-                "3) Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if Exit_Date is blank, 1 decimal.\n\n"
-                "FOLLOW-UP: Explain the Active_Start formula, and show one employee who exited before 2025-07-01\n"
-                "with Hire_Date, Exit_Date and Active_Start.",
+                "Create the workbook rules: + (Add work content) > Create workbook rules, then paste rules-template.txt into "
+                ".Rules!A1 or send the prompt below. Note the privacy rule - the skill will follow it.",
+                "ALLOW EDITING:\n"
+                "On the .Rules sheet, replace everything in column A with these rules, one per cell from A1 down.\n"
+                "Keep each ## heading in its own cell. Do not change any other sheet.\n" + RULES_LAB8,
             ),
             (
-                "Ask Copilot to create a Checks sheet with these independent checks (label in column A, formula in column B), "
-                "exactly as written. These are the numbers the dashboard must match.",
-                "Create a sheet named Checks. Put these labels in column A and formulas in column B exactly as written,\n"
-                "then tell me each result. Build the Attrition rate formula from the cells above it:\n"
-                "Active headcount     =COUNTIFS(tblEmployees[Status],\"Active\")\n"
-                "Headcount 2025-07-01 =COUNTIFS(tblEmployees[Active_Start],TRUE)\n"
-                "Exits in period      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE)\n"
-                "Voluntary exits      =COUNTIFS(tblEmployees[Exit_In_Period],TRUE,tblEmployees[Exit_Type],\"Voluntary\")\n"
-                "Attrition rate       = Exits in period / ((Headcount 2025-07-01 + Active headcount) / 2)\n"
-                "Hires in period      =COUNTIFS(tblEmployees[Hire_Date],\">=\"&DATE(2025,7,1),tblEmployees[Hire_Date],\"<=\"&DATE(2026,6,30))",
-            ),
-            (
-                "Choose Plan, paste the brief, review the plan against the definitions, then switch to Allow editing to build.",
-                "Plan an HR workforce dashboard on the HR_Dashboard sheet from tblEmployees for the HR Director.\n"
-                "KPI cards (formulas): Active headcount, Exits (last 12 months), Attrition rate, Voluntary attrition rate,\n"
-                "Avg tenure of active staff (years), Hires (last 12 months). Use the definitions on About_This_Data.\n"
-                "Charts: active headcount by Department (bar, sorted); attrition rate by Department (bar); hires vs exits\n"
-                "by quarter for the last 12 months (clustered column); active headcount by Location (bar).\n"
-                "Slicers: Location and Job_Level, connected to all PivotTables. Title and \"Data as at 2026-06-30\".\n"
-                "Do not show Employee_ID, salary or individual records on the dashboard.",
-            ),
-            (
-                "Ask Copilot to compare the KPI cards with Checks, and fix any difference with a follow-up prompt. Then ask "
-                "which Location, Job_Level and Department combinations contain fewer than 5 people.",
+                "Let Copilot write the skill. In Chat only, describe the recipe you followed in Lab 7, made general. Read the "
+                "reply and ask for changes until the steps are clear.",
                 "CHAT ONLY:\n"
-                "Compare each KPI card on HR_Dashboard with the Checks sheet and tell me which, if any, do not match.\n\n"
-                "FOLLOW-UP (if needed):\n"
-                "The attrition rate must use average headcount = (Active_Start count + active count) / 2.\n\n"
+                "Write a complete SKILL.md for a Copilot in Excel skill named hr-workforce-dashboard.\n"
+                "Description: Use when I ask for a workforce, headcount or attrition dashboard from an employee table.\n"
+                "Steps:\n"
+                "1) Read the .Rules sheet first and follow it.\n"
+                "2) Add helper columns Active_Start, Exit_In_Period and Tenure_Years using the period in the rules.\n"
+                "3) Create a Checks sheet with independent COUNTIFS formulas for active headcount (Status Active),\n"
+                "   headcount at period start, headcount at period end, exits, voluntary exits, attrition rate and hires.\n"
+                "4) Put all PivotTables on Dash_Data.\n"
+                "5) Build HR_Dashboard: six KPI cards (Active headcount, Exits, Attrition rate, Voluntary attrition rate,\n"
+                "   Avg tenure of active staff, Hires), charts of headcount by Department, attrition rate by Department,\n"
+                "   hires vs exits by quarter and headcount by Location, and slicers for Location and Job_Level.\n"
+                "6) Compare every KPI card with Checks and report any difference.\n"
+                "7) List any slicer combination with fewer than 5 employees.\n"
+                "Return only the SKILL.md text, starting with the --- front matter.",
+            ),
+            (
+                "Save it as before: copy the reply into a plain-text file named SKILL.md, create the folder "
+                "hr-workforce-dashboard in your OneDrive skills folder and upload the file (or upload the ready-made one from "
+                "this lab folder). In Excel select Settings (...) > Manage plugins & skills > Custom skills > Refresh and turn "
+                "the skill on.",
+                "OneDrive : .../skills/hr-workforce-dashboard/SKILL.md\n"
+                "Check    : folder name = name: line = hr-workforce-dashboard",
+            ),
+            (
+                "Run the skill in Plan mode: one line replaces the long brief, because the skill holds the steps and the rules "
+                "hold the definitions. Review the plan, approve it, and select Done when Copilot finishes.",
+                "PLAN MODE:\n"
+                "@hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30.",
+            ),
+            (
+                "Verify. Ask Copilot to compare the KPI cards with the Checks sheet the skill built, and to show the attrition "
+                "formula. Compare both with the Test It values - a skill can build a wrong check too.",
                 "CHAT ONLY:\n"
-                "Which combinations of Location, Job_Level and Department contain fewer than 5 active employees?",
+                "Compare each KPI card on HR_Dashboard with the Checks sheet and tell me which, if any, do not match.\n"
+                "Show the formula behind the Attrition rate card.\n\n"
+                "ALLOW EDITING (if needed):\n"
+                "The attrition rate must use average headcount = (active on 2025-07-01 + active on 2026-06-30) / 2, as the rules say.",
             ),
             (
                 "Refresh test: ask Copilot to append the 8 rows from New_Joiners_Jul2026 to tblEmployees and refresh every "
@@ -253,62 +346,89 @@ DOMAIN3 = [
                 "so the table expands. Then refresh all PivotTables in the workbook and tell me the new Active headcount\n"
                 "and the number of rows in tblEmployees.\n\n"
                 "Expected after refresh:\n"
-                f"Active headcount : {E6['active']} -> {E6['active_after']}\n"
-                f"tblEmployees rows: {E6['rows']} -> {E6['rows_after']}\n"
+                f"Active headcount : {E8['active']} -> {E8['active_after']}\n"
+                f"tblEmployees rows: {E8['rows']} -> {E8['rows_after']}\n"
                 "New joiners by department: "
-                + ", ".join(f"{k} +{v}" for k, v in E6["nj_by_dept"].items()),
+                + ", ".join(f"{k} +{v}" for k, v in E8["nj_by_dept"].items()),
             ),
             (
-                "Ask Copilot (Chat only) to review the dashboard for privacy and clarity, ask it to act on its valid points, and "
-                "ask it to log all prompts on Prompt_Log.",
+                "Check it is safe to share, then ask for a leadership summary that uses only dashboard numbers. Copilot drafts; "
+                "you check every number before it leaves HR. Log your prompts.",
                 "CHAT ONLY:\n"
                 "Review HR_Dashboard before I share it with the leadership team. Does any element expose individual\n"
                 "employee data or a group smaller than 5? Is each KPI labelled with its period and definition?\n\n"
-                + _LOG,
+                "CHAT ONLY:\n"
+                "Write a 5-line summary of HR_Dashboard for BrightPath's leadership team. Use only numbers shown on the\n"
+                "dashboard, and label any explanation as a hypothesis to test.\n\n" + _LOG,
             ),
         ],
         sample_prompts=[
-            ("Helper column", "Add Active_Start = TRUE if Hire_Date <= 2025-07-01 and Exit_Date is blank or after 2025-07-01."),
-            ("Helper column", "Add Tenure_Years from Hire_Date to Exit_Date, or to 2026-06-30 if Exit_Date is blank, rounded to 1 decimal."),
-            ("Plan", "Plan an HR workforce dashboard with KPI cards for active headcount, exits, attrition rate, voluntary attrition, average tenure and hires."),
-            ("Chart", "Create a bar chart of 12-month attrition rate by Department, sorted highest first, with data labels as percentages."),
-            ("Slicers", "Add slicers for Location and Job_Level and connect them to every PivotTable on the dashboard."),
+            ("Write a skill", "Write a SKILL.md named hr-workforce-dashboard that reads the .Rules sheet first and builds a verified workforce dashboard."),
+            ("Run a skill", "@hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30."),
             ("Refresh", "I added rows to tblEmployees. Refresh all PivotTables and tell me which KPI values changed."),
             ("Privacy", "Which slicer combinations show a group of fewer than 5 employees? Suggest how to suppress them."),
             ("Explain", "Explain how the Attrition rate card is calculated, step by step."),
+            ("Improve the skill", "Update the hr-workforce-dashboard SKILL.md so it also adds a timeline on Hire_Date. Return the full file."),
+            ("Summary", "Write a 5-line leadership summary using only the numbers on HR_Dashboard."),
         ],
         test=(
-            f"Before the refresh: Active headcount {E6['active']}, headcount on 2025-07-01 {E6['start_hc']}, exits in period "
-            f"{E6['exits_12m']} ({E6['vol_exits']} voluntary), attrition rate {E6['attrition']}% and voluntary attrition "
-            f"{E6['vol_attrition']}%, hires in period {E6['hires_12m']}, average tenure of active staff about "
-            f"{E6['avg_tenure']} years. {E6['top_attr_dept']} has the highest attrition rate ({_RD['rate']}%, {_RD['exits']} exits) "
-            f"and the largest active headcount ({_RD['hc']}). After appending the July joiners and refreshing, Active headcount "
-            f"shows {E6['active_after']} and tblEmployees has {E6['rows_after']} rows. The dashboard shows no Employee_ID, salary "
-            "or individual record."
+            f"Before the refresh: Active headcount {E8['active']}, headcount on 2025-07-01 {E8['start_hc']}, exits in period "
+            f"{E8['exits_12m']} ({E8['vol_exits']} voluntary), attrition rate {E8['attrition']}% and voluntary attrition "
+            f"{E8['vol_attrition']}%, hires in period {E8['hires_12m']}, average tenure of active staff about "
+            f"{E8['avg_tenure']} years. {E8['top_attr_dept']} has the highest attrition rate ({_RD['rate']}%, {_RD['exits']} "
+            f"exits) and the largest active headcount ({_RD['hc']}). After appending the July joiners and refreshing, Active "
+            f"headcount shows {E8['active_after']} and tblEmployees has {E8['rows_after']} rows. The dashboard shows no "
+            "Employee_ID, salary or individual record, and the skill appears when you type @."
         ),
-        checkpoint="Keep the workbook in work-c34. Topic 4 starts from the attrition-analysis workbook in the Lab 7 folder.",
+        checkpoint=(
+            "You now have two custom skills in OneDrive. Run hr-workforce-dashboard again next month on new data, and improve "
+            "the skill whenever you correct Copilot twice."
+        ),
         troubleshooting=[
             (
                 "The new rows did not join the table and nothing changed on refresh.",
                 "Ask Copilot to resize tblEmployees to include the 8 new rows, then refresh all PivotTables again.",
             ),
             (
-                "Attrition rate is far too high (e.g. 29 / 237).",
-                "The card divides by closing headcount only. Ask Copilot to use the average of opening and closing headcount.",
+                "Attrition shows 12.2% (29 / 237) instead of 13.0%.",
+                "The card divides by closing headcount only. Ask Copilot to use the average of opening and closing headcount, "
+                "then add that wording to the skill.",
+            ),
+            (
+                "The skill ignores the .Rules sheet.",
+                "Check the sheet is named .Rules and is visible, and that step 1 of the skill says to read it. Start a New chat.",
             ),
             (
                 "Helper columns show #VALUE! for blank Exit_Date.",
                 "Ask Copilot to treat blank Exit_Date explicitly, e.g. OR([@Exit_Date]=\"\",[@Exit_Date]>DATE(2025,7,1)).",
             ),
-            (
-                "A chart did not update after the refresh.",
-                "It is a static picture or a range copy. Ask Copilot to replace it with a PivotChart linked to tblEmployees.",
-            ),
         ],
         challenge=(
-            "Ask Copilot to add a Timeline control on Hire_Date and a chart of average Engagement_Score by Department for "
-            "active staff, then check one department's average with AVERAGEIFS."
+            "Improve the skill so it also adds a Timeline on Hire_Date and a chart of average Engagement_Score by Department "
+            "for active staff. Save, refresh and rerun it, then check one department's average with AVERAGEIFS."
         ),
         reflection="What would happen to trust in this dashboard if one leader could filter it down to a single named team member?",
     ),
 ]
+
+# Test-it checklist: (what to check, expected result).
+_CHECKS = {
+    7: [
+        ("Applications and hires", f"{E7['apps']} applications, {E7['hires']} hires (no slicer selected)"),
+        ("Offer acceptance rate", f"{E7['oar']}% = {E7['accepted']} of {E7['decided']}; {E7['pending']} pending excluded"),
+        ("Time to hire, cost per hire", f"{E7['avg_tth']} days; S${E7['cph']:.2f}"),
+        ("Hires vs target (amber)", f"{_HVT}% = {E7['hires']} of {_TARGET}"),
+        ("Slicer: Sector = Technology", f"{E7['tech_apps']} applications, {E7['tech_hires']} hires, {E7['tech_avg_tth']:.1f} days"),
+        ("Timeline: Apr-Jun 2026", f"{_Q2} hires; no KPI card holds a typed number"),
+    ],
+    8: [
+        ("Active headcount", f"{E8['active']} before the refresh"),
+        ("Exits and attrition", f"{E8['exits_12m']} exits ({E8['vol_exits']} voluntary); {E8['attrition']}% attrition"),
+        ("Hires and tenure", f"{E8['hires_12m']} hires; average tenure about {E8['avg_tenure']} years"),
+        ("Highest-attrition department", f"{E8['top_attr_dept']}: {_RD['rate']}% ({_RD['exits']} exits)"),
+        ("Refresh test", f"After adding the July joiners: headcount {E8['active_after']}, {E8['rows_after']} rows"),
+        ("Privacy", "No Employee_ID, salary, individual record or group under 5 on the dashboard"),
+    ],
+}
+for _a in DOMAIN3:
+    _a["checks"] = _CHECKS[_a["num"]]

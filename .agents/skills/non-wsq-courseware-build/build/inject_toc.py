@@ -63,7 +63,10 @@ def main():
     #     the extra pages the injected TOC occupies. offset is 0 for small TOCs
     #     (e.g. the Lesson Plan), so this never regresses single-page documents.
     LINES_PER_PAGE = 44
-    toc_lines = len(entries) + 2            # "Contents" heading + spacing
+    # Long headings wrap in the TOC, so count each entry's wrapped lines
+    # (~88 characters fit beside the dot leader and page number).
+    CHARS_PER_LINE = 88
+    toc_lines = sum(1 + len(text) // CHARS_PER_LINE for _, text, _ in entries) + 2  # + heading/spacing
     toc_pages = max(1, -(-toc_lines // LINES_PER_PAGE))
     offset = toc_pages - 1
     if offset:

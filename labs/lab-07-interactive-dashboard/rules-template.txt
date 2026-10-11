@@ -1,0 +1,14 @@
+## DASHBOARD STANDARDS
+This workbook builds BrightPath's H1 2026 recruitment dashboard. Never change tblApps or tblTargets.
+Applications = rows of tblApps. Hires = Furthest_Stage "Hired", counted by Hire_Date month.
+Offer acceptance rate = accepted / (accepted + declined). Pending offers are excluded.
+Avg time to hire = average Time_to_Hire_Days of hires. Cost per hire = total Sourcing_Cost / hires.
+KPI cards are formulas linked to the PivotTables (GETPIVOTDATA) so they respond to slicers - never typed numbers.
+## LAYOUT
+Dashboard sheet: title in A1, "Data as at 2026-06-30" in A2, KPI cards in row 4, charts in a grid below, slicers and the timeline on the right.
+Put every PivotTable on a sheet named Dash_Data.
+Never merge cells. Hide gridlines on the Dashboard sheet.
+## VISUAL STYLE
+Colours: navy #1F4E79 for hires, teal #2A9D8F for targets and comparisons, amber #F4A261 for warnings.
+Every chart title states the finding, e.g. Technology led H1 hiring.
+Money as S$ with no decimals, except Cost per hire with 2 decimals. Rates as % with 1 decimal. Days with 1 decimal.

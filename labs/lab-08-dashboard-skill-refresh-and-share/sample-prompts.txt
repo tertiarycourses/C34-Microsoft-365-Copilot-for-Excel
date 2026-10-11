@@ -1,0 +1,102 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 8: Turn the Dashboard into a Reusable Skill, Refresh It and Share It Safely
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-8
+
+[1] Write a skill
+Write a SKILL.md named hr-workforce-dashboard that reads the .Rules sheet first and builds a verified workforce dashboard.
+
+[2] Run a skill
+@hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30.
+
+[3] Refresh
+I added rows to tblEmployees. Refresh all PivotTables and tell me which KPI values changed.
+
+[4] Privacy
+Which slicer combinations show a group of fewer than 5 employees? Suggest how to suppress them.
+
+[5] Explain
+Explain how the Attrition rate card is calculated, step by step.
+
+[6] Improve the skill
+Update the hr-workforce-dashboard SKILL.md so it also adds a timeline on Hire_Date. Return the full file.
+
+[7] Summary
+Write a 5-line leadership summary using only the numbers on HR_Dashboard.
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Table : tblEmployees (420 employees hired since 2019; Status Active or Exited)
+Period: 2025-07-01 to 2026-06-30
+Attrition rate = exits in period / ((active on 2025-07-01 + active on 2026-06-30) / 2)
+
+[Step 2]
+ALLOW EDITING:
+On the .Rules sheet, replace everything in column A with these rules, one per cell from A1 down.
+Keep each ## heading in its own cell. Do not change any other sheet.
+## WORKFORCE DASHBOARD STANDARDS
+Never change or delete existing rows of tblEmployees.
+Never show Employee_ID, Monthly_Salary or any individual record on a dashboard.
+The 12-month period is 2025-07-01 to 2026-06-30. Active on a date = Hire_Date on or before it and Exit_Date blank or after it.
+Active headcount = employees with Status Active now, so new joiners count as soon as they are added to tblEmployees.
+Attrition rate = exits in the period / ((active on 2025-07-01 + active on 2026-06-30) / 2). New joiners after 2026-06-30 do not change it.
+Tenure_Years = years from Hire_Date to Exit_Date, or to 2026-06-30 if still active; use 0 for anyone hired after 2026-06-30.
+Do not show any group of fewer than 5 employees. Group it into Other or leave it out.
+## LAYOUT
+Dashboard sheet HR_Dashboard: title in A1, "Data as at 2026-06-30" in A2, KPI cards in row 4, charts in a grid below, slicers on the right.
+Put every PivotTable on a sheet named Dash_Data. Never merge cells. Hide gridlines on HR_Dashboard.
+## VISUAL STYLE
+Colours: navy #1F4E79 for headcount, teal #2A9D8F for hires, amber #F4A261 for exits and attrition.
+Every chart title states the finding. Rates as % with 1 decimal. Years with 1 decimal.
+
+[Step 3]
+CHAT ONLY:
+Write a complete SKILL.md for a Copilot in Excel skill named hr-workforce-dashboard.
+Description: Use when I ask for a workforce, headcount or attrition dashboard from an employee table.
+Steps:
+1) Read the .Rules sheet first and follow it.
+2) Add helper columns Active_Start, Exit_In_Period and Tenure_Years using the period in the rules.
+3) Create a Checks sheet with independent COUNTIFS formulas for active headcount (Status Active), headcount at period start, headcount at period end, exits, voluntary exits, attrition rate and hires.
+4) Put all PivotTables on Dash_Data.
+5) Build HR_Dashboard: six KPI cards (Active headcount, Exits, Attrition rate, Voluntary attrition rate,
+   Avg tenure of active staff, Hires), charts of headcount by Department, attrition rate by Department, hires vs exits by quarter and headcount by Location, and slicers for Location and Job_Level.
+6) Compare every KPI card with Checks and report any difference.
+7) List any slicer combination with fewer than 5 employees.
+Return only the SKILL.md text, starting with the --- front matter.
+
+[Step 4]
+OneDrive : .../skills/hr-workforce-dashboard/SKILL.md
+Check    : folder name = name: line = hr-workforce-dashboard
+
+[Step 5]
+PLAN MODE:
+@hr-workforce-dashboard Build the workforce dashboard for the 12 months ending 2026-06-30.
+
+[Step 6]
+CHAT ONLY:
+Compare each KPI card on HR_Dashboard with the Checks sheet and tell me which, if any, do not match.
+Show the formula behind the Attrition rate card.
+
+ALLOW EDITING (if needed):
+The attrition rate must use average headcount = (active on 2025-07-01 + active on 2026-06-30) / 2, as the rules say.
+
+[Step 7]
+ALLOW EDITING:
+Copy the 8 data rows in New_Joiners_Jul2026!A2:L9 to the first empty rows directly below tblEmployees so the table expands. Then refresh all PivotTables in the workbook and tell me the new Active headcount and the number of rows in tblEmployees.
+
+Expected after refresh:
+Active headcount : 237 -> 245
+tblEmployees rows: 420 -> 428
+New joiners by department: Recruitment +2, Sales & Client Services +2, IT +4
+
+[Step 8]
+CHAT ONLY:
+Review HR_Dashboard before I share it with the leadership team. Does any element expose individual employee data or a group smaller than 5? Is each KPI labelled with its period and definition?
+
+CHAT ONLY:
+Write a 5-line summary of HR_Dashboard for BrightPath's leadership team. Use only numbers shown on the dashboard, and label any explanation as a hypothesis to test.
+
+LOG (Allow editing):
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.

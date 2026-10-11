@@ -42,7 +42,8 @@ BRAND=RGBColor(0x1F,0x6F,0xEB); DARK=RGBColor(0x11,0x18,0x27); GREY=RGBColor(0x5
 HEADER_FILL="1F6FEB"; TOPIC_FILL="E8F0FE"; BREAK_FILL="FFF4E5"; LUNCH_FILL="FDE9D9"; ASSESS_FILL="E8F7EE"
 
 def lab_titles(nums):
-    return "; ".join(f"Lab {a['num']}: {a['title']}" for a in ACT if a['num'] in nums)
+    return "; ".join(f"Lab {a['num']}" + (f" ({a['theme']})" if a.get("theme") else "") + f": {a['title']}"
+                     for a in ACT if a['num'] in nums)
 
 # ------------------------------------------------ schedule
 # NON-WSQ: no assessment blocks. The schedule is supplied by course_data.SCHEDULE
@@ -102,6 +103,7 @@ for k,v in info:
     prevent_row_split(t.rows[-1])
     prodoc._shade_cell(c[0],TOPIC_FILL)
     c[1].text=""; c[1].paragraphs[0].add_run(v).font.size=Pt(10)
+prodoc.set_col_widths(t,[Inches(1.7),Inches(4.8)])
 
 H("Learning Outcomes",1)
 doc.add_paragraph("On completion of this course, learners will be able to:")
@@ -144,8 +146,7 @@ for day,(theme,rows) in SCHEDULE.items():
         set_cell(cells[2],text,bold=(kind=="topic"),size=9.5,fill=fill)
         if kind!="lunch": training+=mins
     # widths
-    for row in tbl.rows:
-        row.cells[0].width=Inches(1.15); row.cells[1].width=Inches(0.9); row.cells[2].width=Inches(4.75)
+    prodoc.set_col_widths(tbl,[Inches(1.1),Inches(0.85),Inches(4.55)])
     # `training` excludes lunch but still counts tea breaks, so report both it and
     # the instructional total (tea breaks removed) — the latter is the figure the
     # advertised course duration is based on.
@@ -174,6 +175,7 @@ for tp in C.TOPICS:
     coverage=tp.get("weighting") or f"{len(acts)} of {_total_labs} labs ({round(100*len(acts)/_total_labs)}%)"
     set_cell(cells[1],coverage,size=9.5,fill=TOPIC_FILL)
     set_cell(cells[2],", ".join(f"Lab {a['num']}" for a in acts),size=9.5)
+prodoc.set_col_widths(tt,[Inches(3.4),Inches(1.3),Inches(1.8)])
 
 prodoc.add_page_numbers(doc)
 prodoc.enable_update_fields(doc)

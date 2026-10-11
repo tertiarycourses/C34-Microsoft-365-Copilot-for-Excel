@@ -28,6 +28,7 @@ def _load_domains():
     return acts
 ACT=_load_domains()
 import prodoc
+from lab_prompts import reflow
 def _find_repo(start):
     env=os.environ.get("COURSE_REPO")
     if env and os.path.isdir(env): return env
@@ -131,70 +132,94 @@ if _SETUP:
 
 # ---------------- per-topic, per-lab ----------------
 TOPICS_BY_NUM={t["num"]:t for t in C.TOPICS}
+def _lg_section(sec):
+    h2(sec["title"])
+    p(sec["definition"])
+    p(sec["why"])
+    h3("How it works")
+    bullets(sec.get("how",[]))
+    h3("Worked example")
+    bullets(sec.get("example",[]))
+    h3("Decision guide")
+    uses=sec.get("use_when",[])
+    avoids=sec.get("avoid_when",[])
+    rows=[]
+    for i in range(max(len(uses),len(avoids))):
+        rows.append((uses[i] if i<len(uses) else "",avoids[i] if i<len(avoids) else ""))
+    table(["Use when","Avoid when"],rows)
+    if sec.get("quality"):
+        h3("Practitioner quality lens")
+        bullets([f"{heading}: {body}" for heading,body in sec["quality"]])
+    if sec.get("sources"):
+        h3("Authoritative references")
+        bullets(sec["sources"])
+    _tour=getattr(C,"INTERFACE_TOUR",None)
+    if _tour and _tour.get("after")==sec["title"]:
+        h3(_tour["title"])
+        bullets([f"{x[0]} — {x[1]}" for x in _tour["items"]])
+        if _tour.get("models"):
+            h3(_tour.get("models_title","Choosing a Model"))
+            bullets([f"{x[0]} — {x[1]}" for x in _tour["models"]])
+    rule()
+
+def _lg_lab(a):
+    h2(f"Lab {a['num']}" + (f" · {a['theme']}" if a.get("theme") else "") + f" — {a['title']}")
+    p(f"Learning outcome: {a['objective']}.")
+    p(f"Goal: {a.get('goal',a['desc'])}")
+    p(a["desc"])
+    h3("What you'll build")
+    p(a["build"]+f"   (Tools: {a['services']}.)")
+    if a.get("prerequisites"):
+        h3("Prerequisites")
+        bullets(a["prerequisites"])
+    h3("Step-by-step")
+    # Prefer the detailed README steps. The LG never shows YouTube reference
+    # links — videos live in the labs/ READMEs only.
+    st=_readme_steps(a["num"]) or [(instr,reflow(cmd) if cmd.strip() else cmd) for (instr,cmd) in a["steps"]]
+    st=[(si,sc) for (si,sc) in st if "youtube" not in sc.lower() and "youtube" not in si.lower()]
+    steps(st)
+    if a.get("sample_prompts"):
+        h3("Sample prompts")
+        table(["Purpose","Prompt"],a["sample_prompts"])
+    h3("Test it")
+    if a.get("checks"):
+        table(["Check","Expected result"],a["checks"])
+    else:
+        p(a["test"])
+    if a.get("checkpoint"):
+        h3("Checkpoint and rejoin point")
+        p(a["checkpoint"])
+    if a.get("troubleshooting"):
+        h3("Troubleshooting")
+        table(["If this happens","Fix"],a["troubleshooting"])
+    if a.get("challenge"):
+        h3("Challenge")
+        p(a["challenge"])
+    if a.get("reflection"):
+        h3("Reflection")
+        p(a["reflection"])
+    note(f"The lab folder labs/lab-{a['num']:02d}-*/ holds the instruction PDF with sample prompts, "
+         f"sample-prompts.txt and the mock-data workbook ({', '.join(a.get('data_files',[])) or 'none'})"
+         + "".join(f", plus {rel} ({desc})" for rel,_t,desc in a.get("extra_files",[])) + ". "
+         + getattr(C,"LAB_NOTE","Use only accounts and data you are authorised to use."))
+    rule()
+
 for t in C.TOPICS:
     h1(f"Topic {t['code']} — {t['title']}" + (f"  ({t['weighting']})" if t.get("weighting") else ""))
     p(t["subtitle"])
     h3("Key concepts")
     bullets([f"{x[0]} — {x[1]}" if isinstance(x,tuple) else x for x in t["concepts"]])
-    for sec in t.get("sections",[]):
-        h2(sec["title"])
-        p(sec["definition"])
-        p(sec["why"])
-        h3("How it works")
-        bullets(sec.get("how",[]))
-        h3("Worked example")
-        bullets(sec.get("example",[]))
-        h3("Decision guide")
-        uses=sec.get("use_when",[])
-        avoids=sec.get("avoid_when",[])
-        rows=[]
-        for i in range(max(len(uses),len(avoids))):
-            rows.append((uses[i] if i<len(uses) else "",avoids[i] if i<len(avoids) else ""))
-        table(["Use when","Avoid when"],rows)
-        if sec.get("quality"):
-            h3("Practitioner quality lens")
-            bullets([f"{heading}: {body}" for heading,body in sec["quality"]])
-        if sec.get("sources"):
-            h3("Authoritative references")
-            bullets(sec["sources"])
-        rule()
+    # Interleave like the deck: concepts for Lab n, then Lab n.
+    _secs=t.get("sections",[])
+    for sec in [x for x in _secs if not x.get("lab")]:
+        _lg_section(sec)
     for a in [x for x in ACT if x["topic"]==t["num"]]:
-        h2(f"Lab {a['num']} — {a['title']}")
-        p(f"Learning outcome: {a['objective']}.")
-        p(f"Goal: {a.get('goal',a['desc'])}")
-        p(a["desc"])
-        h3("What you'll build")
-        p(a["build"]+f"   (Tools: {a['services']}.)")
-        if a.get("prerequisites"):
-            h3("Prerequisites")
-            bullets(a["prerequisites"])
-        h3("Step-by-step")
-        # Prefer the detailed README steps. The LG never shows YouTube reference
-        # links — videos live in the labs/ READMEs only.
-        st=_readme_steps(a["num"]) or [(instr,cmd) for (instr,cmd) in a["steps"]]
-        st=[(si,sc) for (si,sc) in st if "youtube" not in sc.lower() and "youtube" not in si.lower()]
-        steps(st)
-        if a.get("sample_prompts"):
-            h3("Sample prompts")
-            table(["Purpose","Prompt"],a["sample_prompts"])
-        h3("Test it")
-        p(a["test"])
-        if a.get("checkpoint"):
-            h3("Checkpoint and rejoin point")
-            p(a["checkpoint"])
-        if a.get("troubleshooting"):
-            h3("Troubleshooting")
-            table(["If this happens","Fix"],a["troubleshooting"])
-        if a.get("challenge"):
-            h3("Challenge")
-            p(a["challenge"])
-        if a.get("reflection"):
-            h3("Reflection")
-            p(a["reflection"])
-        note(f"The lab folder labs/lab-{a['num']:02d}-*/ holds the instruction PDF with sample prompts, "
-             f"sample-prompts.txt and the mock-data workbook ({', '.join(a.get('data_files',[])) or 'none'}). "
-             + getattr(C,"LAB_NOTE","Use only accounts and data you are authorised to use."))
-        rule()
+        _lab_secs=[x for x in _secs if x.get("lab")==a["num"]]
+        if _lab_secs:
+            p(f"Concepts for Lab {a['num']}: "+", ".join(x["title"] for x in _lab_secs)+".")
+        for sec in _lab_secs:
+            _lg_section(sec)
+        _lg_lab(a)
     _recaps=getattr(C,"TOPIC_RECAPS",{}).get(t["num"],[])
     if _recaps:
         h2(f"Topic {t['code']} Recap - Mapped to Learning Outcomes")
@@ -248,7 +273,7 @@ def render_md():
         elif kind=="steps":
             for i,(instr,cmd) in enumerate(rest[0],1):
                 out.append(f"{i}. {instr}")
-                if cmd: out+=["",f"   ```bash",f"   {cmd}","   ```",""]
+                if cmd: out+=["","   ```text"]+[("   "+l).rstrip() for l in cmd.split("\n")]+["   ```",""]
             out.append("")
         elif kind=="code": out+=["```bash",rest[0],"```",""]
         elif kind=="note": out+=[f"> **Note:** {rest[0]}",""]

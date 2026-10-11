@@ -51,13 +51,19 @@ REPO = _find_repo(HERE)
 ASSETS = os.path.join(os.path.dirname(HERE), "assets")   # co-located with the skill
 
 # ---------------- palette (matches reference) ----------------
-BLUE=RGBColor(0x1F,0x6F,0xEB); TEAL=RGBColor(0x10,0xB9,0x81); AMBER=RGBColor(0xF5,0x9E,0x0B)
-INK=RGBColor(0x16,0x1B,0x26); GREY=RGBColor(0x5B,0x63,0x72); LIGHT=RGBColor(0xF5,0xF8,0xFC)
-WHITE=RGBColor(0xFF,0xFF,0xFF); LINE=RGBColor(0xE2,0xE8,0xF0); VIOLET=RGBColor(0x7C,0x3A,0xED)
-ORANGE=RGBColor(0xEA,0x58,0x0C); RED=RGBColor(0xDC,0x26,0x26)
+# Charcoal / cream / burnt-orange design system (same as the Tertiary
+# "Multi AI Agents Workflow" deck). BLUE keeps its name but is the primary accent.
+BLUE=RGBColor(0xD9,0x77,0x57); TEAL=RGBColor(0x3A,0x7D,0x7B); AMBER=RGBColor(0xC2,0x60,0x3F)
+INK=RGBColor(0x21,0x20,0x1C); GREY=RGBColor(0x6B,0x68,0x62)
+LIGHT=RGBColor(0xFF,0xFF,0xFE)   # card fill; rect() draws this as a rounded, bordered card
+WHITE=RGBColor(0xFF,0xFF,0xFF); LINE=RGBColor(0xDC,0xD8,0xCF); VIOLET=RGBColor(0x5B,0x4B,0x8A)
+ORANGE=RGBColor(0xD9,0x77,0x57); RED=RGBColor(0xB4,0x48,0x3A)
+CREAM=RGBColor(0xFA,0xF9,0xF5); CHARCOAL=RGBColor(0x21,0x20,0x1C)
+ON_DARK=RGBColor(0xB9,0xB4,0xA9); FOOT_DARK=RGBColor(0x8A,0x86,0x7D)
+TITLE_FONT="Cambria"; BODY_FONT="Calibri"
 # Per-topic accent themes for the section covers — cycled so ANY number of
 # topics gets a distinct colour without hard-coding a specific course.
-_ACCENTS=[ORANGE,RED,BLUE,TEAL,VIOLET,AMBER]
+_ACCENTS=[ORANGE,TEAL,VIOLET,AMBER]
 CARD_COLORS=[BLUE,TEAL,VIOLET]
 TOPIC_THEME={t["num"]:_ACCENTS[i%len(_ACCENTS)] for i,t in enumerate(C.TOPICS)}
 # Topic → its labs. Hoisted here (the WSQ engine defined it late) so the admin
@@ -75,7 +81,7 @@ DK_GREEN= RGBColor(0x4A,0xDE,0x80)   # success/test-it accents
 
 # Module-level theme switch — dark "masterclass" theme for the ENTIRE deck.
 THEME={"dark":False}
-def _bg():   return DK_BG    if THEME["dark"] else WHITE
+def _bg():   return DK_BG    if THEME["dark"] else CREAM
 def _panel():return DK_PANEL if THEME["dark"] else LIGHT
 def _ink():  return DK_IVORY if THEME["dark"] else INK
 def _grey(): return DK_DIM   if THEME["dark"] else GREY
@@ -91,21 +97,29 @@ BLANK=prs.slide_layouts[6]
 
 def slide(): return prs.slides.add_slide(BLANK)
 def rect(s,x,y,w,h,color,line=None):
-    sp=s.shapes.add_shape(1,x,y,w,h); sp.fill.solid(); sp.fill.fore_color.rgb=color
+    card=(color==LIGHT and not THEME["dark"])          # panels render as white rounded cards
+    sp=s.shapes.add_shape(5 if card else 1,x,y,w,h); sp.fill.solid(); sp.fill.fore_color.rgb=color
+    if card:
+        sp.adjustments[0]=min(0.06,0.06*Inches(4)/max(1,min(w,h))); line=LINE
     if line is None: sp.line.fill.background()
     else: sp.line.color.rgb=line; sp.line.width=Pt(1)
-    sp.shadow.inherit=False; return sp
+    sp.shadow.inherit=False; _flat(sp); return sp
+def _flat(sp):
+    """Drop the theme shape style so no default shadow/effect is rendered (flat cards)."""
+    st=sp._element.find('{http://schemas.openxmlformats.org/presentationml/2006/main}style')
+    if st is not None: sp._element.remove(st)
 def oval(s,x,y,w,h,color):
     sp=s.shapes.add_shape(9,x,y,w,h); sp.fill.solid(); sp.fill.fore_color.rgb=color
-    sp.line.fill.background(); sp.shadow.inherit=False; return sp
-def txt(s,x,y,w,h,runs,align=PP_ALIGN.LEFT,anchor=MSO_ANCHOR.TOP,space=4):
+    sp.line.fill.background(); sp.shadow.inherit=False; _flat(sp); return sp
+def txt(s,x,y,w,h,runs,align=PP_ALIGN.LEFT,anchor=MSO_ANCHOR.TOP,space=4,font=None):
     tb=s.shapes.add_textbox(x,y,w,h); tf=tb.text_frame; tf.word_wrap=True; tf.vertical_anchor=anchor
     for i,line in enumerate(runs):
         p=tf.paragraphs[0] if i==0 else tf.add_paragraph()
         p.alignment=align; p.space_after=Pt(space)
         for t,sz,col,bold in line:
             r=p.add_run(); r.text=t; r.font.size=Pt(sz); r.font.bold=bold
-            r.font.color.rgb=col; r.font.name="Arial"
+            r.font.color.rgb=col
+            r.font.name=font or (TITLE_FONT if (bold and sz>=17) else BODY_FONT)
     return tb
 def bullets(s,x,y,w,h,items,size=18,color=None,gap=10,mcolor=BLUE):
     tb=s.shapes.add_textbox(x,y,w,h); tf=tb.text_frame; tf.word_wrap=True
@@ -116,25 +130,31 @@ def bullets(s,x,y,w,h,items,size=18,color=None,gap=10,mcolor=BLUE):
         text=it[0] if isinstance(it,tuple) else it
         r=p.add_run(); r.text=("•  " if lvl==0 else "–  ")+text
         r.font.size=Pt(size if lvl==0 else size-2); r.font.color.rgb=body if lvl==0 else _grey()
-        r.font.name="Arial"; r.font.bold=(lvl==0 and isinstance(it,tuple) and len(it)>2 and it[2])
+        r.font.name=BODY_FONT; r.font.bold=(lvl==0 and isinstance(it,tuple) and len(it)>2 and it[2])
     return tb
 
 PAGE={"n":0}
-def footer(s):
-    PAGE["n"]+=1
-    txt(s,Inches(0.4),Inches(7.05),Inches(7.5),Inches(0.35),
-        [[(f"{C.SHORT_TITLE}  ·  {C.COURSE_CODE}",9,_grey(),False)]])
-    txt(s,Inches(5.0),Inches(7.05),Inches(3.3),Inches(0.35),
-        [[("© 2026 Tertiary Infotech Academy Pte Ltd",9,_grey(),False)]],align=PP_ALIGN.CENTER)
-    txt(s,Inches(12.4),Inches(7.05),Inches(0.6),Inches(0.35),
-        [[(str(PAGE["n"]),9,_grey(),False)]],align=PP_ALIGN.RIGHT)
+def footer(s,dark=False):
+    PAGE["n"]+=1; fc=FOOT_DARK if dark else _grey()
+    txt(s,Inches(0.5),Inches(7.08),Inches(6.2),Inches(0.3),
+        [[("© Tertiary Infotech Academy Pte Ltd",9,fc,False)]])
+    txt(s,Inches(7.0),Inches(7.08),Inches(5.3),Inches(0.3),
+        [[(f"{C.SHORT_TITLE}  ·  {C.COURSE_CODE}",9,fc,False)]],align=PP_ALIGN.RIGHT)
+    txt(s,Inches(12.43),Inches(7.08),Inches(0.5),Inches(0.3),
+        [[(str(PAGE["n"]),9,fc,False)]],align=PP_ALIGN.RIGHT)
+def dark_bg(s):
+    """Charcoal canvas with the two signature circles (cover, dividers, closing)."""
+    rect(s,0,0,SW,SH,CHARCOAL)
+    oval(s,Inches(10.4),Inches(-1.6),Inches(4.6),Inches(4.6),ORANGE)
+    oval(s,Inches(11.6),Inches(4.4),Inches(3.4),Inches(3.4),TEAL)
 def head(s,title,kicker=None,kcolor=BLUE):
-    rect(s,0,0,SW,SH,_bg()); rect(s,0,0,Inches(0.28),Inches(1.55),_acc(kcolor))
-    if kicker: txt(s,Inches(0.85),Inches(0.48),Inches(11.9),Inches(0.4),[[(kicker,14,_acc(kcolor),True)]])
-    # Auto-fit the title so long lab titles never wrap into the divider rule below.
-    L=len(str(title)); tsize = 29 if L<=42 else (25 if L<=56 else 21)
-    txt(s,Inches(0.85),Inches(0.9),Inches(11.95),Inches(0.82),[[(title,tsize,_ink(),True)]],anchor=MSO_ANCHOR.MIDDLE)
-    rect(s,Inches(0.85),Inches(1.8),Inches(11.63),Inches(0.02),_line())
+    rect(s,0,0,SW,SH,_bg())
+    # Small orange kicker, then a Cambria title - no side bar, no divider rule.
+    if kicker: txt(s,Inches(0.85),Inches(0.42),Inches(11.9),Inches(0.32),[[(str(kicker).upper(),12,_acc(BLUE),True)]])
+    # Auto-fit the title so long lab titles stay on one line.
+    L=len(str(title)); tsize = 30 if L<=46 else (26 if L<=58 else 22)
+    txt(s,Inches(0.85),Inches(0.78),Inches(11.95),Inches(0.85),[[(title,tsize,_ink(),False)]],
+        anchor=MSO_ANCHOR.MIDDLE,font=TITLE_FONT)
     return s
 def _logo(name):
     p=os.path.join(ASSETS,name)
@@ -142,32 +162,27 @@ def _logo(name):
 
 # ---------------- slide templates ----------------
 def cover():
-    s=slide(); rect(s,0,0,SW,SH,_bg())
-    rect(s,0,0,SW,Inches(0.22),BLUE); rect(s,0,Inches(7.28),SW,Inches(0.22),TEAL)
-    org=_logo("tertiary-infotech-logo.png")
-    if org: s.shapes.add_picture(org,Inches(0.85),Inches(0.7),height=Inches(1.05))
-    # course badge (top-right) — optional course badge asset; never a WSQ badge
-    badge=_logo("course-badge.png")
-    if badge:
-        s.shapes.add_picture(badge,Inches(10.05),Inches(0.6),width=Inches(2.5))
-    txt(s,Inches(0.9),Inches(2.3),Inches(12),Inches(0.6),[[("COURSE SLIDES",16,_acc(BLUE),True)]])
-    txt(s,Inches(0.9),Inches(2.85),Inches(12.0),Inches(1.9),[[(C.TITLE,40,_ink(),True)]])
-    rect(s,Inches(0.92),Inches(4.75),Inches(2.4),Inches(0.06),TEAL)
-    txt(s,Inches(0.9),Inches(5.05),Inches(12),Inches(1.4),
-        [[(f"Course Code: {C.COURSE_CODE}",16,_grey(),False)],
-         [("Conducted by Tertiary Infotech Academy Pte Ltd  ·  UEN 201200696W",14,_grey(),False)]],space=6)
-    txt(s,Inches(0.9),Inches(6.5),Inches(12),Inches(0.4),[[(f"Version {C.VERSION}  ·  {C.VERSION_DATE}",12,_grey(),False)]])
-    txt(s,Inches(0.9),Inches(6.85),Inches(12),Inches(0.34),[[("© 2026 Tertiary Infotech Academy Pte Ltd. All rights reserved.  ·  www.tertiarycourses.com.sg",10,_grey(),False)]])
+    s=slide(); dark_bg(s)
+    txt(s,Inches(0.9),Inches(1.5),Inches(8.5),Inches(0.4),
+        [[(f"NON-WSQ COURSE  •  {C.COURSE_CODE}",14,ORANGE,True)]],font=BODY_FONT)
+    txt(s,Inches(9.6),Inches(1.5),Inches(3.13),Inches(0.4),
+        [[(f"Version {C.VERSION}  ·  {C.VERSION_DATE}",13,ON_DARK,False)]],align=PP_ALIGN.RIGHT)
+    txt(s,Inches(0.85),Inches(2.0),Inches(11.2),Inches(2.6),[[(C.TITLE,52,WHITE,True)]],font=TITLE_FONT)
+    txt(s,Inches(0.9),Inches(5.7),Inches(11),Inches(0.8),
+        [[("Tertiary Infotech Academy Pte Ltd",15,WHITE,True)],[(C.UEN,13,ON_DARK,False)]],font=BODY_FONT,space=2)
+    txt(s,Inches(0.9),Inches(6.75),Inches(11.5),Inches(0.35),
+        [[("www.tertiarycourses.com.sg   |   enquiry@tertiaryinfotech.com   |   +65 6100 0613",12,ON_DARK,False)]])
+    txt(s,Inches(7.83),Inches(6.95),Inches(5.0),Inches(0.3),
+        [[("© Tertiary Infotech Academy Pte Ltd",9,FOOT_DARK,False)]],align=PP_ALIGN.RIGHT)
 
 def section(kicker,title,n,sub="",accent=BLUE):
-    s=slide(); rect(s,0,0,SW,SH,_bg()); rect(s,0,0,Inches(0.28),SH,accent)
-    rect(s,Inches(0.85),Inches(2.5),Inches(0.14),Inches(2.0),accent)
-    txt(s,Inches(1.25),Inches(2.55),Inches(11),Inches(0.6),[[(kicker,18,accent,True)]])
-    txt(s,Inches(1.25),Inches(3.0),Inches(11.4),Inches(1.6),[[(title,40,_ink(),True)]])
-    if sub: txt(s,Inches(1.27),Inches(4.55),Inches(11),Inches(0.8),[[(sub,16,_grey(),False)]])
-    ghost=DK_FAINT if THEME["dark"] else RGBColor(0xE2,0xE8,0xF0)
-    txt(s,Inches(10.0),Inches(0.7),Inches(2.8),Inches(1.6),[[(n,72,ghost,True)]],align=PP_ALIGN.RIGHT)
-    footer(s)
+    s=slide(); dark_bg(s)
+    txt(s,Inches(0.9),Inches(2.05),Inches(9.2),Inches(0.45),[[(str(kicker).upper(),14,ORANGE,True)]],font=BODY_FONT)
+    txt(s,Inches(0.85),Inches(2.5),Inches(9.4),Inches(1.9),[[(title,40,WHITE,False)]],
+        anchor=MSO_ANCHOR.MIDDLE,font=TITLE_FONT)
+    rect(s,Inches(0.92),Inches(4.6),Inches(1.25),Inches(0.07),accent if accent!=VIOLET else ORANGE)
+    if sub: txt(s,Inches(0.9),Inches(4.85),Inches(9.2),Inches(1.2),[[(sub,15,ON_DARK,False)]])
+    footer(s,dark=True)
 def content(title,items,kicker=None,size=20):
     # HARD RULE: no bullet-wall slides — every content slide renders as numbered
     # visual cards (LIGHT card, accent bar, number chip), never plain bullets.
@@ -181,34 +196,37 @@ def content(title,items,kicker=None,size=20):
     for idx,it in enumerate(xs):
         r,c=divmod(idx,cols)
         cx=x0+c*(cw+gap); cy=y0+r*(ch+gap)
-        rect(s,cx,cy,cw,ch,_panel()); rect(s,cx,cy,Inches(0.07),ch,_acc(BLUE))
+        rect(s,cx,cy,cw,ch,_panel()); rect(s,cx,cy,cw,Inches(0.07),_acc(BLUE))
         oval(s,cx+Inches(0.2),int(cy+ch/2-Inches(0.19)),Inches(0.38),Inches(0.38),_acc(BLUE))
         txt(s,cx+Inches(0.2),int(cy+ch/2-Inches(0.17)),Inches(0.38),Inches(0.34),
             [[(str(idx+1),13,DK_BG if THEME["dark"] else WHITE,True)]],align=PP_ALIGN.CENTER)
         txt(s,cx+Inches(0.74),cy+Inches(0.08),cw-Inches(0.98),ch-Inches(0.16),
             [[(it,fs,_ink(),False)]],anchor=MSO_ANCHOR.MIDDLE)
     footer(s); return s
-def two_col(title,left,right,kicker=None,lhead="",rhead=""):
+def two_col(title,left,right,kicker=None,lhead="",rhead="",size=16):
     s=head(slide(),title,kicker)
-    rect(s,Inches(0.85),Inches(1.95),Inches(5.7),Inches(4.7),_panel()); rect(s,Inches(6.95),Inches(1.95),Inches(5.55),Inches(4.7),_panel())
+    rect(s,Inches(0.85),Inches(1.95),Inches(5.7),Inches(4.7),_panel()); rect(s,Inches(6.95),Inches(1.95),Inches(5.53),Inches(4.7),_panel())
+    rect(s,Inches(0.85),Inches(1.95),Inches(5.7),Inches(0.07),_acc(BLUE)); rect(s,Inches(6.95),Inches(1.95),Inches(5.53),Inches(0.07),_acc(TEAL))
     if lhead: txt(s,Inches(1.1),Inches(2.15),Inches(5.2),Inches(0.4),[[(lhead,16,_acc(BLUE),True)]])
     if rhead: txt(s,Inches(7.2),Inches(2.15),Inches(5.0),Inches(0.4),[[(rhead,16,_acc(TEAL),True)]])
-    bullets(s,Inches(1.1),Inches(2.7),Inches(5.2),Inches(3.8),left,size=16,color=_ink())
-    bullets(s,Inches(7.2),Inches(2.7),Inches(5.05),Inches(3.8),right,size=16,color=_ink(),mcolor=TEAL); footer(s); return s
-def cards3(title,cards,kicker):
-    s=head(slide(),title,kicker); xs=[Inches(0.85),Inches(5.0),Inches(9.15)]
-    for i,c in enumerate(cards[:3]):
-        x=xs[i]; col=c[0]
-        rect(s,x,Inches(1.95),Inches(3.65),Inches(4.7),_panel()); rect(s,x,Inches(1.95),Inches(3.65),Inches(0.12),col)
-        txt(s,x+Inches(0.25),Inches(2.2),Inches(3.2),Inches(0.6),[[(c[1],19,col,True)]])
-        bullets(s,x+Inches(0.25),Inches(2.95),Inches(3.2),Inches(3.4),c[2],size=14,color=_ink(),mcolor=col,gap=9)
+    bullets(s,Inches(1.1),Inches(2.7),Inches(5.2),Inches(3.8),left,size=size,color=_ink())
+    bullets(s,Inches(7.2),Inches(2.7),Inches(5.05),Inches(3.8),right,size=size,color=_ink(),mcolor=TEAL); footer(s); return s
+def cards3(title,cards,kicker,size=14):
+    # 1-3 cards share the width of the title rule (0.85in -> 12.48in) exactly.
+    s=head(slide(),title,kicker); cards=cards[:3]; k=max(1,len(cards)); gap=Inches(0.2)
+    cw=int((Inches(11.63)-gap*(k-1))/k)
+    for i,c in enumerate(cards):
+        x=Inches(0.85)+i*(cw+gap); col=c[0]
+        rect(s,x,Inches(1.95),cw,Inches(4.7),_panel()); rect(s,x,Inches(1.95),cw,Inches(0.07),col)
+        txt(s,x+Inches(0.25),Inches(2.2),cw-Inches(0.45),Inches(0.6),[[(c[1],19,col,True)]])
+        bullets(s,x+Inches(0.25),Inches(2.95),cw-Inches(0.45),Inches(3.4),c[2],size=size,color=_ink(),mcolor=col,gap=9)
     footer(s); return s
 def big_statement(line1,line2,kicker,color=BLUE):
-    s=slide(); rect(s,0,0,SW,SH,_bg()); rect(s,0,0,Inches(0.28),SH,color)
-    txt(s,Inches(1.1),Inches(2.2),Inches(11),Inches(0.5),[[(kicker,16,color,True)]])
-    txt(s,Inches(1.1),Inches(2.8),Inches(11.3),Inches(2.4),[[(line1,38,_ink(),True)]])
-    if line2: txt(s,Inches(1.12),Inches(4.9),Inches(11),Inches(1.2),[[(line2,20,_grey(),False)]])
-    footer(s); return s
+    s=slide(); dark_bg(s)
+    txt(s,Inches(1.0),Inches(2.0),Inches(9.2),Inches(0.5),[[(str(kicker).upper(),14,ORANGE,True)]],font=BODY_FONT)
+    txt(s,Inches(0.95),Inches(2.55),Inches(9.3),Inches(2.3),[[(line1,40,WHITE,True)]],font=TITLE_FONT)
+    if line2: txt(s,Inches(1.0),Inches(4.95),Inches(9.2),Inches(1.4),[[(line2,18,ON_DARK,False)]])
+    footer(s,dark=True); return s
 import math
 PALETTE=[BLUE,TEAL,VIOLET,AMBER]
 """Max tiles per slide. The grid divides a fixed-height area by the row count,
@@ -244,7 +262,7 @@ def tile_grid(title,items,kicker=None,cols=2,size=15,icons=None,accent=BLUE,_sta
         g=_start+i          # global index across continuation slides
         r=i//cols; c=i%cols
         x=int(X0+(cw+gx)*c); y=int(Y0+(ch+gy)*r); col=PALETTE[g%len(PALETTE)]
-        rect(s,x,y,cw,ch,_panel()); rect(s,x,y,Inches(0.1),ch,col)
+        rect(s,x,y,cw,ch,_panel()); rect(s,x,y,cw,Inches(0.07),col)
         oval(s,x+Inches(0.28),int(y+ch/2-bd/2),bd,bd,col)
         ic=icons[i] if icons else str(g+1)
         txt(s,x+Inches(0.28),int(y+ch/2-bd/2),bd,bd,[[(ic,19,WHITE,True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
@@ -262,7 +280,7 @@ def flow_h(title,steps,kicker=None,color=BLUE):
     cw=int((TOTW-gap*(n-1))/n); y=Inches(2.55); ch=Inches(3.15); bd=Inches(0.82)
     for i,st in enumerate(steps):
         x=int(X0+(cw+gap)*i)
-        rect(s,x,y,cw,ch,_panel()); rect(s,x,y,cw,Inches(0.1),color)
+        rect(s,x,y,cw,ch,_panel()); rect(s,x,y,cw,Inches(0.07),color)
         oval(s,int(x+cw/2-bd/2),int(y+Inches(0.42)),bd,bd,color)
         txt(s,int(x+cw/2-bd/2),int(y+Inches(0.42)),bd,bd,[[(str(i+1),30,WHITE,True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
         txt(s,x+Inches(0.16),int(y+Inches(1.55)),cw-Inches(0.32),int(ch-Inches(1.7)),[[(st,14,_ink(),False)]],align=PP_ALIGN.CENTER)
@@ -285,19 +303,43 @@ def trainer_slide(kicker,name,role,rows,initials,accent=BLUE):
     n=len(rows); gy=Inches(0.2); th=int((rh-gy*(n-1))/n)
     for i,(label,val) in enumerate(rows):
         y=int(ry+(th+gy)*i); col=PALETTE[i%len(PALETTE)]
-        rect(s,rx,y,rw,th,_panel()); rect(s,rx,y,Inches(0.1),th,col)
+        rect(s,rx,y,rw,th,_panel()); rect(s,rx,y,rw,Inches(0.07),col)
         vruns=[(val,14,_ink(),False)] if val else [("____________________________________________",13,_line(),False)]
         txt(s,rx+Inches(0.32),y,rw-Inches(0.6),th,
             [[(label.upper(),11,col,True)],vruns],anchor=MSO_ANCHOR.MIDDLE,space=3)
     footer(s); return s
+def trainer_profile(prof):
+    """'About the Trainer' (reference design): charcoal name card on the left,
+    icon rows on the right, LinkedIn / GitHub along the bottom."""
+    s=head(slide(),"About the Trainer","INTRODUCTION")
+    def icon(name,x,y,d,col):
+        oval(s,x,y,d,d,col)
+        f=os.path.join(ASSETS,"icons",f"{name}.png")
+        if os.path.exists(f):
+            k=int(d*0.52); s.shapes.add_picture(f,int(x+(d-k)/2),int(y+(d-k)/2),k,k)
+    cx,cy,cw=Inches(0.85),Inches(1.9),Inches(3.6)
+    sp=s.shapes.add_shape(5,cx,cy,cw,cw); sp.fill.solid(); sp.fill.fore_color.rgb=CHARCOAL
+    sp.line.fill.background(); sp.adjustments[0]=0.06; _flat(sp)
+    icon("person",int(cx+(cw-Inches(0.7))/2),Inches(2.3),Inches(0.7),ORANGE)
+    txt(s,cx,Inches(3.2),cw,Inches(0.6),[[(prof["name"],22,WHITE,True)]],align=PP_ALIGN.CENTER,font=TITLE_FONT)
+    txt(s,cx,Inches(3.75),cw,Inches(0.4),[[(prof["role"],13,ORANGE,False)]],align=PP_ALIGN.CENTER)
+    for i,(ic,text) in enumerate(prof.get("points",[])):
+        y=Inches(2.0)+i*Inches(0.88)
+        icon(ic,Inches(4.85),y,Inches(0.55),TEAL)
+        txt(s,Inches(5.6),y-Inches(0.17),Inches(7.0),Inches(0.9),[[(text,15,_ink(),False)]],anchor=MSO_ANCHOR.MIDDLE)
+    for i,(ic,text) in enumerate(prof.get("links",[])):
+        x=Inches(4.85)+i*Inches(4.4); y=Inches(5.57)
+        icon(ic,x,y,Inches(0.55),ORANGE)
+        txt(s,x+Inches(0.75),y-Inches(0.03),Inches(3.4),Inches(0.6),[[(text,15,_ink(),False)]],anchor=MSO_ANCHOR.MIDDLE)
+    footer(s); return s
 def activity_overview(tag,title,desc,build,services,kicker,workflow=None):
     s=head(slide(),title,kicker,kcolor=TEAL)
-    rect(s,Inches(0.85),Inches(1.85),Inches(1.7),Inches(0.5),_acc(TEAL))
+    rect(s,Inches(0.85),Inches(1.85),Inches(1.7),Inches(0.5),_acc(BLUE))
     txt(s,Inches(0.85),Inches(1.9),Inches(1.7),Inches(0.4),[[(tag,16,DK_BG if THEME["dark"] else WHITE,True)]],align=PP_ALIGN.CENTER)
     # Auto-fit the description so long lab goals never clip into the panel below.
     dL=len(str(desc)); dsize = 21 if dL<=200 else (17 if dL<=320 else 15)
-    txt(s,Inches(0.85),Inches(2.55),Inches(11.7),Inches(1.25),[[(desc,dsize,_ink(),False)]])
-    rect(s,Inches(0.85),Inches(4.0),Inches(11.7),Inches(2.5),_panel())
+    txt(s,Inches(0.85),Inches(2.55),Inches(11.63),Inches(1.25),[[(desc,dsize,_ink(),False)]])
+    rect(s,Inches(0.85),Inches(4.0),Inches(11.63),Inches(2.5),_panel()); rect(s,Inches(0.85),Inches(4.0),Inches(0.07),Inches(2.5),_acc(BLUE))
     txt(s,Inches(1.1),Inches(4.18),Inches(11),Inches(0.35),[[("You'll build",14,_acc(BLUE),True)]])
     bL=len(str(build)); bsize=18 if bL<=120 else (16 if bL<=190 else 14)
     txt(s,Inches(1.1),Inches(4.48),Inches(11),Inches(0.72),[[(build,bsize,_ink(),True)]])
@@ -585,6 +627,24 @@ def shot(title,img,kicker=None,caption=""):
     if caption:
         txt(s,Inches(0.85),Inches(6.68),Inches(11.6),Inches(0.35),[[(caption,12,_grey(),False)]],align=PP_ALIGN.CENTER)
     footer(s); return s
+def shot_callouts(title,img,items,kicker=None,accent=BLUE):
+    """Portrait UI screenshot on the left, numbered (label, caption) callouts on the right."""
+    s=head(slide(),title,kicker,kcolor=accent)
+    from PIL import Image as _Im
+    iw,ih=_Im.open(img).size
+    H=Inches(4.75); W=int(H*iw/ih); x=Inches(0.85); y=Inches(1.98)
+    rect(s,x-Inches(0.05),y-Inches(0.05),W+Inches(0.1),H+Inches(0.1),_line())
+    s.shapes.add_picture(img,x,y,height=H)
+    rx=x+W+Inches(0.4); rw=Inches(12.48)-rx
+    n=len(items); gy=Inches(0.12); th=int((H-gy*(n-1))/n); bd=Inches(0.42)
+    for i,(label,cap) in enumerate(items):
+        ty=int(y+(th+gy)*i); col=PALETTE[i%len(PALETTE)]
+        rect(s,rx,ty,rw,th,_panel()); rect(s,rx,ty,rw,Inches(0.07),col)
+        oval(s,rx+Inches(0.2),int(ty+th/2-bd/2),bd,bd,col)
+        txt(s,rx+Inches(0.2),int(ty+th/2-bd/2),bd,bd,[[(str(i+1),14,WHITE,True)]],align=PP_ALIGN.CENTER,anchor=MSO_ANCHOR.MIDDLE)
+        txt(s,rx+Inches(0.8),ty,rw-Inches(1.0),th,[[(label,14,_ink(),True)],[(cap,12,_grey(),False)]],
+            anchor=MSO_ANCHOR.MIDDLE,space=2)
+    footer(s); return s
 def test_slide(act_title,text,kicker):
     s=head(slide(),act_title,kicker,TEAL)
     rect(s,Inches(0.85),Inches(2.3),Inches(11.7),Inches(2.8),DK_PANEL if THEME["dark"] else RGBColor(0xE8,0xF7,0xEE))
@@ -603,8 +663,11 @@ cover()
 
 # ---------------- ADMIN ----------------
 section("COURSE ADMINISTRATION","Welcome & Housekeeping","")
-tile_grid("Course Trainer Profiles",getattr(C,"TRAINER_TEAM",[]),
-          kicker=f"TRAINERS LISTED FOR {C.COURSE_CODE}",cols=2,size=15,accent=BLUE)
+if getattr(C,"TRAINER_PROFILE",None):
+    trainer_profile(C.TRAINER_PROFILE)
+elif getattr(C,"TRAINER_TEAM",None):
+    tile_grid("Course Trainer Profiles",C.TRAINER_TEAM,
+              kicker=f"TRAINERS LISTED FOR {C.COURSE_CODE}",cols=2,size=15,accent=BLUE)
 content("Let's Know Each Other",getattr(C,"ICE_BREAKER",[
  "Your name and organisation / role.",
  "Your experience with this subject (if any).",
@@ -618,7 +681,7 @@ _dl=flow_h("Access Course Materials",[
  f"Open the {C.COURSE_CODE} course page or the trainer-supplied Drive folder",
  "Open the courseware links for this course",
  "Download the Slides, Learner Guide and Lesson Plan",
- f"Open the Activities folder for all {len(ACTIVITIES)} lab folders",
+ f"Open the labs folder for all {len(ACTIVITIES)} lab folders",
  "Keep the files together as you work"],kicker="COURSE MATERIALS")
 # Course-page URL as a wide caption (kept out of the narrow chips so it never wraps mid-token)
 txt(_dl,Inches(0.85),Inches(6.5),Inches(11.6),Inches(0.4),
@@ -675,7 +738,8 @@ def _topics_by_day():
 
 _BY_DAY=_topics_by_day()
 _TB={t["num"]:t for t in C.TOPICS}
-_left=[(f"Day 1 — {C.DAY_THEMES[1]}",0)]+[_topic_line(_TB[n]) for n in _BY_DAY.get(1,[]) if n in _TB]
+_left=([(_topic_line(t)[0],0) for t in C.TOPICS] if C.DAYS==1 else
+       [(f"Day 1 — {C.DAY_THEMES[1]}",0)]+[_topic_line(_TB[n]) for n in _BY_DAY.get(1,[]) if n in _TB])
 _inst=getattr(C,"INSTRUCTIONAL_MINUTES",getattr(C,"DAY_MINUTES",480))
 if C.DAYS==1:
     _right=[
@@ -691,6 +755,13 @@ else:
     _rhead=f"Day {_d2}"
 two_col(f"Lesson Plan — {C.DAYS} Day{'s' if C.DAYS>1 else ''}, {_inst*C.DAYS/60:g} instructional hours",
         _left,_right,kicker="SCHEDULE",lhead="Course sequence",rhead=_rhead)
+# COURSE_OVERVIEW["after_schedule"] lists overview parts shown right after the
+# Lesson Plan slide (e.g. the course roadmap) instead of in the concepts section.
+_AFTER_SCHED=set((getattr(C,"COURSE_OVERVIEW",None) or {}).get("after_schedule",[]))
+if "pillars" in _AFTER_SCHED and C.COURSE_OVERVIEW.get("pillars"):
+    cards3(C.COURSE_OVERVIEW.get("pillars_title","What You'll Build"),
+           [(CARD_COLORS[i%3],t,b) for i,(t,b) in enumerate(C.COURSE_OVERVIEW["pillars"])],
+           kicker="COURSE ROADMAP")
 # Learning-outcome tiles built straight from course_data. Optional per-course
 # short titles via course_data.LO_TITLES; otherwise fall back to "LO1", "LO2", …
 _LO_TITLES=getattr(C,"LO_TITLES",[])
@@ -712,27 +783,33 @@ flow_h("How You'll Learn",[
 # framing via optional course_data fields; nothing here is tied to a specific
 # subject, so the same engine builds any non-WSQ course.
 _OVERVIEW=getattr(C,"COURSE_OVERVIEW",None)
-if _OVERVIEW:
-    section("CORE CONCEPTS",_OVERVIEW.get("section_title","Course Fundamentals"),"")
-    if _OVERVIEW.get("concepts"):
-        tile_grid(_OVERVIEW.get("concepts_title","Key Concepts"),_OVERVIEW["concepts"],
-                  kicker="OVERVIEW",cols=2,size=15)
-    if _OVERVIEW.get("framework"):
-        tile_grid(_OVERVIEW.get("framework_title","The Framework"),_OVERVIEW["framework"],
+# COURSE_OVERVIEW["move_to_first_topic"] lists parts (statement, pillars, arc,
+# deep_dives, ...) rendered at the start of the first topic instead of here.
+_MOVED=set((_OVERVIEW or {}).get("move_to_first_topic",[]))
+def _overview_parts(want):
+    O=_OVERVIEW
+    if "concepts" in want and O.get("concepts"):
+        tile_grid(O.get("concepts_title","Key Concepts"),O["concepts"],kicker="OVERVIEW",cols=2,size=15)
+    if "framework" in want and O.get("framework"):
+        tile_grid(O.get("framework_title","The Framework"),O["framework"],
                   kicker="THE BUILDING BLOCKS",cols=2,size=14)
-    if _OVERVIEW.get("statement"):
-        st=_OVERVIEW["statement"]
+    if "statement" in want and O.get("statement"):
+        st=O["statement"]
         big_statement(st.get("headline",""),st.get("body",""),st.get("kicker",""),color=BLUE)
-    if _OVERVIEW.get("pillars"):
-        cards3(_OVERVIEW.get("pillars_title","What You'll Build"),
-               [(CARD_COLORS[i%3],t,b) for i,(t,b) in enumerate(_OVERVIEW["pillars"])],
+    if "pillars" in want and O.get("pillars"):
+        cards3(O.get("pillars_title","What You'll Build"),
+               [(CARD_COLORS[i%3],t,b) for i,(t,b) in enumerate(O["pillars"])],
                kicker="COURSE ROADMAP")
-    if _OVERVIEW.get("arc"):
-        content(_OVERVIEW.get("arc_title","How Every Lab Progresses"),_OVERVIEW["arc"],
-                kicker="THE LEARNING ARC")
-    for _deep in _OVERVIEW.get("deep_dives",[]):
-        tile_grid(_deep["title"],_deep["items"],
-                  kicker=_deep.get("kicker","CONCEPT DEEP DIVE"),cols=2,size=14,accent=BLUE)
+    if "arc" in want and O.get("arc"):
+        content(O.get("arc_title","How Every Lab Progresses"),O["arc"],kicker="THE LEARNING ARC")
+    if "deep_dives" in want:
+        for _deep in O.get("deep_dives",[]):
+            tile_grid(_deep["title"],_deep["items"],
+                      kicker=_deep.get("kicker","CONCEPT DEEP DIVE"),cols=2,size=14,accent=BLUE)
+_PARTS=[p for p in ["concepts","framework","statement","pillars","arc","deep_dives"] if p not in _AFTER_SCHED]
+if _OVERVIEW and [p for p in _PARTS if p not in _MOVED]:
+    section("CORE CONCEPTS",_OVERVIEW.get("section_title","Course Fundamentals"),"")
+    _overview_parts([p for p in _PARTS if p not in _MOVED])
 
 # ---------------- TOPICS + ACTIVITIES ----------------
 # Optional per-lab screenshot slides. A course drops images into
@@ -747,63 +824,117 @@ def _lab_extras(num):
             shot(f"{label}",p,kicker=f"LAB {num} · SCREENSHOT",caption=cap)
 
 
+# Concept slides for one sub-topic. `tag` is the kicker prefix: 'LAB n' when the
+# section is taught right before lab n, else 'TOPIC nn'.
+def _render_section(t,sec,accent,tag):
+    _b=sec.get("brief")
+    if _b:
+        # Slide-ready brief: one 3-card concept slide + one "Try it" slide.
+        # The full definition/why/how/example text lives in the Learner Guide.
+        # brief["single"]: one explainer slide only (no 3-card concept slide).
+        if not _b.get("single"):
+            cards3(sec["title"],[(accent,"WHAT IT IS",[_b["what"]]),
+                                 (TEAL,"WHY IT MATTERS",[_b["why"]]),
+                                 (VIOLET,"CHECK IT",[_b["check"]])],
+                   kicker=f"{tag} · CONCEPT",size=19)
+        _chars=sum(len(x) for x in _b["prompts"])
+        _tt=sec["title"] if _b.get("single") else f"{_b.get('try_title','Try It in Copilot')} — {sec['title']}"
+        two_col(_tt,_b["prompts"],_b.get("verify",[]),
+                kicker=f"{tag} · {_b.get('kicker','HOW TO USE IT')}",
+                lhead=_b.get("try_head","TYPE THIS IN COPILOT"),rhead=_b.get("check_head","THEN CHECK"),
+                size=16 if _chars<=330 else 15)
+        _tour=getattr(C,"INTERFACE_TOUR",None)
+        if _tour and _tour.get("after")==sec["title"]:
+            _img=os.path.join(_SHOTDIR,_tour.get("screenshot",""))
+            if _tour.get("screenshot") and os.path.isfile(_img):
+                shot_callouts(_tour["title"],_img,_tour["items"],kicker=f"{tag} · INTERFACE",accent=accent)
+            else:
+                tile_grid(_tour["title"],_tour["items"],kicker=f"{tag} · INTERFACE",cols=2,size=15,accent=accent)
+            if _tour.get("models"):
+                tile_grid(_tour.get("models_title","Choosing a Model"),_tour["models"],
+                          kicker=f"{tag} · INTERFACE",cols=2,size=16,accent=accent)
+        return
+    cards3(
+        sec["title"],
+        [
+            (accent,"WHAT",[sec["definition"]]),
+            (TEAL,"WHY IT MATTERS",[sec["why"]]),
+            (VIOLET,"HUMAN CHECK",[
+                "Ground the task in approved facts.",
+                "Review evidence, privacy, rights and tone.",
+                "Approve, edit or stop before use.",
+            ]),
+        ],
+        kicker=f"{tag} · CONCEPT",
+    )
+    flow_h(
+        f"How It Works — {sec['title']}",
+        sec.get("how",[]),
+        kicker=f"{tag} · PROCESS",
+        color=accent,
+    )
+    _decision=[]
+    if sec.get("use_when"):
+        _decision.append(("Use when",0,True))
+        _decision.extend((x,1) for x in sec["use_when"])
+    if sec.get("avoid_when"):
+        _decision.append(("Avoid when",0,True))
+        _decision.extend((x,1) for x in sec["avoid_when"])
+    two_col(
+        f"In Practice — {sec['title']}",
+        sec.get("example",[]),
+        _decision,
+        kicker=f"{tag} · WORKED EXAMPLE",
+        lhead="WORKED EXAMPLE",
+        rhead="DECISION GUIDE",
+    )
+    if sec.get("quality"):
+        cards3(
+            f"Quality Lens — {sec['title']}",
+            [
+                (CARD_COLORS[i % len(CARD_COLORS)], heading, [body])
+                for i, (heading, body) in enumerate(sec["quality"])
+            ],
+            kicker=f"{tag} · PRACTITIONER CONTROL",
+        )
+
+# All slides for one lab: overview, screenshots, sample prompts and checks.
+def _render_lab(t,a):
+    activity_overview(
+        f"LAB {a['num']}", a["title"], a["desc"], a["build"], a["services"],
+        kicker=(f"LAB {a['num']} THEME · {a['theme'].upper()}" if a.get("theme") else f"TOPIC {t['code']} · HANDS-ON"),
+        workflow=a.get("workflow", []),
+    )
+    _lab_extras(a["num"])
+    if a.get("sample_prompts"):
+        content(f"Sample Prompts — Lab {a['num']}",
+                [f"{lbl}: {pr}" for lbl,pr in a["sample_prompts"][:5]],
+                kicker=f"LAB {a['num']} · PROMPTS TO TRY",size=14)
+    # Keep the deck concept-first: the overview above carries objective,
+    # context, outcome and key workflow; click-by-click detail lives in the
+    # aligned lab Markdown and Learner Guide.
+    if a.get("checks"):
+        # Checklist of (what to check, expected result) - easier to follow than a paragraph.
+        tile_grid(f"Check Your Results — Lab {a['num']}", a["checks"],
+                  kicker=f"LAB {a['num']} · VERIFY", cols=2, size=15, accent=TEAL)
+    else:
+        test_slide(a["title"], a["test"], kicker=f"LAB {a['num']} · VERIFY")
+
 for t in C.TOPICS:
     accent=TOPIC_THEME.get(t["num"],BLUE)
     section(f"TOPIC {t['code']}", t["title"], t["code"], t["subtitle"], accent=accent)
+    if _MOVED and t is C.TOPICS[0]:
+        _overview_parts([p for p in _PARTS if p in _MOVED])
     # concept slide(s) — visual tile grid instead of a bullet list (topic-accented)
     # Non-WSQ: no exam, so the kicker shows the topic's share of course time
     # (course_data may omit `weighting` entirely).
     _w=t.get("weighting")
     # tile_grid paginates past TILE_MAX items, so a long concept list is safe here.
     tile_grid(f"Key Concepts — {t['title']}", t["concepts"],
-              kicker=(f"COURSE COVERAGE {_w}" if _w else "KEY CONCEPTS"),
-              cols=2, size=14, accent=accent)
+              kicker=(f"KEY CONCEPTS · {_w.upper()}" if _w else "KEY CONCEPTS"),
+              cols=2, size=16, accent=accent)
     # Every stated sub-topic receives full concept teaching before its labs:
     # what/why, a visual process, a worked example and a use/avoid comparison.
-    for sec in t.get("sections",[]):
-        cards3(
-            sec["title"],
-            [
-                (accent,"WHAT",[sec["definition"]]),
-                (TEAL,"WHY IT MATTERS",[sec["why"]]),
-                (VIOLET,"HUMAN CHECK",[
-                    "Ground the task in approved facts.",
-                    "Review evidence, privacy, rights and tone.",
-                    "Approve, edit or stop before use.",
-                ]),
-            ],
-            kicker=f"TOPIC {t['code']} · CONCEPT",
-        )
-        flow_h(
-            f"How It Works — {sec['title']}",
-            sec.get("how",[]),
-            kicker=f"TOPIC {t['code']} · PROCESS",
-            color=accent,
-        )
-        _decision=[]
-        if sec.get("use_when"):
-            _decision.append(("Use when",0,True))
-            _decision.extend((x,1) for x in sec["use_when"])
-        if sec.get("avoid_when"):
-            _decision.append(("Avoid when",0,True))
-            _decision.extend((x,1) for x in sec["avoid_when"])
-        two_col(
-            f"In Practice — {sec['title']}",
-            sec.get("example",[]),
-            _decision,
-            kicker=f"TOPIC {t['code']} · WORKED EXAMPLE",
-            lhead="WORKED EXAMPLE",
-            rhead="DECISION GUIDE",
-        )
-        if sec.get("quality"):
-            cards3(
-                f"Quality Lens — {sec['title']}",
-                [
-                    (CARD_COLORS[i % len(CARD_COLORS)], heading, [body])
-                    for i, (heading, body) in enumerate(sec["quality"])
-                ],
-                kicker=f"TOPIC {t['code']} · PRACTITIONER CONTROL",
-            )
     acts=TOPIC_ACTS[t["num"]]
     # a card summary of the labs in this topic
     # Split the topic's labs into at most three cards. Only emit cards that
@@ -811,24 +942,20 @@ for t in C.TOPICS:
     # cards rather than padding the row with empty "—" placeholders.
     third=max(1,(len(acts)+2)//3)
     groups=[g for g in (acts[i:i+third] for i in range(0,len(acts),third)) if g][:3]
-    cards=[(CARD_COLORS[gi], _lab_range(g).strip(" ()"), [a["title"] for a in g])
+    cards=[(CARD_COLORS[gi], _lab_range(g).strip(" ()"),
+            [x for a in g for x in ([(a["theme"],0,True),(a["title"],1)] if a.get("theme") else [a["title"]])])
            for gi,g in enumerate(groups)]
     cards3(f"Hands-On Labs — {t['title']}", cards, kicker="WHAT YOU'LL DO")
     # per activity
+    # Interleave: concepts for Lab n, then Lab n. Sections without a `lab` key
+    # are taught first, before the topic's first lab.
+    _secs=t.get("sections",[])
+    for sec in [x for x in _secs if not x.get("lab")]:
+        _render_section(t,sec,accent,f"TOPIC {t['code']}")
     for a in acts:
-        activity_overview(
-            f"LAB {a['num']}", a["title"], a["desc"], a["build"], a["services"],
-            kicker=f"TOPIC {t['code']} · HANDS-ON", workflow=a.get("workflow", []),
-        )
-        _lab_extras(a["num"])
-        if a.get("sample_prompts"):
-            content(f"Sample Prompts — Lab {a['num']}",
-                    [f"{lbl}: {pr}" for lbl,pr in a["sample_prompts"][:5]],
-                    kicker=f"LAB {a['num']} · PROMPTS TO TRY",size=14)
-        # Keep the deck concept-first: the overview above carries objective,
-        # context, outcome and key workflow; click-by-click detail lives in the
-        # aligned lab Markdown and Learner Guide.
-        test_slide(a["title"], a["test"], kicker=f"LAB {a['num']} · VERIFY")
+        for sec in [x for x in _secs if x.get("lab")==a["num"]]:
+            _render_section(t,sec,accent,f"LAB {a['num']}")
+        _render_lab(t,a)
     # topic recap
     _topic_recaps=getattr(C,"TOPIC_RECAPS",{}).get(t["num"],[])
     _recap_lines=(

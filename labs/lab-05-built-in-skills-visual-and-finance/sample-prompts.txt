@@ -1,0 +1,89 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 5: Analyse HR-Outsourcing Finances with Built-in Skills
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-5
+
+[1] Find skills
+Which skills do you have for charts, formatting and finance? When would I use each one?
+
+[2] Chart skill
+@chart-design Recommend the best chart for new vs churned clients by month, then create it.
+
+[3] Finance skill
+@unit-economics Compare CAC and payback months by acquisition Channel for H1 2026.
+
+[4] Audit skill
+@check-model Check this sheet for hardcoded numbers, broken formulas and totals that miss rows.
+
+[5] Style skill
+@theme-design Apply a coordinated theme to this workbook.
+
+[6] Brand skill
+@brandkit Apply our organisation's brand colours and fonts to the charts.
+
+[7] Explain
+Explain how you calculated LTV, step by step, with the cells you used.
+
+[8] Question
+Which acquisition channel has the lowest CAC in H1 2026, and how many clients did it bring?
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Tables : tblClientMonths (18 months) | tblClients | tblSpend | Headcount_Budget (cost model)
+H1 2026 = Jan-Jun 2026
+CAC     = sales & marketing spend / new clients
+ARPA    = MRR / active clients at Jun 2026
+LTV     = ARPA x gross margin / monthly churn
+Payback = CAC / (ARPA x gross margin), in months
+
+[Step 2]
+Formatting    : brandkit, theme-design
+Visualization : chart-design
+Finance       : 3-statements, check-model, comps-analysis, unit-economics and more (20 skills)
+Call a skill  : type @ and its name, e.g. @chart-design
+
+CHAT ONLY:
+Which of your skills would help me analyse client acquisition cost and churn in this workbook, and which would help me audit the Headcount_Budget sheet? Do not change anything.
+
+[Step 3]
+ALLOW EDITING:
+@chart-design Create a combo chart on a new sheet Charts from tblClientMonths: MRR as columns and Clients_End as a line on a secondary axis, Jan 2025 to Jun 2026.
+
+FOLLOW-UP:
+@chart-design Improve this chart for a leadership slide: a title that states the finding, axis titles with units, and a data label on the last month only.
+
+[Step 4]
+PLAN MODE:
+@unit-economics Analyse the unit economics of BrightPath's HR-outsourcing clients for H1 2026 using tblClientMonths, tblClients and tblSpend. Use the definitions on About_This_Data. Put the results on a new sheet Unit_Economics: CAC, ARPA, gross margin, monthly churn, LTV, LTV:CAC and payback months, plus CAC by Channel. List your assumptions.
+
+[Step 5]
+CHECK (Allow editing):
+Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:
+A1 New clients H1      B1 =SUMIFS(tblClientMonths[New_Clients],tblClientMonths[Month],">="&DATE(2026,1,1))
+A2 S&M spend H1        B2 =SUMIFS(tblClientMonths[Sales_Marketing_Spend],tblClientMonths[Month],">="&DATE(2026,1,1))
+A3 CAC                 B3 =B2/B1
+A4 ARPA                B4 =INDEX(tblClientMonths[MRR],18)/INDEX(tblClientMonths[Clients_End],18)
+A5 Gross margin        B5 =AVERAGEIFS(tblClientMonths[Gross_Margin_Pct],tblClientMonths[Month],">="&DATE(2026,1,1))
+A6 Monthly churn       B6 =AVERAGE(FILTER(tblClientMonths[Churned_Clients]/tblClientMonths[Clients_Start],tblClientMonths[Month]>=DATE(2026,1,1)))
+A7 LTV                 B7 =B4*B5/B6
+A8 LTV to CAC          B8 =B7/B3
+A9 Payback months      B9 =B3/(B4*B5)
+
+FOLLOW-UP:
+Compare Checks!B3:B9 with the Unit_Economics sheet. Show any value that differs and why.
+
+[Step 6]
+CHAT ONLY:
+@check-model Audit the Headcount_Budget sheet: look for typed numbers in formula columns, formulas that differ from their neighbours, and totals that miss rows. List each issue with its cell, what is wrong and the fix. Do not change anything yet.
+
+ALLOW EDITING:
+Fix the issues you found on Headcount_Budget and tell me the new Total FY2027 cost.
+
+[Step 7]
+ALLOW EDITING:
+@theme-design Apply one clean, professional theme to the Charts, Unit_Economics, Checks and Headcount_Budget sheets.
+
+LOG (Allow editing):
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
