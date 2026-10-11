@@ -19,8 +19,8 @@ _SETUP_STEP = (
 
 _LOG = (
     "LOG (Allow editing):\n"
-    "Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,\n"
-    "How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo."
+    "Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and\n"
+    "How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo."
 )
 
 DOMAIN1 = [
@@ -100,13 +100,14 @@ DOMAIN1 = [
             ),
             (
                 "Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it "
-                "shows. Then ask Copilot (Allow editing) to add the two check formulas to Prompt_Log and compare the results with "
+                "shows. Then ask Copilot (Allow editing) to add the two check formulas to a Checks sheet and compare the results with "
                 "its answer. Duplicate rows are Rejected applications, so they do not change the hire counts.",
                 "PROMPT (Chat only):\n"
                 "Using tblApplications, count applications and hires (Stage = \"Hired\") by Source_Clean.\n"
                 "Show a table sorted by hires, highest first, with hire rate = hires / applications.\n\n"
                 "CHECK (Allow editing):\n"
-                "In empty cells on Prompt_Log, add these check formulas with a label beside each, then tell me the results:\n"
+                "On a sheet named Checks (create it if needed), add these formulas with a label beside each,\n"
+                "then tell me the results:\n"
                 "=COUNTIFS(tblApplications[Stage],\"Hired\")\n"
                 "=COUNTIFS(tblApplications[Source_Clean],\"LinkedIn\",tblApplications[Stage],\"Hired\")",
             ),
@@ -122,8 +123,8 @@ DOMAIN1 = [
                 f"5) Clear all filters on tblApplications and confirm all {E1['rows']} rows are visible.",
             ),
             (
-                "Ask Copilot to complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how it was "
-                "verified and your decision (Keep, Revise or Undo). AutoSave keeps the cloud copy current.",
+                "Prompt_Log already lists every prompt in this lab with its step and mode. Ask Copilot to fill in what it did, "
+                "how it was verified and your decision (Keep, Revise or Undo). AutoSave keeps the cloud copy current.",
                 _LOG,
             ),
         ],
@@ -145,7 +146,7 @@ DOMAIN1 = [
             f"values; =COUNTIF(tblApplications[Source_Clean],\"LinkedIn\") returns {E1['linkedin_clean_all']}. Hires total "
             f"{E1['hired']} and {E1['top_hire_source']} has the most hires ({E1['top_hire_source_n']}). The Technology + Interview "
             f"filter shows {E1['tech_interview_all']} rows. Technology received the most applications ({E1['top_sector_n']} unique). "
-            f"After clearing the filter all {E1['rows']} rows are visible, and Prompt_Log has at least 5 entries."
+            f"After clearing the filter all {E1['rows']} rows are visible, and every Prompt_Log row you ran has What Copilot did, How I verified and a Decision."
         ),
         checkpoint=(
             "Keep this workbook in work-c34. Lab 2 uses a separate requisitions workbook, so a learner who is behind can "

@@ -51,132 +51,7 @@ def folder_name(lab):
     return f"lab-{lab['num']:02d}-{slug(lab['title'])}"
 
 
-# =========================================================================== parse step blocks
-# A step's code block holds prompts, check formulas or reference info. Labelled
-# paragraphs ("CHAT ONLY:", "CHECK:", "FOLLOW-UP:" ...) say which.
-LABEL = re.compile(r"^(CHAT ONLY|ALLOW EDITING|PROMPT|CHECK FORMULAS|CHECK|LOG|FOLLOW-UP EXAMPLE|FOLLOW-UP|"
-                   r"OPTION [A-Z]|Then|Expected after refresh)([^:\n]*):[ \t]*(.*)$")
-MODES = [("advanced analysis mode", "Advanced analysis"), ("Chat only", "Chat only"),
-         ("Allow editing", "Allow editing"), (r"\bPlan\b", "Plan")]
-INFO_LINE = re.compile(r"^[A-Za-z_][A-Za-z_ ]*\s+:\s")      # "Table name : tblApplications"
-FORMULA_LINE = re.compile(r"^(.*?\S)\s+(=\S.*)$")           # "Active headcount   =COUNTIFS(...)"
-CELL_PAIR = re.compile(r"^(A\d+)\s+(.*?)\s+(B\d+)\s+(=.*)$")  # "A3 Total fee   B3 =SUM(...)"
-
-
-STRUCT = re.compile(r"^(\(?\d+\)\s|[A-Z][A-Za-z0-9_]*( [A-Za-z0-9_]+)?:|- |=|[A-Z]\d+ )|\s=[A-Z<(]")
-
-
-def unwrap(body):
-    """Undo the source's ~100-column hard wraps; keep structural breaks (labels, numbered/indented items)."""
-    out = []
-    for line in body.split("\n"):
-        s, indent = line.lstrip(), len(line) - len(line.lstrip())
-        structural = (not out or not s or out[-1].rstrip().endswith(":") or STRUCT.search(s)
-                      or (1 <= indent <= 4 and s[0].isupper()))
-        if structural:
-            out.append(line.rstrip())
-        else:
-            out[-1] = out[-1].rstrip() + " " + s.rstrip()
-    return "\n".join(out)
-
-
-def modes_in(text):
-    hits = sorted((m.start(), name) for pat, name in MODES for m in re.finditer(pat, text))
-    return [name for _, name in hits]
-
-
-def split_formulas(body):
-    """One item per line starting with '='; indented continuation lines are joined."""
-    out = []
-    for line in body.split("\n"):
-        s = line.strip()
-        if not s:
-            continue
-        if s.startswith("=") or not out:
-            out.append(s)
-        else:
-            out[-1] += " " + s
-    return [("", f) for f in out]
-
-
-def setup_formulas(body):
-    out = []
-    for line in body.split("\n"):
-        m = CELL_PAIR.match(line.strip())
-        if m:
-            out.append((f"{m.group(1)} {m.group(2)} · {m.group(3)}", m.group(4)))
-        else:
-            m = FORMULA_LINE.match(line.strip())
-            out.append((m.group(1), m.group(2)))
-    return out
-
-
-def split_changes(body):
-    """'One change at a time' blocks: one prompt per numbered item or per line."""
-    if re.search(r"^\d\)\s", body, re.M):
-        parts = re.split(r"^\d\)\s+", body, flags=re.M)
-        return [re.sub(r"\s*\n\s*", " ", p).strip() for p in parts if p.strip()]
-    return [l.strip() for l in body.split("\n") if l.strip()]
-
-
-def parse_step(num, instr, cmd, mode):
-    """Return (items, carried_mode). Items: ('prompt', tag, text) | ('formulas', tag, [(label, f)])
-    | ('info', tag, text)."""
-    found = modes_in(instr)
-    step_mode = found[0] if found else mode
-    if re.search(r"^(CHAT ONLY|ALLOW EDITING):", cmd, re.M):   # explicit labels mark the exceptions
-        step_mode = mode or step_mode
-    carry = next((m for m in reversed(found) if m != "Advanced analysis"), mode)
-    items = []
-    if not cmd.strip():
-        return items, carry
-    one_by_one = re.search(r"one change at a time|one prompt per change", instr)
-    for para in re.split(r"\n\s*\n", cmd.strip("\n")):
-        lines = para.rstrip().split("\n")
-        m = LABEL.match(lines[0].strip())
-        label = (m.group(1) + m.group(2)).strip() if m else None
-        body = "\n".join(([m.group(3)] if m and m.group(3) else []) + lines[1:]) if m else para
-        body = "\n".join(l.rstrip() for l in body.split("\n")).strip("\n")
-        if label is None and one_by_one:
-            for chunk in split_changes(body):
-                cm = LABEL.match(chunk)
-                if cm:
-                    items.append(("prompt", cm.group(1).capitalize(), cm.group(3)))
-                else:
-                    items.append(("prompt", step_mode, chunk))
-            continue
-        if label is None:
-            if num == 1 or INFO_LINE.match(lines[0]):
-                items.append(("info", "Reference", body))
-            elif all(FORMULA_LINE.match(l.strip()) or l.strip().startswith("=") for l in lines if l.strip()):
-                items.append(("formulas", "Type these yourself", setup_formulas(body)))
-            elif body.startswith("If ") and 'ask: "' in body:
-                cond, ask = body.split('ask: "', 1)
-                items.append(("prompt", "If needed · " + cond[3:].strip(" ,"), ask.rstrip('"')))
-            else:
-                items.append(("prompt", step_mode, body))
-        elif label.startswith(("CHECK", "LOG")) and not body.lstrip().startswith("="):
-            # a check or log done by Copilot: "CHECK (Allow editing)" -> "Check · Allow editing"
-            pm = re.search(r"\(([^)]*)\)", label)
-            items.append(("prompt", label.split(" ")[0].capitalize() + (" · " + pm.group(1) if pm else ""), body))
-        elif label.startswith("CHECK"):
-            sub = label[len("CHECK FORMULAS") if label.startswith("CHECK FORMULAS") else len("CHECK"):].strip()
-            items.append(("formulas", "Check " + sub if sub else "Check", split_formulas(body)))
-        elif label.startswith("Expected"):
-            items.append(("info", label, body))
-        elif label.startswith("OPTION"):
-            if body.lstrip().startswith("="):
-                items.append(("formulas", "Option" + label[6:], [("", re.sub(r"\s*\n\s*", " ", body.strip()))]))
-            else:
-                items.append(("prompt", "Option" + label[6:], body))
-        elif label in ("CHAT ONLY", "ALLOW EDITING"):
-            items.append(("prompt", label.capitalize(), body))
-        elif label.startswith("PROMPT"):
-            pm = re.search(r"\(([^)]*)\)", label)
-            items.append(("prompt", pm.group(1) if pm else step_mode, body))
-        else:  # Then / FOLLOW-UP*
-            items.append(("prompt", "Follow-up" if label == "Then" else label.capitalize(), body))
-    return items, carry
+from lab_prompts import LETTERS, parse_step, unwrap  # noqa: E402
 
 
 # =========================================================================== render
@@ -197,8 +72,6 @@ def copy_btn(text, small=False):
     cls = "copy small" if small else "copy"
     return f'<button class="{cls}" type="button" data-copy="{attr(text)}">Copy</button>'
 
-
-LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def render_lab(lab):

@@ -81,7 +81,7 @@ ALLOW EDITING:
    to 'LinkedIn'. Do not delete or edit any existing values.
 ```
 
-### 5. Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it shows. Then ask Copilot (Allow editing) to add the two check formulas to Prompt_Log and compare the results with its answer. Duplicate rows are Rejected applications, so they do not change the hire counts.
+### 5. Ask Copilot a direct question about which sources produce hires. Expand or ask Copilot to summarise any code it shows. Then ask Copilot (Allow editing) to add the two check formulas to a Checks sheet and compare the results with its answer. Duplicate rows are Rejected applications, so they do not change the hire counts.
 
 ```text
 PROMPT (Chat only):
@@ -89,7 +89,8 @@ Using tblApplications, count applications and hires (Stage = "Hired") by Source_
 Show a table sorted by hires, highest first, with hire rate = hires / applications.
 
 CHECK (Allow editing):
-In empty cells on Prompt_Log, add these check formulas with a label beside each, then tell me the results:
+On a sheet named Checks (create it if needed), add these formulas with a label beside each,
+then tell me the results:
 =COUNTIFS(tblApplications[Stage],"Hired")
 =COUNTIFS(tblApplications[Source_Clean],"LinkedIn",tblApplications[Stage],"Hired")
 ```
@@ -105,12 +106,12 @@ In empty cells on Prompt_Log, add these check formulas with a label beside each,
 5) Clear all filters on tblApplications and confirm all 242 rows are visible.
 ```
 
-### 7. Ask Copilot to complete the Prompt_Log for every prompt you ran: mode, prompt, what Copilot did, how it was verified and your decision (Keep, Revise or Undo). AutoSave keeps the cloud copy current.
+### 7. Prompt_Log already lists every prompt in this lab with its step and mode. Ask Copilot to fill in what it did, how it was verified and your decision (Keep, Revise or Undo). AutoSave keeps the cloud copy current.
 
 ```text
 LOG (Allow editing):
-Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
-How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and
+How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts
@@ -129,7 +130,7 @@ How it was verified, and Decision = Keep. I will tell you any row to change to R
 
 ## Test It
 
-tblApplications exists with 242 data rows and =COUNTA(UNIQUE(tblApplications[Application_ID])) returns 240. The repeated IDs are APP-0018 and APP-0020 (both Rejected) and are orange. Copilot found 3 'Linked In' and 2 'JobStreet ' (trailing space) values; =COUNTIF(tblApplications[Source_Clean],"LinkedIn") returns 69. Hires total 22 and LinkedIn has the most hires (8). The Technology + Interview filter shows 9 rows. Technology received the most applications (49 unique). After clearing the filter all 242 rows are visible, and Prompt_Log has at least 5 entries.
+tblApplications exists with 242 data rows and =COUNTA(UNIQUE(tblApplications[Application_ID])) returns 240. The repeated IDs are APP-0018 and APP-0020 (both Rejected) and are orange. Copilot found 3 'Linked In' and 2 'JobStreet ' (trailing space) values; =COUNTIF(tblApplications[Source_Clean],"LinkedIn") returns 69. Hires total 22 and LinkedIn has the most hires (8). The Technology + Interview filter shows 9 rows. Technology received the most applications (49 unique). After clearing the filter all 242 rows are visible, and every Prompt_Log row you ran has What Copilot did, How I verified and a Decision.
 
 ## Checkpoint and Rejoin Point
 

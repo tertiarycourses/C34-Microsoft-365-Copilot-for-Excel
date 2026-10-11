@@ -70,7 +70,8 @@ Using tblApplications, count applications and hires (Stage = "Hired") by Source_
 Show a table sorted by hires, highest first, with hire rate = hires / applications.
 
 CHECK (Allow editing):
-In empty cells on Prompt_Log, add these check formulas with a label beside each, then tell me the results:
+On a sheet named Checks (create it if needed), add these formulas with a label beside each,
+then tell me the results:
 =COUNTIFS(tblApplications[Stage],"Hired")
 =COUNTIFS(tblApplications[Source_Clean],"LinkedIn",tblApplications[Stage],"Hired")
 
@@ -84,5 +85,5 @@ In empty cells on Prompt_Log, add these check formulas with a label beside each,
 
 [Step 7]
 LOG (Allow editing):
-Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
-How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and
+How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.

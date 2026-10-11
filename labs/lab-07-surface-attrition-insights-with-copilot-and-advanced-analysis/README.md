@@ -53,7 +53,8 @@ What's interesting about tblAttrition in relation to Left_Company? Give up to fi
 the numbers and group sizes behind it. Do not change the workbook.
 
 ALLOW EDITING:
-Copy the patterns you just gave me into Prompt_Log, one row each, marked "Unverified".
+Add the patterns you just gave me below the last row of Prompt_Log, one row each, with Decision
+set to "Unverified".
 ```
 
 ### 3. Set the baseline: ask for the overall rate, then ask Copilot to add the two check formulas in empty cells.
@@ -63,7 +64,8 @@ CHAT ONLY:
 What is the overall attrition rate in tblAttrition (Left_Company = "Yes" divided by all employees)?
 
 CHECK (Allow editing):
-In empty cells on Prompt_Log, add these formulas with a label beside each, and tell me the results:
+On a sheet named Checks (create it if needed), add these formulas with a label beside each,
+and tell me the results:
 =COUNTIFS(tblAttrition[Left_Company],"Yes")
 =COUNTIFS(tblAttrition[Left_Company],"Yes")/ROWS(tblAttrition[Employee_ID])
 ```
@@ -81,7 +83,7 @@ Using tblAttrition, show attrition rate AND number of employees for:
 6) each Work_Mode.
 
 CHECK (Allow editing):
-In an empty cell on Prompt_Log, add this formula for Engagement_Score below 3 and tell me if it matches:
+On the Checks sheet, add this formula for Engagement_Score below 3 and tell me if it matches:
 =COUNTIFS(tblAttrition[Engagement_Score],"<3",tblAttrition[Left_Company],"Yes")/COUNTIFS(tblAttrition[Engagement_Score],"<3")
 ```
 
@@ -96,7 +98,7 @@ and the correlation between Overtime_Hours_Month and Engagement_Score. Explain t
 FOLLOW-UP: Which rows and columns does your code use, and how does it handle blanks?
 
 CHECK (Allow editing):
-In empty cells on Prompt_Log, add these formulas and tell me if they match your means for leavers:
+On the Checks sheet, add these formulas and tell me if they match your means for leavers:
 =AVERAGEIFS(tblAttrition[Overtime_Hours_Month],tblAttrition[Left_Company],"Yes")
 =AVERAGEIFS(tblAttrition[Engagement_Score],tblAttrition[Left_Company],"Yes")
 ```
@@ -122,8 +124,8 @@ Review my Insight_Log. Which statement overstates the evidence or implies causat
 you reword it?
 
 LOG (Allow editing):
-Add one row to Prompt_Log for each prompt I ran in this lab: Mode, Prompt, What Copilot did,
-How it was verified, and Decision = Keep. I will tell you any row to change to Revise or Undo.
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and
+How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
 ```
 
 ## Sample Prompts
