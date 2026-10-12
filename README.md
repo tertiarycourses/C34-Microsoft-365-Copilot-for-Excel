@@ -10,7 +10,7 @@ Use Copilot in Excel for everyday Excel work, make it consistent and repeatable 
 | Format | Instructor-led, with 8 hands-on labs |
 | Registration | [View course details and register](https://www.tertiarycourses.com.sg/microsoft-365-copilot-for-excel.html) |
 | Lab prompts | [Copy-ready prompts page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/) |
-| Courseware version | v3.1 · 12 October 2026 |
+| Courseware version | v3.2 · 13 October 2026 |
 
 ---
 
@@ -77,7 +77,7 @@ See the [labs index](labs/README.md).
 
 | Item | Files |
 |---|---|
-| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v3.1.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v3.1.pdf>) |
+| Slide deck | [PowerPoint](<courseware/Microsoft 365 Copilot for Excel-v3.2.pptx>) · [PDF](<courseware/Microsoft 365 Copilot for Excel-v3.2.pdf>) |
 | Learner Guide | [Word](<courseware/LG-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LG-Microsoft 365 Copilot for Excel.pdf>) · [Markdown](<LG-Microsoft 365 Copilot for Excel.md>) |
 | Lesson Plan | [Word](<courseware/LP-Microsoft 365 Copilot for Excel.docx>) · [PDF](<courseware/LP-Microsoft 365 Copilot for Excel.pdf>) |
 | Labs | [labs/](labs/README.md): 8 lab folders with instruction PDFs, sample prompts, mock data, rules templates and skills |

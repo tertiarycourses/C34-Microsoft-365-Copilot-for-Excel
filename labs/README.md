@@ -37,4 +37,4 @@ Work through the labs in order. Each lab opens its own workbook, so you can rejo
 > Use only the supplied fictional BrightPath data or information you are authorised to process. Do not paste credentials, confidential business material or real employees' personal data into Copilot, rules or skills.
 
 
-_Tertiary Infotech Academy Pte Ltd · C34 · v3.1 (12 October 2026)_
+_Tertiary Infotech Academy Pte Ltd · C34 · v3.2 (13 October 2026)_

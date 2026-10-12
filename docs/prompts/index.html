@@ -83,7 +83,7 @@ border:1.5px solid var(--accent);font-size:15px}
 .pick h4{margin:14px 0 4px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .pick ul{margin:0;padding-left:20px}.pick li{margin:4px 0}
 </style></head><body><div class="wrap">
-<p class="eyebrow">C34 · Copilot in Excel · v3.1</p>
+<p class="eyebrow">C34 · Copilot in Excel · v3.2</p>
 <h1>Lab Prompts</h1>
 <p class="sub">Microsoft 365 Copilot for Excel. Pick your lab, click <b>Copy</b>, then paste into the Copilot pane in Excel
 (or into a cell, for check formulas). Verify every result. <a href="https://github.com/tertiarycourses/C34-Microsoft-365-Copilot-for-Excel">Course repository</a>.</p>
@@ -214,8 +214,9 @@ Start with YAML front matter containing name: pareto-chart and a description.
 Description: Use when I ask for a Pareto chart, an 80/20 analysis or the vital few categories in a table column.
 When the skill runs in Excel I will name a table and a category column, for example tblJobs and Job_Category. If I do not, it must ask me.
 Steps:
-1) Never change the source table or any existing sheet.
-2) Create a new sheet named Pareto_&lt;column name&gt; with a summary table: Category, Count, Share %, Cumulative %, sorted by Count from highest to lowest. Use formulas that read the source table so it updates when rows are added, and add a Total row.
+1) Never change the source table or unrelated sheets. You may replace only the matching Pareto_&lt;column name&gt; output sheet when rerunning this skill.
+2) Create a sheet named Pareto_&lt;column name&gt;; if it already exists, replace only its contents.
+Build a summary table: Category, Count, Share %, Cumulative %, sorted by Count from highest to lowest. Use formulas that read the source table so it updates when rows are added, and add a Total row.
 3) Create one combo chart from the summary: Count as columns and Cumulative % as a line with markers on a secondary axis from 0% to 100%.
 4) Give every column a different colour. Never use one colour for all the columns. Make the line dark grey.
 5) Format the chart cleanly: white background, no border or effects, data labels on the columns, axis titles, no legend, and a title that states the finding, for example &quot;6 of 16 categories make up 83% of the total&quot;.
@@ -228,8 +229,9 @@ Start with YAML front matter containing name: pareto-chart and a description.
 Description: Use when I ask for a Pareto chart, an 80/20 analysis or the vital few categories in a table column.
 When the skill runs in Excel I will name a table and a category column, for example tblJobs and Job_Category. If I do not, it must ask me.
 Steps:
-1) Never change the source table or any existing sheet.
-2) Create a new sheet named Pareto_<mark>&lt;column name&gt;</mark> with a summary table: Category, Count, Share %, Cumulative %, sorted by Count from highest to lowest. Use formulas that read the source table so it updates when rows are added, and add a Total row.
+1) Never change the source table or unrelated sheets. You may replace only the matching Pareto_<mark>&lt;column name&gt;</mark> output sheet when rerunning this skill.
+2) Create a sheet named Pareto_<mark>&lt;column name&gt;</mark>; if it already exists, replace only its contents.
+Build a summary table: Category, Count, Share %, Cumulative %, sorted by Count from highest to lowest. Use formulas that read the source table so it updates when rows are added, and add a Total row.
 3) Create one combo chart from the summary: Count as columns and Cumulative % as a line with markers on a secondary axis from 0% to 100%.
 4) Give every column a different colour. Never use one colour for all the columns. Make the line dark grey.
 5) Format the chart cleanly: white background, no border or effects, data labels on the columns, axis titles, no legend, and a title that states the finding, for example "6 of 16 categories make up 83% of the total".

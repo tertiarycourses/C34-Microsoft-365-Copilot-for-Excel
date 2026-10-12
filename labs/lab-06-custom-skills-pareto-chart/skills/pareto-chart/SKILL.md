@@ -12,7 +12,7 @@ Show which few categories account for most of the total: a sorted count of every
 - Optional: a threshold. The default is 80%.
 
 ## Steps
-1. Never change the source table or any existing sheet.
+1. Never change the source table or unrelated sheets. You may replace only the matching Pareto_<column name> output sheet when rerunning this skill.
 2. Create a new sheet named Pareto_<column name>, e.g. Pareto_Job_Category. If it already exists, replace its contents.
 3. In A1 write "Pareto chart - <column name> in <table name>". In A2 write "Created by Copilot".
 4. From A4 build a summary table with the headers Category, Count, Share %, Cumulative %. List every distinct value of the column once, sorted by Count from highest to lowest. Use formulas that read the source table so the summary updates when rows are added. Format Share % and Cumulative % as % with 1 decimal.
