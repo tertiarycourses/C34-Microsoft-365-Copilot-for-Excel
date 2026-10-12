@@ -1711,7 +1711,7 @@ Rules belong to one workbook; a skill is a recipe you can run in any workbook. I
 
 ### Using Copilot to Write and Improve a Skill
 
-You do not have to write SKILL.md yourself. Ask Copilot on the web (copilot.microsoft.com): describe the task, the input table, the output you want and the checks, and ask for a complete SKILL.md with front matter. You copy the reply into a plain-text file, upload it to the skill's OneDrive folder, refresh in Excel and call it. To improve the skill, ask Copilot to update the file and upload the new version over the old one.
+You do not have to write SKILL.md yourself. Ask Microsoft 365 Copilot on the web (copilot.cloud.microsoft): describe the task, the input table, the output you want and the checks, and ask for a complete SKILL.md with front matter. You copy the reply into a plain-text file, upload it to the skill's OneDrive folder, refresh in Excel and call it. To improve the skill, ask Copilot to update the file and upload the new version over the old one.
 
 Copilot knows the SKILL.md format and writes clear, numbered steps, so a non-technical user can build a skill in minutes. Treat the skill as a living recipe: each time you correct its output twice, add the correction to the steps. Skills run inside what Excel normally allows, but test a new skill on a copy of the workbook before you rely on it.
 
@@ -1799,12 +1799,12 @@ BrightPath received 500 job postings from clients in H1 2026, spread over 16 job
 
 **What you'll build**
 
-A pareto-chart skill in your OneDrive skills folder, and BrightPath_Job_Postings.xlsx with a Pareto_Job_Category sheet and a Pareto_Client_Sector sheet - each a summary table and a Pareto chart with a different colour for every bar - plus a Checks sheet   (Tools: Copilot on the web (copilot.microsoft.com) to draft the skill · OneDrive skills folder · Excel Copilot (Chat only, Allow editing) · SKILL.md.)
+A pareto-chart skill in your OneDrive skills folder, and BrightPath_Job_Postings.xlsx with a Pareto_Job_Category sheet and a Pareto_Client_Sector sheet - each a summary table and a Pareto chart with a different colour for every bar - plus a Checks sheet   (Tools: Microsoft 365 Copilot web (https://copilot.cloud.microsoft/) to draft the skill · OneDrive skills folder · Excel Copilot (Chat only, Allow editing) · SKILL.md.)
 
 **Prerequisites**
 
 - Lab 5 completed: you can find, enable and @mention skills.
-- Access to https://copilot.microsoft.com with the account you use in Excel and OneDrive, and to your OneDrive in a browser (custom skills are stored there).
+- Access to https://copilot.cloud.microsoft/ with the same work account used in Excel and OneDrive, and to your OneDrive in a browser (custom skills are stored there).
 - This lab folder's data workbook and skills/pareto-chart/SKILL.md (fallback).
 
 **Step-by-step**
@@ -1818,10 +1818,10 @@ A pareto-chart skill in your OneDrive skills folder, and BrightPath_Job_Postings
              line = cumulative % of all jobs, 0% to 100% on a secondary axis
    ```
 
-2. Draft the skill in Copilot on the web. Open https://copilot.microsoft.com in your browser and sign in with the same account you use in Excel and OneDrive (with a work account you may be sent to Microsoft 365 Copilot Chat - use that chat). Start a new chat and paste the prompt below. The web chat cannot see your workbook, so the prompt describes the table, the chart and the colours. Read the reply: it must start with --- and include name: pareto-chart, a description that says when to use the skill, and numbered steps that give every column a different colour. Ask for corrections in this chat until you are happy.
+2. Draft the skill in Microsoft 365 Copilot on the web. Open https://copilot.cloud.microsoft/ in your browser and sign in with the same work account used in Excel and OneDrive. Start a new chat and paste the prompt below. The web chat cannot see your workbook, so the prompt describes the table, the chart and the colours. Read the reply: it must start with --- and include name: pareto-chart, a description that says when to use the skill, and numbered steps that give every column a different colour. Ask for corrections in this chat until you are happy.
 
    ```text
-   PROMPT (Microsoft Copilot web):
+   PROMPT (Microsoft 365 Copilot web):
    Write a complete SKILL.md for a Copilot in Excel skill named pareto-chart.
    Return reusable skill instructions only; do not draw a chart or claim to see my workbook in this chat.
    Start with YAML front matter containing name: pareto-chart and a description.
@@ -1897,7 +1897,7 @@ A pareto-chart skill in your OneDrive skills folder, and BrightPath_Job_Postings
 9. Improve the skill. A skill is a living recipe: improve it whenever you correct Copilot twice. Go back to the web chat, send the prompt below, then paste your current SKILL.md under it. Save the reply as SKILL.md as in Step 3. In OneDrive open the pareto-chart folder, select Create or upload > Files upload, choose the new SKILL.md and select Replace when OneDrive asks. In Excel select Custom skills > Refresh and rerun the skill on Job_Category: the chart now shows a dashed 80% line and one Other column that groups the 6 categories under 2% (29 postings, 5.8%). Finally log your prompts - fill in the two web-chat rows yourself, because Excel Copilot cannot see the web chat.
 
    ```text
-   PROMPT (Microsoft Copilot web):
+   PROMPT (Microsoft 365 Copilot web):
    I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column at the end.
    Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first.
 
@@ -1913,13 +1913,13 @@ A pareto-chart skill in your OneDrive skills folder, and BrightPath_Job_Postings
 
 | Purpose | Prompt |
 |---|---|
-| Write a skill · Microsoft Copilot web | In the web chat at https://copilot.microsoft.com, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook. |
+| Write a skill · Microsoft 365 Copilot web | In the web chat at https://copilot.cloud.microsoft/, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook. |
 | Call the skill | @pareto-chart Plot a Pareto chart of Job_Category in tblJobs. |
 | Reuse | @pareto-chart Plot a Pareto chart of Client_Sector in tblJobs. |
 | Check | Add a Checks sheet with formulas that count all the jobs and the Customer Service jobs, so I can check the Pareto chart. |
 | Vital few | Which job categories together make up 80% of the postings? Show their combined share. |
 | Explain | Explain in plain English how to read this Pareto chart: what the columns, the line and the 80% point tell me. |
-| Improve the skill · Microsoft Copilot web | I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first. |
+| Improve the skill · Microsoft 365 Copilot web | I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first. |
 
 **Test it**
 

@@ -429,13 +429,13 @@ DOMAIN2 = [
             "sheet and a Pareto_Client_Sector sheet - each a summary table and a Pareto chart with a different colour for every "
             "bar - plus a Checks sheet"
         ),
-        services="Copilot on the web (copilot.microsoft.com) to draft the skill · OneDrive skills folder · Excel Copilot (Chat only, Allow editing) · SKILL.md",
+        services="Microsoft 365 Copilot web (https://copilot.cloud.microsoft/) to draft the skill · OneDrive skills folder · Excel Copilot (Chat only, Allow editing) · SKILL.md",
         data_files=["data/BrightPath_Job_Postings.xlsx"],
         extra_files=[("skills/pareto-chart/SKILL.md", SKILL_PARETO,
                       "ready-made skill to upload if you run short of time")],
         prerequisites=[
             "Lab 5 completed: you can find, enable and @mention skills.",
-            "Access to https://copilot.microsoft.com with the account you use in Excel and OneDrive, and to your OneDrive in a browser (custom skills are stored there).",
+            "Access to https://copilot.cloud.microsoft/ with the same work account used in Excel and OneDrive, and to your OneDrive in a browser (custom skills are stored there).",
             "This lab folder's data workbook and skills/pareto-chart/SKILL.md (fallback).",
         ],
         steps=[
@@ -449,13 +449,13 @@ DOMAIN2 = [
                 "          line = cumulative % of all jobs, 0% to 100% on a secondary axis",
             ),
             (
-                "Draft the skill in Copilot on the web. Open https://copilot.microsoft.com in your browser and sign in with "
-                "the same account you use in Excel and OneDrive (with a work account you may be sent to Microsoft 365 Copilot "
-                "Chat - use that chat). Start a new chat and paste the prompt below. The web chat cannot see your workbook, "
+                "Draft the skill in Microsoft 365 Copilot on the web. Open https://copilot.cloud.microsoft/ in your browser and sign "
+                "in with the same work account used in Excel and OneDrive. Start a new chat and paste the prompt below. The "
+                "web chat cannot see your workbook, "
                 "so the prompt describes the table, the chart and the colours. Read the reply: it must start with --- and "
                 "include name: pareto-chart, a description that says when to use the skill, and numbered steps that give "
                 "every column a different colour. Ask for corrections in this chat until you are happy.",
-                "PROMPT (Microsoft Copilot web):\n"
+                "PROMPT (Microsoft 365 Copilot web):\n"
                 "Write a complete SKILL.md for a Copilot in Excel skill named pareto-chart.\n"
                 "Return reusable skill instructions only; do not draw a chart or claim to see my workbook in this chat.\n"
                 "Start with YAML front matter containing name: pareto-chart and a description.\n"
@@ -550,7 +550,7 @@ DOMAIN2 = [
                 f"on Job_Category: the chart now shows a dashed 80% line and one Other column that groups the {E6['small_n']} "
                 f"categories under 2% ({E6['small_total']} postings, {E6['small_share']}%). Finally log your prompts - fill in "
                 "the two web-chat rows yourself, because Excel Copilot cannot see the web chat.",
-                "PROMPT (Microsoft Copilot web):\n"
+                "PROMPT (Microsoft 365 Copilot web):\n"
                 "I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80%\n"
                 "reference line and groups any category with less than 2% share into one Other column at the end.\n"
                 "Preserve its front matter and numbered steps. Return the full file without code fences. If I have not\n"
@@ -564,13 +564,13 @@ DOMAIN2 = [
             ),
         ],
         sample_prompts=[
-            ("Write a skill · Microsoft Copilot web", "In the web chat at https://copilot.microsoft.com, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook."),
+            ("Write a skill · Microsoft 365 Copilot web", "In the web chat at https://copilot.cloud.microsoft/, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook."),
             ("Call the skill", "@pareto-chart Plot a Pareto chart of Job_Category in tblJobs."),
             ("Reuse", "@pareto-chart Plot a Pareto chart of Client_Sector in tblJobs."),
             ("Check", "Add a Checks sheet with formulas that count all the jobs and the Customer Service jobs, so I can check the Pareto chart."),
             ("Vital few", "Which job categories together make up 80% of the postings? Show their combined share."),
             ("Explain", "Explain in plain English how to read this Pareto chart: what the columns, the line and the 80% point tell me."),
-            ("Improve the skill · Microsoft Copilot web", "I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first."),
+            ("Improve the skill · Microsoft 365 Copilot web", "I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first."),
         ],
         test=(
             f"tblJobs has {E6['rows']} rows and {E6['categories']} job categories, and the skill appears when you type @ in Excel. "

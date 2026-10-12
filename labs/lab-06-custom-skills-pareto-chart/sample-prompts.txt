@@ -2,8 +2,8 @@ Microsoft 365 Copilot for Excel (C34) — Lab 6: Use Copilot to Build a Custom P
 Sample prompts: use the app labelled in each step. Copy one at a time, adapt it, and verify every result.
 Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-6
 
-[1] Write a skill · Microsoft Copilot web
-In the web chat at https://copilot.microsoft.com, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook.
+[1] Write a skill · Microsoft 365 Copilot web
+In the web chat at https://copilot.cloud.microsoft/, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook.
 
 [2] Call the skill
 @pareto-chart Plot a Pareto chart of Job_Category in tblJobs.
@@ -20,7 +20,7 @@ Which job categories together make up 80% of the postings? Show their combined s
 [6] Explain
 Explain in plain English how to read this Pareto chart: what the columns, the line and the 80% point tell me.
 
-[7] Improve the skill · Microsoft Copilot web
+[7] Improve the skill · Microsoft 365 Copilot web
 I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first.
 
 ------------------------------------------------------------
@@ -34,7 +34,7 @@ Pareto  : columns = jobs per category, highest to lowest, a different colour for
           line = cumulative % of all jobs, 0% to 100% on a secondary axis
 
 [Step 2]
-PROMPT (Microsoft Copilot web):
+PROMPT (Microsoft 365 Copilot web):
 Write a complete SKILL.md for a Copilot in Excel skill named pareto-chart.
 Return reusable skill instructions only; do not draw a chart or claim to see my workbook in this chat.
 Start with YAML front matter containing name: pareto-chart and a description.
@@ -89,7 +89,7 @@ CHAT ONLY:
 Which job categories together make up 80% of the postings? Give their combined share.
 
 [Step 9]
-PROMPT (Microsoft Copilot web):
+PROMPT (Microsoft 365 Copilot web):
 I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column at the end.
 Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first.
 

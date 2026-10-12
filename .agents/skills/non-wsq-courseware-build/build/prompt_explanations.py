@@ -113,7 +113,7 @@ EXPLAIN = {
         "J": _LOG,
     },
     6: {
-        "A": "Copilot on the web (copilot.microsoft.com) writes the complete pareto-chart SKILL.md from the table, "
+        "A": "Microsoft 365 Copilot on the web (https://copilot.cloud.microsoft/) writes the complete pareto-chart SKILL.md from the table, "
              "chart and colour instructions. Save the returned text, upload it to OneDrive and install it in Excel. "
              "No workbook upload is needed to draft the skill.",
         "B": "Runs your new skill: a Pareto_Job_Category sheet with the count, share and cumulative % of each "

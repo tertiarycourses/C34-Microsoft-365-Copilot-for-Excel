@@ -1016,7 +1016,7 @@ TOPICS = [
                 title="Using Copilot to Write and Improve a Skill",
                 lab=6,
                 definition=(
-                    "You do not have to write SKILL.md yourself. Ask Copilot on the web (copilot.microsoft.com): describe the task, the "
+                    "You do not have to write SKILL.md yourself. Ask Microsoft 365 Copilot on the web (copilot.cloud.microsoft): describe the task, the "
                     "input table, the output you want and the checks, and ask for a complete SKILL.md with front matter. You copy "
                     "the reply into a plain-text file, upload it to the skill's OneDrive folder, refresh in Excel and call it. To "
                     "improve the skill, ask Copilot to update the file and upload the new version over the old one."
@@ -1761,7 +1761,7 @@ SECTION_BRIEFS = {
                             "then upload SKILL.md into it. The sample make-calendar.example shows the layout.")],
     ),
     "Using Copilot to Write and Improve a Skill": dict(
-        what="Describe the task to Copilot on the web (copilot.microsoft.com) and it writes the whole SKILL.md for you.",
+        what="Describe the task to Microsoft 365 Copilot on the web (copilot.cloud.microsoft) and it writes the whole SKILL.md for you.",
         why="No coding needed - and a skill gets better each time you add a correction to it.",
         check="Read every step before saving, and test the skill on a copy first.",
         prompts=[

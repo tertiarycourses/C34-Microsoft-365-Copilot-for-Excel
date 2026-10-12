@@ -69,7 +69,7 @@ See the [labs index](labs/README.md).
 
 - You need a current Excel for Microsoft 365 desktop app (Windows or Mac) and a work account with a Microsoft 365 Copilot licence.
 - Copy each lab workbook into a local `work-c34` folder and open it in Excel; no OneDrive upload is needed. OneDrive is used only for **custom skills** (Labs 6 and 8), which Excel reads from your OneDrive skills folder.
-- In Lab 6, draft the Pareto-chart skill in [Copilot on the web](https://copilot.microsoft.com), upload `SKILL.md` to your OneDrive skills folder, install it in Excel and run it. In Lab 8, draft the dashboard skill in [Microsoft 365 Copilot on the web](https://copilot.cloud.microsoft/) and install it the same way. Each creation prompt includes the workbook context, so no upload is needed for drafting.
+- In Lab 6, draft the Pareto-chart skill in [Microsoft 365 Copilot on the web](https://copilot.cloud.microsoft/), upload `SKILL.md` to your OneDrive skills folder, install it in Excel and run it. In Lab 8, draft the dashboard skill the same way. Each creation prompt includes the workbook context, so no upload is needed for drafting.
 - Skills and workbook rules are fully supported only when Excel's display language is **English**.
 - Copilot's menus and skills are still rolling out, so some labels may differ on your screen. Each lab includes troubleshooting tips.
 
