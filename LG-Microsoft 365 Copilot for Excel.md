@@ -31,12 +31,13 @@
   - [Workbook Rules: The .Rules Sheet](#workbook-rules-the-rules-sheet)
   - [Personalization, Rules and Skills Compared](#personalization-rules-and-skills-compared)
   - [Lab 4 · Workbook Rules & Personalisation — Clean Messy Client Orders with Cleanup, Personalisation and Rules](#lab-4--workbook-rules--personalisation--clean-messy-client-orders-with-cleanup-personalisation-and-rules)
-  - [Key Finance Measures: CAC, LTV, Churn and Payback](#key-finance-measures-cac-ltv-churn-and-payback)
-  - [Built-in Skills: Formatting, Visualisation and Finance](#built-in-skills-formatting-visualisation-and-finance)
-  - [Lab 5 · Built-in Skills: Visual & Finance — Analyse HR-Outsourcing Finances with Built-in Skills](#lab-5--built-in-skills-visual--finance--analyse-hr-outsourcing-finances-with-built-in-skills)
+  - [Built-in Skills: Chart Design and Theme Design](#built-in-skills-chart-design-and-theme-design)
+  - [Themes: One Look for the Whole Workbook](#themes-one-look-for-the-whole-workbook)
+  - [Lab 5 · Built-in Skills: Visual Design — Plot and Style Client Growth Charts with Built-in Visual Skills](#lab-5--built-in-skills-visual-design--plot-and-style-client-growth-charts-with-built-in-visual-skills)
   - [Custom Skills: The SKILL.md Recipe](#custom-skills-the-skillmd-recipe)
   - [Using Copilot to Write and Improve a Skill](#using-copilot-to-write-and-improve-a-skill)
-  - [Lab 6 · Custom Skills: Calendar — Use Copilot to Build a Custom Interview-Calendar Skill](#lab-6--custom-skills-calendar--use-copilot-to-build-a-custom-interview-calendar-skill)
+  - [Pareto Charts: Finding the Vital Few](#pareto-charts-finding-the-vital-few)
+  - [Lab 6 · Custom Skills: Pareto Chart — Use Copilot to Build a Custom Pareto-Chart Skill](#lab-6--custom-skills-pareto-chart--use-copilot-to-build-a-custom-pareto-chart-skill)
   - [Topic 02 Recap - Mapped to Learning Outcomes](#topic-02-recap---mapped-to-learning-outcomes)
 - [Topic 03 — Interactive Dashboards with Copilot, Skills and Rules  (Labs 7-8)](#topic-03--interactive-dashboards-with-copilot-skills-and-rules--labs-7-8)
   - [What Is a Skill?](#what-is-a-skill)
@@ -272,7 +273,7 @@ Most 'Copilot is missing' problems are setup problems: an old Excel build, a lic
 
 - A recruiter attaches the client rate-card PDF and asks Copilot to add the agreed fee rate to each job order.
 - Auto says 'revise' on a business case; a deeper reasoning model finds the calculation error behind it.
-- Both models' hire counts are checked against the same COUNTIFS formula.
+- Both models' hire counts are checked against the same Checks sheet.
 
 **Decision guide**
 
@@ -316,7 +317,7 @@ Duplicated IDs and labels such as 'LinkedIn', 'Linked In' and 'JobStreet ' split
 
 - BrightPath's pipeline export has 242 rows but only 240 unique Application_IDs.
 - Five Source values use non-standard spellings that would split the LinkedIn and JobStreet totals.
-- Copilot adds a Source_Clean column and highlights the cells it fixed; the original Source stays unchanged.
+- Copilot adds a Source_Clean column with the names tidied up; the original Source stays unchanged.
 
 **Decision guide**
 
@@ -345,13 +346,13 @@ Duplicated IDs and labels such as 'LinkedIn', 'Linked In' and 'JobStreet ' split
 
 Learning outcome: LO1: confirm Copilot access and use the Chat only, Plan and Allow editing modes to prepare, check, highlight, sort and filter recruitment pipeline data.
 
-Goal: Turn a raw candidate-pipeline export into a named Excel table, find its data-quality issues with Copilot, and answer pipeline questions with checked numbers.
+Goal: Turn a raw candidate-pipeline export into a named Excel table, find and fix its data-quality issues with Copilot, and answer pipeline questions you can check.
 
-You are a talent analyst at BrightPath Talent Solutions, a fictional Singapore recruitment and staffing firm. You will meet Copilot's three modes on a real task: Allow editing turns the H1 2026 pipeline export into a named table, Chat only describes it without touching the sheet, and Plan shows you its steps before it fixes duplicate IDs and inconsistent Source labels. You will then answer pipeline questions, compare two AI models on the same question, and build a highlighted, sorted and filtered review view. Every number is checked with a formula.
+You are a talent analyst at BrightPath Talent Solutions, a fictional Singapore recruitment and staffing firm. You will meet Copilot's three modes on a real task, asking in plain English: Allow editing turns the H1 2026 pipeline export into a named table, Chat only describes it without touching the sheet, and Plan shows you its steps before it fixes duplicate IDs and inconsistent Source names. You will then ask which source brings in the most hires, have Copilot add a Checks sheet to confirm the answer, compare two AI models, and highlight, sort and filter the pipeline.
 
 **What you'll build**
 
-BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplications, a Source_Clean column, duplicate IDs highlighted, Hired rows highlighted, a verified source-by-hires answer and a filled Prompt_Log   (Tools: Excel for Microsoft 365 (desktop) · Copilot (Chat only, Plan, Allow editing, model picker) · BrightPath_Candidate_Pipeline.xlsx.)
+BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplications, a Source_Clean column, duplicate IDs and Hired rows highlighted, a Checks sheet that confirms the hire counts and a filled Prompt_Log   (Tools: Excel for Microsoft 365 (desktop) · Copilot (Chat only, Plan, Allow editing, model picker) · BrightPath_Candidate_Pipeline.xlsx.)
 
 **Prerequisites**
 
@@ -370,67 +371,47 @@ BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplica
    Sheets    : About_This_Data | Applications | Prompt_Log
    ```
 
-2. Open Copilot and find the mode menu above the prompt box: Chat only (answers, no changes), Plan (shows its steps first) and Allow editing (makes the changes). Choose Allow editing and ask Copilot to turn the Applications data into a named table. Its reply must confirm tblApplications, 13 columns and 242 data rows. Select Done to keep the change, or Undo to reverse it. If Excel offers 'Clean data with Copilot', select Dismiss for now - you will use it in Lab 4.
+2. Open Copilot and find the mode menu above the prompt box: Chat only (answers, no changes), Plan (shows its steps first) and Allow editing (makes the changes). Choose Allow editing and ask Copilot to turn the data into a table. Its reply should confirm tblApplications with 13 columns and 242 rows. Select Done to keep the change, or Undo to reverse it. If Excel offers 'Clean data with Copilot', select Dismiss for now - you will use it in Lab 4.
 
    ```text
    ALLOW EDITING:
-   Format the data on the Applications sheet (from A1 to the last row and column) as an Excel table with headers. Name the table tblApplications. Do not change, sort or delete any values.
-   Then tell me the table name, the number of columns and the number of data rows.
+   Turn the data on the Applications sheet into a table named tblApplications. Don't change any values.
+   Then tell me how many rows and columns it has.
    ```
 
-3. Switch to Chat only (no workbook changes). Paste the prompt below. Copilot's row count must match the 242 rows it reported in Step 2. If Copilot already points out Source labels such as 'Linked In' or 'JobStreet ' (trailing space), note them - Step 4 checks and fixes them. You will log every prompt in Step 7.
-
-   ```text
-   GOAL: Describe this candidate pipeline before I analyse it.
-   CONTEXT: BrightPath recruitment desk, H1 2026. One row should be one application.
-   DATA: Use only tblApplications.
-   CONSTRAINTS: Do not change the workbook.
-   OUTPUT: What a row represents, each column with its data type, the number of rows, the Applied_Date range and the distinct values of Stage and Source.
-   REVIEW: Tell me how you counted the rows.
-   ```
-
-4. Still in Chat only, ask Copilot to check data quality. It should report 2 repeated Application_IDs and Source values that are not in the canonical list on About_This_Data. Then switch to Plan mode and send the two changes: Copilot first shows its plan - read it, approve it, then select Done. Orange means 'this ID appears more than once': each duplicate ID is coloured in both places it occurs, so you see one orange cell near the top of the table and its twin further down (press Ctrl+End to jump to the last rows). Check that no row was deleted - the table must still have 242 rows.
+3. Switch to Chat only (no workbook changes) and ask Copilot to describe the data. The row count should match Step 2 (242). If Copilot already mentions odd Source names such as 'Linked In', note them - you fix them in Step 4.
 
    ```text
    CHAT ONLY:
-   Check tblApplications for data-quality issues. List any Application_ID that appears more than once, and any Source value that is not exactly one of: LinkedIn, JobStreet, MyCareersFuture, Referral, BrightPath Website, Job Fair, Talent Database. Give the count of each issue. Do not change anything.
-
-   PLAN MODE:
-   1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.
-   2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In' to 'LinkedIn'. Do not delete or edit any existing values.
-
-   FOLLOW-UP: For each duplicated Application_ID, give the row numbers of both copies and say whether the two rows are identical.
-
-   FOLLOW-UP: Highlight the Source cells in tblApplications where Source_Clean is different from Source with a yellow fill. Tell me how many cells you highlighted and list their Application_IDs.
-
-   FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In' and no value with a trailing space, and that tblApplications still has 242 rows.
+   Describe this data for me. What does one row represent, what dates does it cover, and what are the different Stage and Source values?
    ```
 
-5. Ask Copilot a direct question about which sources produce hires, then ask Copilot (Allow editing) to add the two check formulas to a Checks sheet. Duplicate rows are Rejected applications, so they do not change the hire counts. Finally, open the model picker at the top of the pane (Auto by default), choose a different model, select New chat and ask the same question again. Both answers must match the Checks formulas - if a model disagrees, the formula wins.
+4. Still in Chat only, ask Copilot to look for problems. It should find 2 repeated Application_IDs and Source names spelt more than one way ('Linked In', and 'JobStreet' with an extra space). Then switch to Plan and ask for the fix: read Copilot's plan, approve it, then select Done. Each repeated ID turns orange in both places it occurs - one near the top of the table and its copy in the last rows (press Ctrl+End to jump there). To check the fix, open the filter arrow on the new Source_Clean column: you should see 7 sources and no 'Linked In', and the table still has 242 rows.
+
+   ```text
+   CHAT ONLY:
+   Are there any data-quality problems in tblApplications, such as repeated Application_IDs or Source names spelt in different ways? Don't change anything yet.
+
+   PLAN MODE:
+   Highlight the repeated Application_IDs in orange. Then add a Source_Clean column with the Source names tidied up, and keep the original Source column as it is.
+   ```
+
+5. Ask Copilot which source brings in the most hires (Chat only). Then switch to Allow editing and ask it to add a Checks sheet that counts the hires with formulas, so you can confirm its answer. Finally, open the model picker at the top of the pane (Auto by default), choose a different model, select New chat and send the first prompt again. Both answers must match the Checks sheet - if a model disagrees, the Checks sheet wins.
 
    ```text
    PROMPT (Chat only):
-   Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
-   Show a table sorted by hires, highest first, with hire rate = hires / applications.
+   Which source brings in the most hires? Show the applications, hires and hire rate for each source, using Source_Clean.
 
    CHECK (Allow editing):
-   On a sheet named Checks (create it if needed), add these formulas with a label beside each, then tell me the results:
-   =COUNTIFS(tblApplications[Stage],"Hired")
-   =COUNTIFS(tblApplications[Source_Clean],"LinkedIn",tblApplications[Stage],"Hired")
-
-   CHAT ONLY (new chat, different model):
-   Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
-   Show a table sorted by hires, highest first.
+   Add a Checks sheet with formulas that count the total hires and the LinkedIn hires, so I can check your answer.
    ```
 
-6. Switch to Allow editing and build a review view, one change at a time. After each change, look at the sheet and keep it or select Undo in the Copilot pane. Finally ask Copilot how many rows the filter shows, then ask it to clear the filter so all 242 rows return.
+6. Stay in Allow editing and send these one change at a time. After each change, look at the sheet and keep it or select Undo in the Copilot pane. When you have the filtered count, select Data > Clear to show all 242 rows again.
 
    ```text
-   1) Highlight entire rows of tblApplications where Stage is "Hired" with a light green fill.
-   2) Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline from lowest to highest.
-   3) Filter tblApplications to show only Client_Sector = "Technology" and Stage = "Interview".
-   4) How many rows of tblApplications are visible with this filter?
-   5) Clear all filters on tblApplications and confirm all 242 rows are visible.
+   1) Highlight the rows of candidates who were hired in light green.
+   2) Sort the table so the highest interview scores come first.
+   3) Show only the Technology candidates at the Interview stage. How many are there?
    ```
 
 7. Prompt_Log already lists every prompt in this lab with its step and mode. Ask Copilot to fill in what it did, how it was verified and your decision (Keep, Revise or Undo). Save the workbook (Ctrl+S / Cmd+S) when it is done.
@@ -445,16 +426,11 @@ BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplica
 
 | Purpose | Prompt |
 |---|---|
-| Describe | Describe tblApplications: what one row represents, each column's data type, the row count and the Applied_Date range. Do not change the workbook. |
-| Data quality | List any Application_ID that appears more than once in tblApplications and any Source value that is not in the canonical list on About_This_Data. |
-| Plan first | Plan how you would flag duplicate Application_IDs and standardise Source. Show me the steps before you change anything. |
-| Clean helper column | Add a column Source_Clean that trims spaces from Source and replaces 'Linked In' with 'LinkedIn'. Do not change the original Source column. |
-| Question | Using tblApplications, count applications and hires by Source_Clean and show the hire rate. Sort by hires, highest first. |
-| Question | Which Client_Sector received the most applications, and how many? Show the count for every sector. |
-| Highlight | Highlight rows where Stage is Hired in light green. |
-| Sort | Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline from lowest to highest. |
-| Filter | Filter to show only Technology applications at the Interview stage. |
-| Insight | What's interesting about this pipeline data? Give three observations, each with the numbers behind it. |
+| Summary | Give me a quick summary of this pipeline data in five bullet points. |
+| Question | Which sector received the most applications? |
+| Question | Which recruiter has the most candidates at the Offer stage? |
+| Highlight | Highlight the candidates with an interview score of 5 in light blue. |
+| Insight | What's interesting about this data? Give me three observations with the numbers behind them. |
 
 **Test it**
 
@@ -462,10 +438,10 @@ BrightPath_Candidate_Pipeline.xlsx in your work-c34 folder with table tblApplica
 |---|---|
 | Rows in tblApplications | 242 rows, 240 unique Application_IDs |
 | Duplicate IDs (orange) | APP-0018 and APP-0020 - 4 orange cells: 2 near the top, 2 in the last rows |
-| Fixed Source cells (yellow) | 5 cells: 3 'Linked In' + 2 'JobStreet ' |
-| LinkedIn count in Source_Clean | 69 |
-| Hires | 22 in total; LinkedIn has the most (8) |
-| Technology + Interview filter | 9 rows; all 242 back after clearing it |
+| Source_Clean | 7 sources - 3 'Linked In' and 2 'JobStreet' (extra space) fixed |
+| Hires (Checks sheet) | 22 in total; LinkedIn has the most (8) |
+| Two models | Both name LinkedIn as the top source, matching the Checks sheet |
+| Technology + Interview filter | 9 rows; all 242 back after Data > Clear |
 
 **Checkpoint and rejoin point**
 
@@ -478,12 +454,12 @@ Keep this workbook in work-c34. Lab 2 uses a separate requisitions workbook, so 
 | The Copilot button is missing or greyed out. | Save the file as a normal .xlsx, close and reopen it, and update Excel. Check your licence in your Microsoft 365 account and ask IT if Copilot is disabled for your tenant. Pair with a neighbour meanwhile. |
 | There is no Plan option in the mode menu. | Some Excel builds show only Allow editing and Chat only. Use Chat only, end the prompt with 'Show me the plan; do not change anything yet', then switch to Allow editing to carry it out. |
 | 'Unsupported file state' message. | Save as a normal .xlsx (Strict Open XML files are not supported), close and reopen it. If the file is read-only, copy it into work-c34 and open the copy. |
-| Copilot answers about the whole sheet instead of the table. | Name the table (tblApplications) and the exact columns in the prompt, and click inside the table before asking. |
-| Copilot's count differs from your formula. | Ask Copilot how it counted (rows vs unique IDs, which Stage values). Trust the formula, record the difference and refine the prompt. |
+| Copilot answers about the whole sheet instead of the table. | Mention tblApplications in the prompt and click inside the table before asking. |
+| Copilot's count differs from the Checks sheet. | Ask Copilot how it counted (all rows or unique IDs, which Stage values). Trust the Checks sheet, note the difference and ask again more precisely. |
 
 **Challenge**
 
-Ask Copilot to add a Pipeline_Status column that groups Stage into Active (Applied, Screening, Interview, Offer), Hired and Closed (Rejected, Withdrawn). Verify the three counts add up to the row count.
+Ask Copilot to add a Pipeline_Status column that groups the stages into Active, Hired and Closed (Rejected or Withdrawn). Check that the three counts add up to the row count.
 
 **Reflection**
 
@@ -1148,15 +1124,15 @@ Use this checkpoint to explain what you can now do and identify any lab evidence
 
 ## Topic 02 — Skills and Rules  (Labs 4-6)
 
-Personalisation · workbook rules on a .Rules sheet · built-in formatting, visualisation and finance skills · custom skills in SKILL.md · using Copilot to write a skill
+Personalisation · workbook rules on a .Rules sheet · built-in chart and theme skills · custom skills in SKILL.md · using Copilot to write a skill · Pareto charts
 
 **Key concepts**
 
 - Personalisation = you — Preferences that follow you to every workbook, e.g. 'Never merge cells'. Settings (...) > Personalization.
 - Rules = this workbook — A visible sheet named .Rules with one rule per cell in column A. The rules travel with the file.
 - Skills = a repeatable recipe — Saved step-by-step instructions you call by name with @, in any workbook.
-- Start with built-in skills — @chart-design for charts, @theme-design for styling, and finance skills such as @unit-economics and @check-model.
-- Let Copilot write your skill — Describe the task; Copilot writes the SKILL.md. Save it in its own OneDrive folder and select Refresh.
+- Start with built-in skills — @chart-design plots a chart from a prompt; @theme-design gives the whole workbook one look.
+- Let Copilot write your skill — Describe the task to Copilot on the web; it writes the SKILL.md. Upload it to its own OneDrive folder, then Refresh in Excel.
 - Still check the result — Rules and skills guide Copilot. They do not guarantee the numbers are right.
 
 Concepts for Lab 4: Personalisation: Preferences That Follow You, Workbook Rules: The .Rules Sheet, Personalization, Rules and Skills Compared.
@@ -1269,13 +1245,13 @@ An instruction in the wrong place causes surprises. A personal colour choice in 
 | Shared? | No - only you | Yes - it travels with the file | Only with people who install the same skill |
 | Set up | Settings (...) > Personalization | + > Create workbook rules | Manage plugins & skills; custom: OneDrive + Refresh |
 | Best for | Formats, colours, tone you always want | Definitions, valid values, layout | Multi-step tasks repeated across files |
-| Example | Use navy and teal for charts | WIP = In Progress | @interview-calendar week of 6 July |
+| Example | Use navy and teal for charts | WIP = In Progress | @pareto-chart Job_Category |
 
 **Worked example**
 
 - Personalization: 'Use navy #1F4E79 and teal #2A9D8F as the main chart colours.'
 - .Rules: 'Offer acceptance rate = accepted / (accepted + declined); exclude Pending.'
-- Skill: '@interview-calendar Build the calendar for the week starting Monday 6 July 2026.'
+- Skill: '@pareto-chart Plot a Pareto chart of Job_Category in tblJobs.'
 
 **Decision guide**
 
@@ -1464,101 +1440,100 @@ Which three corrections do you give Copilot most often? Which belong in Personal
 
 ---
 
-Concepts for Lab 5: Key Finance Measures: CAC, LTV, Churn and Payback, Built-in Skills: Formatting, Visualisation and Finance.
+Concepts for Lab 5: Built-in Skills: Chart Design and Theme Design, Themes: One Look for the Whole Workbook.
 
 
-### Key Finance Measures: CAC, LTV, Churn and Payback
+### Built-in Skills: Chart Design and Theme Design
 
-A subscription business such as BrightPath's HR outsourcing is judged on a few measures: MRR (monthly recurring revenue); churn (the share of clients lost each month); ARPA (average revenue per account = MRR / active clients); CAC (customer acquisition cost = sales and marketing spend / new clients); LTV (lifetime value = ARPA x gross margin / monthly churn); LTV:CAC; and payback months (CAC / (ARPA x gross margin)).
+A skill gives Copilot ready-made instructions for a repeatable task. Copilot in Excel ships with built-in skills that you manage in Settings (...) > Manage plugins & skills. For this course the two that matter are Visualization (@chart-design) and Formatting (@theme-design); @brandkit applies your organisation's own colours and fonts, and a Finance library of about 20 skills is there to explore later. Call a skill by typing @ and its name, or choose it from + > Choose plugins & skills.
 
-Together they answer one question: does winning a client pay off, and how fast? A common benchmark is an LTV:CAC of 3 or more and a payback within about 12 months. Each measure involves choices - which period, average or end-of-period clients, gross margin or revenue - so two analysts (or two skills) can disagree unless the definitions are written down first.
+@chart-design applies the Excel design team's chart guidance: it picks a suitable chart type, builds it and formats it. @theme-design applies one coordinated theme - colours, fonts and formats - across cells, tables and charts from a single prompt. A skill uses its own defaults, so you still say where the chart goes and which colours to use, and you check the plotted numbers. Skills need Excel's display language set to English.
 
 **How it works**
 
-- Write each definition and the period (e.g. H1 2026) before calculating anything.
-- Calculate the inputs with formulas: new clients, spend, MRR, active clients, margin, churn.
-- Combine them into CAC, LTV, LTV:CAC and payback, and compare by channel.
+- Open Settings (...) > Manage plugins & skills; turn on chart-design (off by default) and theme-design if the Formatting folder is shown.
+- Type @ and the skill name in the prompt, with the table, the position and the style you want.
+- Check each plotted number on a Checks sheet, then steer the skill with a follow-up prompt.
 
 **Worked example**
 
-- H1 2026: S$560,420 spend / 38 new clients = CAC of S$14,748.
-- ARPA S$3,681 x 44.9% margin / 2.06% churn = LTV of about S$80,433.
-- LTV:CAC = 5.5 and payback = 8.9 months - healthy by the common benchmark.
+- '@chart-design Chart H1 2026 spend by Channel as bars, longest first, over A20:H37.'
+- '@theme-design Apply one clean, professional theme to the Charts and Checks sheets.'
+- '@theme-design Use navy #1F4E79 and teal #2A9D8F as the main colours.'
 
 **Decision guide**
 
 | Use when | Avoid when |
 |---|---|
-| Deciding where to spend on marketing or which clients to win. | The period or definitions are not agreed - numbers will not be comparable. |
-| Checking a finance skill's output against your own definitions. | Very few new clients in a channel - its CAC will swing wildly. |
+| A built-in skill matches the task: plotting a chart or styling a workbook. | You need an exact layout the skill does not give - ask for the change in a follow-up prompt. |
+| You can say where the output goes and check its numbers. | Your organisation has a brand kit - use @brandkit so the colours stay on-brand. |
 
 **Practitioner quality lens**
 
-- Defined: Formula and period written for each measure.
-- Consistent: Same definitions every month and every channel.
-- Reproduced: Headline numbers rebuilt with your own formulas.
-
-**Authoritative references**
-
-- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-built-in-skills
-- https://www.microsoft.com/en-us/copilot/blog/2026/06/25/copilot-in-excel-built-for-the-era-of-frontier-finance/
-
----
-
-
-### Built-in Skills: Formatting, Visualisation and Finance
-
-A skill gives Copilot ready-made instructions for a repeatable task. Copilot in Excel ships with built-in skills that you manage in Settings (...) > Manage plugins & skills: Formatting (@brandkit, @theme-design), Visualization (@chart-design) and a Finance library of about 20 skills such as @unit-economics, @check-model, @3-statements and @comps-analysis. Call one by typing @ and its name, or choose it from + > Choose plugins & skills.
-
-Built-in skills package expert know-how: @chart-design applies the Excel design team's chart guidance, @check-model audits a model for hardcoded overrides and broken formulas, and @unit-economics works out CAC, LTV and payback. They save hours - but a skill uses its own assumptions, so you still hold it to your definitions and check the headline numbers. Skills need Excel's display language set to English.
-
-**How it works**
-
-- Open Settings (...) > Manage plugins & skills and turn on the skills you need (chart-design is off by default).
-- Type @ and the skill name in the prompt, plus the table, period and definitions to use.
-- Check the output against independent formulas; ask the skill to show its working if they differ.
-
-**Worked example**
-
-- '@chart-design Create a combo chart of MRR and active clients by month from tblClientMonths.'
-- '@check-model Audit Headcount_Budget for typed numbers, odd formulas and totals that miss rows.'
-- '@theme-design Apply one professional theme to the Charts and Unit_Economics sheets.'
-
-**Decision guide**
-
-| Use when | Avoid when |
-|---|---|
-| A built-in skill matches the task (styling, charting, a standard finance analysis or model audit). | The skill's default definitions differ from yours and you have not said which to use. |
-| You can state the definitions and check the key results. | Nobody on the team can judge whether the finance output is sensible. |
-
-**Practitioner quality lens**
-
-- Right skill: Chosen for the task; enabled or called directly with @.
-- Your definitions: Period and formulas stated in the prompt or .Rules.
-- Verified: Headline numbers reproduced with native formulas.
+- Right skill: Chosen for the task; enabled, or called directly with @.
+- Directed: Position, colours and style stated in the prompt.
+- Verified: Every plotted number reproduced on a Checks sheet.
 
 **Authoritative references**
 
 - https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-skills
 - https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-built-in-skills
-- https://www.microsoft.com/en-us/copilot/blog/2026/06/25/copilot-in-excel-built-for-the-era-of-frontier-finance/
 - https://www.youtube.com/watch?v=4z4eIaEEH9A
 - https://www.youtube.com/watch?v=wZ8QAKiIfuo
 
 ---
 
 
-### Lab 5 · Built-in Skills: Visual & Finance — Analyse HR-Outsourcing Finances with Built-in Skills
+### Themes: One Look for the Whole Workbook
 
-Learning outcome: LO2: find, enable and call Copilot's built-in skills - chart-design, unit-economics, check-model and theme-design - and verify what each skill produces.
+A theme is one coordinated set of colours, fonts and formats. Applied to a workbook it restyles cells, tables and charts together, so every sheet looks like part of the same report. The @theme-design skill applies a theme from a prompt, and you can steer it with your own colours. @brandkit does the same with your organisation's brand colours and fonts, if a brand kit has been set up.
 
-Goal: Use four built-in skills to chart BrightPath's recurring revenue, calculate client unit economics, audit a headcount budget model and style the results - then prove the numbers.
+Without a theme, every chart carries its own colours, fonts and borders and the report looks assembled from parts. A theme makes the look consistent in one prompt. It changes appearance only - values and formulas stay the same - but you still check that nothing moved, and that a colour choice does not hide a signal such as red, amber or green.
 
-BrightPath's HR-outsourcing business sells monthly payroll and HR services to client companies. Finance wants to know whether winning clients pays off and whether next year's headcount budget is right. You will switch on skills in Manage plugins & skills, call them with @, and let each one do a specialist job: @chart-design builds the revenue chart, @unit-economics works out CAC, LTV and payback, @check-model finds the errors in the budget model, and @theme-design styles the workbook. A Checks sheet proves every headline number.
+**How it works**
+
+- Finish and check the charts first; style last.
+- Call @theme-design and name the sheets and charts to style.
+- Steer it with a follow-up prompt - your own colours, or a calmer or bolder look - and keep or undo the change.
+
+**Worked example**
+
+- '@theme-design Apply one clean, professional theme to the Charts and Checks sheets and all four charts.'
+- '@theme-design Use navy #1F4E79 and teal #2A9D8F as the main colours, and keep every chart readable.'
+- '@brandkit Apply our organisation's brand colours and fonts to the charts.'
+
+**Decision guide**
+
+| Use when | Avoid when |
+|---|---|
+| Several sheets or charts must look like one report. | The numbers are not checked yet - style after you verify. |
+| You have house or brand colours to apply. | A colour would hide a status signal such as red, amber or green. |
+
+**Practitioner quality lens**
+
+- Consistent: Same colours, fonts and number formats on every sheet and chart.
+- Readable: Enough contrast to read every label and data point.
+- Unchanged data: Values and formulas are the same after styling.
+
+**Authoritative references**
+
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-built-in-skills
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-skills
+
+---
+
+
+### Lab 5 · Built-in Skills: Visual Design — Plot and Style Client Growth Charts with Built-in Visual Skills
+
+Learning outcome: LO2: find, enable and call Copilot's built-in visual skills - chart-design and theme-design - to plot charts from a prompt and style them as one set, and verify what each skill produces.
+
+Goal: Use @chart-design to plot four charts of BrightPath's HR-outsourcing growth, polish them as a set, then use @theme-design to give the whole sheet one professional look - and prove the numbers behind every chart.
+
+BrightPath's HR-outsourcing business sells monthly payroll and HR services to client companies, and leadership wants four clear charts of how it is growing. You will switch on the built-in visual skills in Manage plugins & skills, then call @chart-design to plot each chart - it picks the chart type and formats it using the Excel design team's guidance - and place all four in a 2 x 2 grid on a new Charts sheet. You will polish the set, ask Copilot for a Checks sheet that proves the numbers behind the charts, and finish with @theme-design to give the sheet one coordinated theme.
 
 **What you'll build**
 
-BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_Economics sheet, a corrected Headcount_Budget, a Checks sheet that agrees with the skills, and a consistent theme   (Tools: Excel · Copilot (Allow editing, Plan, Chat only) · @chart-design · @unit-economics · @check-model · @theme-design.)
+BrightPath_HR_Outsourcing_Finance.xlsx with a Charts sheet of four skill-designed charts in a 2 x 2 grid (MRR and clients, new vs churned clients, H1 2026 spend by channel, active clients by plan), a Checks sheet that agrees with the charts, and one consistent theme   (Tools: Excel · Copilot (Allow editing, Chat only) · Manage plugins & skills · @chart-design · @theme-design.)
 
 **Prerequisites**
 
@@ -1567,81 +1542,72 @@ BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_E
 
 **Step-by-step**
 
-1. Copy BrightPath_HR_Outsourcing_Finance.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. Read the Definitions row on About_This_Data - you will hold the finance skill to these.
+1. Copy BrightPath_HR_Outsourcing_Finance.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. The workbook holds data only: you will create every chart with a prompt, in a 2 x 2 grid on a new Charts sheet. Read the Definitions row on About_This_Data first.
 
    ```text
-   Tables : tblClientMonths (18 months) | tblClients | tblSpend | Headcount_Budget (cost model)
-   H1 2026 = Jan-Jun 2026
-   CAC     = sales & marketing spend / new clients
-   ARPA    = MRR / active clients at Jun 2026
-   LTV     = ARPA x gross margin / monthly churn
-   Payback = CAC / (ARPA x gross margin), in months
+   Tables : tblClientMonths (18 months) | tblClients (158 clients) | tblSpend (spend by month and channel)
+   H1 2026 : Jan-Jun 2026
+   Chart 1 : MRR and active clients by month   -> Charts!A1:H18
+   Chart 2 : new vs churned clients by month   -> Charts!J1:Q18
+   Chart 3 : H1 2026 spend by Channel          -> Charts!A20:H37
+   Chart 4 : active clients by Plan, Jun 2026  -> Charts!J20:Q37
    ```
 
-2. Turn on the skills. In the Copilot pane select Settings (...) > Manage plugins & skills. Open the Finance folder and turn on unit-economics and check-model. Open the Visualisation folder and turn on chart-design (it is off by default). Leave every other skill as it is. Close the dialog, type @ in the prompt box and confirm all three are listed. theme-design (Step 7) sits in a Formatting folder that is still rolling out - if you have no Formatting folder, skip it; Step 7 shows what to do.
+2. Turn on the skills. In the Copilot pane select Settings (...) > Manage plugins & skills. Open the Visualisation folder and turn on chart-design (it is off by default). Open the Formatting folder and turn on theme-design - if you have no Formatting folder yet, skip it; Step 7 shows what to do. Leave every other skill as it is. Close the dialog, type @ in the prompt box and confirm chart-design is listed. Then ask Copilot which skills fit this job.
 
    ```text
    Where         : Settings (...) > Manage plugins & skills - turn on only these
-   Finance       : unit-economics, check-model
    Visualisation : chart-design (off by default)
    Formatting    : theme-design - only if this folder is shown
    Call a skill  : type @ and its name, e.g. @chart-design
 
    CHAT ONLY:
-   Which of your skills would help me analyse client acquisition cost and churn in this workbook, and which would help me audit the Headcount_Budget sheet? Do not change anything.
+   Which of your skills would help me choose the right chart for this data and style the finished sheet? Do not change anything.
    ```
 
-3. Call @chart-design (Visualisation) in Allow editing. It chooses and formats the chart using the Excel design team's guidance. Check the values: MRR grows from S$238,200 in Jan 2025 to S$482,200 in Jun 2026, with 131 active clients at the end.
+3. Call @chart-design in Allow editing. It chooses and formats the chart using the Excel design team's guidance. Your prompt says where the chart goes and how it should look, because the default placement and style are rarely what you want. Check the values: MRR grows from S$238,200 in Jan 2025 to S$482,200 in Jun 2026, with 131 active clients at the end.
 
    ```text
    ALLOW EDITING:
-   @chart-design Create a combo chart on a new sheet Charts from tblClientMonths: MRR as columns and Clients_End as a line on a secondary axis, Jan 2025 to Jun 2026.
-
-   FOLLOW-UP:
-   @chart-design Improve this chart for a leadership slide: a title that states the finding, axis titles with units, and a data label on the last month only.
+   @chart-design On a new sheet named Charts, create a combo chart from tblClientMonths, placed over A1:H18, with MRR as columns and Clients_End as a line on a secondary axis, Jan 2025 to Jun 2026.
+   Format it cleanly: white background, no border or effects, axis titles with units, and a title that states the finding.
    ```
 
-4. Call the finance skill @unit-economics in Plan mode, so you can review its approach before it builds. Check that the plan uses H1 2026 and the About_This_Data definitions; reply with corrections if not, then approve and select Done.
+4. Add the other three charts, one prompt each, in the same clean style. For chart 2 let the skill recommend the chart type. Check: 98 clients were won and 27 churned over the 18 months; LinkedIn Ads took the most H1 2026 spend (S$191,590) and Referral the least (S$41,440); in Jun 2026 Payroll + HR Admin has 56, Payroll Only has 49, Full HR Outsourcing has 26 active clients.
 
    ```text
-   PLAN MODE:
-   @unit-economics Analyse the unit economics of BrightPath's HR-outsourcing clients for H1 2026 using tblClientMonths, tblClients and tblSpend. Use the definitions on About_This_Data. Put the results on a new sheet Unit_Economics: CAC, ARPA, gross margin, monthly churn, LTV, LTV:CAC and payback months, plus CAC by Channel. List your assumptions.
+   ALLOW EDITING:
+   @chart-design Recommend the best chart for new vs churned clients by month, then create it on the Charts sheet over J1:Q18 in the same clean style as the first chart.
+
+   ALLOW EDITING:
+   @chart-design Chart the sales and marketing spend for each Channel in H1 2026 (Jan-Jun) from tblSpend as bars, longest first, on the Charts sheet over A20:H37 in the same clean style.
+
+   ALLOW EDITING:
+   @chart-design Show how many active clients each Plan has in Jun 2026 from tblClients, as the chart type you think suits it best, on the Charts sheet over J20:Q37 in the same clean style.
    ```
 
-5. Never trust a skill's numbers without a check. Ask Copilot to add these independent formulas, then compare them with the Unit_Economics sheet. If they differ, ask the skill to show its calculation and use the definition.
+5. Polish the four charts as one set with a single call. If one chart is not what you wanted, select Undo and ask again for that chart only.
+
+   ```text
+   ALLOW EDITING:
+   @chart-design Review the four charts on the Charts sheet so they read as one set: a title that states the finding on each, the same fonts and axis style, data labels only where they help, and all four the same size.
+   ```
+
+6. Never trust a chart without a check. Ask Copilot to add a Checks sheet with formulas, then compare each value with its chart. If a chart differs, ask the skill which table and filter it used, and fix the chart: the Checks sheet is the reference.
 
    ```text
    CHECK (Allow editing):
-   Create a sheet named Checks. Enter these labels and formulas exactly as written, then tell me each result:
-   A1 New clients H1      B1 =SUMIFS(tblClientMonths[New_Clients],tblClientMonths[Month],">="&DATE(2026,1,1))
-   A2 S&M spend H1        B2 =SUMIFS(tblClientMonths[Sales_Marketing_Spend],tblClientMonths[Month],">="&DATE(2026,1,1))
-   A3 CAC                 B3 =B2/B1
-   A4 ARPA                B4 =INDEX(tblClientMonths[MRR],18)/INDEX(tblClientMonths[Clients_End],18)
-   A5 Gross margin        B5 =AVERAGEIFS(tblClientMonths[Gross_Margin_Pct],tblClientMonths[Month],">="&DATE(2026,1,1))
-   A6 Monthly churn       B6 =AVERAGE(FILTER(tblClientMonths[Churned_Clients]/tblClientMonths[Clients_Start],tblClientMonths[Month]>=DATE(2026,1,1)))
-   A7 LTV                 B7 =B4*B5/B6
-   A8 LTV to CAC          B8 =B7/B3
-   A9 Payback months      B9 =B3/(B4*B5)
+   Add a Checks sheet with formulas that give the MRR and active clients in Jun 2026, the total new and churned clients over the 18 months, the H1 2026 spend for each Channel, and the active clients for each Plan, so I can check the four charts.
+   ```
+
+7. Style the workbook with @theme-design (Formatting). It applies one coordinated theme - colours, fonts and formats - to cells, tables and charts. Then steer it with a follow-up prompt. If theme-design is not in your @ list, your account does not have it yet: delete @theme-design and run the prompt as it is. If your organisation has set up a brand kit, try @brandkit instead. Then log your prompts.
+
+   ```text
+   ALLOW EDITING:
+   @theme-design Apply one clean, professional theme to the Charts and Checks sheets and all four charts.
 
    FOLLOW-UP:
-   Compare Checks!B3:B9 with the Unit_Economics sheet. Show any value that differs and why.
-   ```
-
-6. Audit a model with @check-model. Ask for the findings first in Chat only, read them, then switch to Allow editing and ask for the fixes. It should find three problems: a typed number in E3, an 11-month formula in E6 and a total in E10 that misses the last role.
-
-   ```text
-   CHAT ONLY:
-   @check-model Audit the Headcount_Budget sheet: look for typed numbers in formula columns, formulas that differ from their neighbours, and totals that miss rows. List each issue with its cell, what is wrong and the fix. Do not change anything yet.
-
-   ALLOW EDITING:
-   Fix the issues you found on Headcount_Budget and tell me the new Total FY2027 cost.
-   ```
-
-7. Style the workbook with @theme-design (Formatting). It applies one coordinated theme to cells, tables and charts. If theme-design is not in your @ list, your account does not have it yet: delete @theme-design and run the rest of the prompt as it is. If your organisation has set up a brand kit, try @brandkit instead. Then log your prompts.
-
-   ```text
-   ALLOW EDITING:
-   @theme-design Apply one clean, professional theme to the Charts, Unit_Economics, Checks and Headcount_Budget sheets.
+   @theme-design Use navy #1F4E79 and teal #2A9D8F as the main colours, and keep every chart readable.
 
    LOG (Allow editing):
    Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
@@ -1652,25 +1618,25 @@ BrightPath_HR_Outsourcing_Finance.xlsx with a skill-designed MRR chart, a Unit_E
 
 | Purpose | Prompt |
 |---|---|
-| Find skills | Which skills do you have for charts, formatting and finance? When would I use each one? |
+| Find skills | Which skills do you have for charts and formatting? When would I use each one? |
 | Chart skill | @chart-design Recommend the best chart for new vs churned clients by month, then create it. |
-| Finance skill | @unit-economics Compare CAC and payback months by acquisition Channel for H1 2026. |
-| Audit skill | @check-model Check this sheet for hardcoded numbers, broken formulas and totals that miss rows. |
+| Chart skill | @chart-design Chart the sales and marketing spend for each Channel in H1 2026 as bars, longest first. |
 | Style skill | @theme-design Apply a coordinated theme to this workbook. |
+| Colours | @theme-design Use navy #1F4E79 and teal #2A9D8F as the main colours on every chart. |
 | Brand skill | @brandkit Apply our organisation's brand colours and fonts to the charts. |
-| Explain | Explain how you calculated LTV, step by step, with the cells you used. |
-| Question | Which acquisition channel has the lowest CAC in H1 2026, and how many clients did it bring? |
+| Explain | Explain why you chose this chart type for this data, and which other chart types would also work. |
+| Question | Which acquisition channel took the most sales and marketing spend in H1 2026, and how much was it? |
 
 **Test it**
 
 | Check | Expected result |
 |---|---|
-| New clients and spend, H1 2026 | 38 clients; S$560,420 |
-| CAC and ARPA | S$14,748; S$3,681 |
-| Margin and monthly churn | 44.9%; 2.06% |
-| LTV, LTV:CAC, payback | About S$80,433; 5.5; 8.9 months |
-| CAC by channel | Lowest Referral S$5,180; highest Events S$33,445 |
-| @check-model fixes | E3, E6, E10: total S$1,437,934 -> S$1,703,052 |
+| MRR and active clients, Jun 2026 | S$482,200; 131 clients (Jan 2025 MRR S$238,200) |
+| New and churned clients, 18 months | 98 new; 27 churned |
+| H1 2026 spend, longest and shortest bar | LinkedIn Ads S$191,590; Referral S$41,440 |
+| H1 2026 spend, all channels | S$560,420 |
+| Active clients by plan | 56 + 49 + 26 = 131 |
+| Charts sheet | Four charts in a 2 x 2 grid, one clean style, one theme |
 
 **Checkpoint and rejoin point**
 
@@ -1682,41 +1648,43 @@ Keep the workbook in work-c34. Lab 6 needs your OneDrive for one thing only: cus
 |---|---|
 | Manage plugins & skills is missing or greyed out. | Wait 10 seconds - it loads after the pane. Then check Excel is up to date and the Office display language is English. |
 | A skill is not listed when I type @. | Turn it on in Manage plugins & skills, or type its full name: an @mention works even when the skill is off. |
-| The skill's CAC or LTV differs from Checks. | Skills use their own defaults. Ask: 'Use the definitions on About_This_Data and recalculate CAC and LTV.' |
-| @check-model changes the sheet straight away. | You were in Allow editing. Select Undo, switch to Chat only and ask for the findings first. |
+| The chart is in the wrong place or has a border or glow. | Ask: 'Move this chart to the Charts sheet over A1:H18 (use that chart's range), use a white background and remove the border and effects.' |
+| @chart-design builds a different chart type from the one I wanted. | The skill recommends, your words decide. Name the type in the prompt, e.g. 'as bars, longest first'. |
+| @theme-design is not in my list. | Your account may not have the Formatting folder yet. Ask without the skill: 'Apply one consistent colour theme and font to the Charts and Checks sheets and all four charts.' |
+| A chart value differs from the Checks sheet. | Ask: 'Which table, columns and filter did this chart use?' Then fix the chart's data; the Checks sheet is the reference. |
 
 **Challenge**
 
-Ask @unit-economics for a client cohort table by Sign_Date quarter showing how many clients from each cohort are still active. Check one cohort with COUNTIFS on tblClients.
+Ask @chart-design for a fifth chart: monthly gross margin % as a line with the axis starting at 40%. Then use @theme-design so it matches the other four, and check one month's value on Client_Months.
 
 **Reflection**
 
-Which skill saved you the most time, and which of its numbers would you not have trusted without the Checks sheet?
+Which chart did the skill choose differently from the one you would have drawn, and was it better? What did the theme change that a prompt alone did not?
 
 > **Note:** The lab folder labs/lab-05-*/ holds the instruction PDF with sample prompts, sample-prompts.txt and the mock-data workbook (data/BrightPath_HR_Outsourcing_Finance.xlsx). Use only the supplied fictional BrightPath data or information you are authorised to process. Do not paste credentials, confidential business material or real employees' personal data into Copilot, rules or skills.
 
 ---
 
-Concepts for Lab 6: Custom Skills: The SKILL.md Recipe, Using Copilot to Write and Improve a Skill.
+Concepts for Lab 6: Custom Skills: The SKILL.md Recipe, Using Copilot to Write and Improve a Skill, Pareto Charts: Finding the Vital Few.
 
 
 ### Custom Skills: The SKILL.md Recipe
 
 A custom skill is a plain-text file named SKILL.md inside its own folder in your OneDrive skills folder. The file starts with front matter between --- lines: a name, which must match the folder name, and a description that tells Copilot when to use the skill. Below it, the body lists the steps in plain English - no code needed. Create the folder from Manage plugins & skills > Custom skills > Create OneDrive folder.
 
-Rules belong to one workbook; a skill is a recipe you can run in any workbook. If you ask Copilot for the same report every week, a skill turns a long prompt into '@weekly-report' and gives the same instructions every time. Your OneDrive comes with a sample calendar skill to copy, and after you add or edit a skill you select Refresh so Copilot sees the change.
+Rules belong to one workbook; a skill is a recipe you can run in any workbook. If you ask Copilot for the same report every week, a skill turns a long prompt into '@weekly-report' and gives the same instructions every time. Your OneDrive skills folder comes with a sample skill to read, and after you add or edit a skill you select Refresh so Copilot sees the change.
 
 **How it works**
 
-- Create the skills folder, then a sub-folder named after the skill, e.g. interview-calendar.
+- Create the skills folder, then a sub-folder named after the skill, e.g. pareto-chart.
 - Save SKILL.md in it: front matter (name, description), then numbered steps and a final check.
 - In Excel select Custom skills > Refresh, turn the skill on and call it with @.
 
 **Worked example**
 
-- Folder: skills/interview-calendar/SKILL.md, with name: interview-calendar.
-- Description: 'Use when I ask for an interview calendar, schedule or clashes for a week.'
-- Steps: read tblInterviews, build a Mon-Fri grid, colour by Mode, flag clashes, add a summary.
+- Folder: skills/pareto-chart/SKILL.md, with name: pareto-chart.
+- Description: 'Use when I ask for a Pareto chart, an 80/20 analysis or the vital few categories in a table column.'
+- Steps: count each category, sort high to low, add a cumulative % line, give every column its own colour.
 
 **Decision guide**
 
@@ -1743,21 +1711,21 @@ Rules belong to one workbook; a skill is a recipe you can run in any workbook. I
 
 ### Using Copilot to Write and Improve a Skill
 
-You do not have to write SKILL.md yourself. In Chat only, describe the task, the input table, the output you want and the checks, and ask Copilot to return a complete SKILL.md with front matter. You copy the reply into a plain-text file, save it in the skill's OneDrive folder, refresh, and call it. To improve the skill, ask Copilot to update the file and save the new version over the old one.
+You do not have to write SKILL.md yourself. Ask Copilot on the web (copilot.microsoft.com): describe the task, the input table, the output you want and the checks, and ask for a complete SKILL.md with front matter. You copy the reply into a plain-text file, upload it to the skill's OneDrive folder, refresh in Excel and call it. To improve the skill, ask Copilot to update the file and upload the new version over the old one.
 
 Copilot knows the SKILL.md format and writes clear, numbered steps, so a non-technical user can build a skill in minutes. Treat the skill as a living recipe: each time you correct its output twice, add the correction to the steps. Skills run inside what Excel normally allows, but test a new skill on a copy of the workbook before you rely on it.
 
 **How it works**
 
-- Chat only: give the skill name, description, input, numbered steps, output and checks; ask for the full file.
-- Save it as SKILL.md (plain text) in skills/<name>/, select Refresh and turn it on.
+- In the web chat: give the skill name, description, input, numbered steps, output and checks; ask for the full file.
+- Save it as SKILL.md (plain text), upload it to OneDrive > skills > <name>, select Refresh in Excel and turn it on.
 - Run it on a copy, check the result, then ask Copilot to update the file with any fixes.
 
 **Worked example**
 
-- 'Write a SKILL.md named interview-calendar that turns tblInterviews into a weekly calendar and flags clashes.'
-- '@interview-calendar Week starting 13 July 2026.' builds next week's calendar from one line.
-- 'Update the skill so the summary shows interview hours per Interviewer.' - save, refresh, rerun.
+- 'Write a SKILL.md named pareto-chart that plots a Pareto chart of a category column, a different colour for each column.'
+- '@pareto-chart Plot a Pareto chart of Client_Sector in tblJobs.' reuses the skill on another column.
+- 'Update the skill with a dashed 80% line.' - upload the new file, refresh, rerun.
 
 **Decision guide**
 
@@ -1782,98 +1750,162 @@ Copilot knows the SKILL.md format and writes clear, numbered steps, so a non-tec
 ---
 
 
-### Lab 6 · Custom Skills: Calendar — Use Copilot to Build a Custom Interview-Calendar Skill
+### Pareto Charts: Finding the Vital Few
 
-Learning outcome: LO2: use Copilot to write a custom SKILL.md, save it in the OneDrive skills folder, call it with @, and improve it so a weekly task runs from a one-line prompt.
+A Pareto chart sorts the categories of one column from the largest count to the smallest and adds a line for the cumulative percentage. It shows the 80/20 idea: a few categories - the vital few - usually account for most of the total, and a long tail of small ones for the rest. Excel has a built-in Pareto chart (Insert > Statistic Chart), but it draws every column in one colour and shows no summary table; a skill can build the summary with formulas and give each column its own colour.
 
-Goal: Create an interview-calendar skill that turns BrightPath's interview list into a weekly calendar with clashes flagged - and reuse it for the next week with one short prompt.
+A Pareto chart tells you where to act first. For BrightPath's 500 job postings it shows that six of the 16 job categories make up 83% of the work, so recruiters know where to focus. The steps are the same for any category column, which makes it a good first custom skill.
 
-Every Friday a BrightPath coordinator turns next week's interview bookings into a calendar and hunts for double-bookings. That is a repeatable recipe, so it should be a skill. You will open the sample calendar skill in your OneDrive skills folder, ask Copilot to write a new SKILL.md for interview-calendar, save it in its own folder, refresh the skills list and call it with @. The same one-line prompt then builds the next week's calendar.
+**How it works**
+
+- Count the rows in each category and sort the counts from highest to lowest.
+- Add each category's share and a running cumulative %.
+- Draw columns for the counts and a line for the cumulative % on a second axis from 0% to 100%; read off where the line passes 80%.
+
+**Worked example**
+
+- Customer Service: 145 of 500 postings = 29.0%.
+- The top three categories make up 61.0% of the postings.
+- The line passes 80% at the sixth category: 6 of 16 categories make up 83.0%.
+
+**Decision guide**
+
+| Use when | Avoid when |
+|---|---|
+| A few categories probably cause most of the volume, cost or complaints. | Every category is about the same size - there is no vital few to find. |
+| You must choose where to focus first. | The counts are not comparable, e.g. hours mixed with jobs. |
+
+**Practitioner quality lens**
+
+- Sorted: Columns run from highest to lowest.
+- Complete: Counts add up to the number of rows; the line ends at 100%.
+- Readable: A different colour for each column, labels on the columns, a title that states the finding.
+
+**Authoritative references**
+
+- https://support.microsoft.com/en-us/excel/create-a-pareto-chart
+- https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-skills
+
+---
+
+
+### Lab 6 · Custom Skills: Pareto Chart — Use Copilot to Build a Custom Pareto-Chart Skill
+
+Learning outcome: LO2: use Copilot on the web to write a custom SKILL.md, upload it to the OneDrive skills folder, install it in Excel and call it with @ to plot a Pareto chart from a one-line prompt.
+
+Goal: Create a pareto-chart skill that turns any category column into a Pareto chart - a different colour for each bar and a cumulative % line - and use it to plot BrightPath's 500 job postings by job category.
+
+BrightPath received 500 job postings from clients in H1 2026, spread over 16 job categories. Which few categories make up most of the work? A Pareto chart answers that: bars sorted from highest to lowest and a cumulative % line that shows where the 'vital few' end. Excel's built-in Pareto chart paints every bar the same colour, so you will write a custom skill instead. You will ask Copilot on the web to write the pareto-chart SKILL.md, save it, upload it to your OneDrive skills folder, install it in Excel and call it with @ to plot the job categories - then reuse it on another column and improve it.
 
 **What you'll build**
 
-An interview-calendar skill in your OneDrive skills folder, and BrightPath_Interview_Schedule.xlsx with Cal_2026-07-06 and Cal_2026-07-13 calendar sheets, each with clashes flagged and a summary   (Tools: Excel · Copilot (Chat only, Allow editing) · Manage plugins & skills · OneDrive skills folder · SKILL.md.)
+A pareto-chart skill in your OneDrive skills folder, and BrightPath_Job_Postings.xlsx with a Pareto_Job_Category sheet and a Pareto_Client_Sector sheet - each a summary table and a Pareto chart with a different colour for every bar - plus a Checks sheet   (Tools: Copilot on the web (copilot.microsoft.com) to draft the skill · OneDrive skills folder · Excel Copilot (Chat only, Allow editing) · SKILL.md.)
 
 **Prerequisites**
 
 - Lab 5 completed: you can find, enable and @mention skills.
-- Access to your OneDrive in a browser (custom skills are stored in a OneDrive folder).
-- This lab folder's data workbook and skills/interview-calendar/SKILL.md (fallback).
+- Access to https://copilot.microsoft.com with the account you use in Excel and OneDrive, and to your OneDrive in a browser (custom skills are stored there).
+- This lab folder's data workbook and skills/pareto-chart/SKILL.md (fallback).
 
 **Step-by-step**
 
-1. Copy BrightPath_Interview_Schedule.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. The workbook stays local; only the skill file goes in OneDrive (Step 2).
+1. Copy BrightPath_Job_Postings.xlsx from this lab's data folder into a work-c34 folder on your computer and open it in Excel for Microsoft 365 (desktop). Work on this local copy - no OneDrive upload is needed. Check that Formulas > Calculation Options is Automatic, then open Copilot from the Copilot button on the Home tab or the floating Copilot icon at the bottom right. Read the About_This_Data sheet before you prompt. The workbook stays local; only the skill file goes in OneDrive (Steps 4-5).
 
    ```text
-   Table  : tblInterviews (41 interviews, 6-17 July 2026)
-   Week 1 : Mon 6 July - Fri 10 July 2026
-   Week 2 : Mon 13 July - Fri 17 July 2026
-   Clash  : same Interviewer overlapping, or two Onsite interviews in the same Room overlapping
+   Table   : tblJobs (500 job postings, Jan-Jun 2026)
+   Columns : Job_ID, Posted_Date, Job_Category (16 values), Client_Sector (6 values), Employment_Type, Status, Openings
+   Pareto  : columns = jobs per category, highest to lowest, a different colour for each column;
+             line = cumulative % of all jobs, 0% to 100% on a secondary axis
    ```
 
-2. Create your skills folder. In the Copilot pane select Settings (...) > Manage plugins & skills > Custom skills and turn the Custom skills switch on. Then select Add in OneDrive (in some versions: Create OneDrive folder, then Open skills folder). OneDrive opens a folder named skills, usually under Documents > Copilot > Microsoft Excel. Open the sample calendar skill folder (e.g. make-calendar.example) and read its SKILL.md: a front matter block between --- lines, then plain-English steps.
+2. Draft the skill in Copilot on the web. Open https://copilot.microsoft.com in your browser and sign in with the same account you use in Excel and OneDrive (with a work account you may be sent to Microsoft 365 Copilot Chat - use that chat). Start a new chat and paste the prompt below. The web chat cannot see your workbook, so the prompt describes the table, the chart and the colours. Read the reply: it must start with --- and include name: pareto-chart, a description that says when to use the skill, and numbered steps that give every column a different colour. Ask for corrections in this chat until you are happy.
 
    ```text
-   Folder      : skills/<skill-name>/   (folder name = the skill name, lower case with hyphens)
-   File        : SKILL.md
-   Front matter: name (the skill name) and description (when Copilot should use it)
-   Body        : the steps Copilot follows - plain English, no code needed
+   PROMPT (Microsoft Copilot web):
+   Write a complete SKILL.md for a Copilot in Excel skill named pareto-chart.
+   Return reusable skill instructions only; do not draw a chart or claim to see my workbook in this chat.
+   Start with YAML front matter containing name: pareto-chart and a description.
+   Description: Use when I ask for a Pareto chart, an 80/20 analysis or the vital few categories in a table column.
+   When the skill runs in Excel I will name a table and a category column, for example tblJobs and Job_Category. If I do not, it must ask me.
+   Steps:
+   1) Never change the source table or any existing sheet.
+   2) Create a new sheet named Pareto_<column name> with a summary table: Category, Count, Share %, Cumulative %, sorted by Count from highest to lowest. Use formulas that read the source table so it updates when rows are added, and add a Total row.
+   3) Create one combo chart from the summary: Count as columns and Cumulative % as a line with markers on a secondary axis from 0% to 100%.
+   4) Give every column a different colour. Never use one colour for all the columns. Make the line dark grey.
+   5) Format the chart cleanly: white background, no border or effects, data labels on the columns, axis titles, no legend, and a title that states the finding, for example "6 of 16 categories make up 83% of the total".
+   6) Place the chart to the right of the summary table, starting at column G.
+   7) Under the table, list the vital few: the categories needed to reach 80% and their combined share.
+   8) Check that the Count total equals the number of rows in the source table, and report the row count, the number of categories, the top category and how many categories reach 80%.
+   Return only the full SKILL.md text, starting with the --- front matter, without code fences or commentary.
    ```
 
-3. Let Copilot write the skill. In Excel, choose Chat only and send the prompt below. Read the reply: it should start with --- name: interview-calendar, have a description that says when to use it, and list clear steps. Ask for changes until you are happy.
+3. Save the reply as a plain-text file named SKILL.md. Select the whole reply and copy it - if it sits in a code block, copy only the text inside, with no ``` lines. Windows: open Notepad, paste, choose File > Save as, set Save as type to All files, type SKILL.md as the file name, set Encoding to UTF-8 and save it in work-c34. Mac: open TextEdit, choose Format > Make Plain Text, paste, choose File > Save, type SKILL.md as the name, untick 'If no extension is provided, use .txt' and save it in work-c34. Check the file is called SKILL.md, not SKILL.md.txt, and that its first line is ---.
 
    ```text
-   CHAT ONLY:
-   Write a Copilot in Excel custom skill as a complete SKILL.md file.
-   Name: interview-calendar
-   Description: Use when I ask for an interview calendar, schedule or clashes for a week.
-   The skill must:
-   1) Read tblInterviews (Interview_ID, Role, Interviewer, Interview_Date, Start_Time, Duration_Min, Mode, Room).
-   2) Ask for the week start date (a Monday) if I do not give one.
-   3) Create a sheet Cal_<yyyy-mm-dd> with Monday to Friday as columns and 30-minute rows from 09:00 to 17:30.
-   4) In each slot show Interviewer - Role (Mode); colour Onsite light blue and Video light green.
-   5) Flag clashes: overlapping interviews with the same Interviewer, or Onsite interviews in the same Room.
-      Colour them red and list them in a Clashes table under the calendar.
-   6) Add a summary of interviews per day and per Interviewer.
-   7) Never change tblInterviews.
-   Return only the SKILL.md text, starting with the --- front matter.
+   File   : work-c34/SKILL.md (plain text)
+   Line 1 : ---
+   Line 2 : name: pareto-chart
+   Check  : no ``` lines and no text before the first ---
+   Short of time? Use skills/pareto-chart/SKILL.md from this lab folder instead.
    ```
 
-4. Save the skill. Copy Copilot's reply into a plain-text editor (Notepad, or TextEdit in plain-text mode) and save it as SKILL.md. In the OneDrive skills folder select New > Folder, name it interview-calendar, open it and Upload SKILL.md. Short of time? Upload skills/interview-calendar/SKILL.md from this lab folder instead.
+4. Open your OneDrive skills folder from Excel. In Excel open the Copilot pane and select Settings (...) > Manage plugins & skills > Custom skills. Turn the Custom skills switch on, then select Add in OneDrive (in some versions: Create OneDrive folder, then Open skills folder). Your browser opens OneDrive at the skills folder, usually Documents > Copilot > Microsoft Excel > skills. A sample folder such as make-calendar.example shows the layout: one folder per skill.
 
    ```text
-   OneDrive : .../skills/interview-calendar/SKILL.md
-   Check    : the folder name and the name: line are both exactly interview-calendar
-   Check    : the file is called SKILL.md (not SKILL.md.txt)
+   Excel    : Copilot pane > Settings (...) > Manage plugins & skills > Custom skills
+   Switch   : Custom skills = On
+   Then     : Add in OneDrive (or Create OneDrive folder, then Open skills folder)
+   OneDrive : Documents > Copilot > Microsoft Excel > skills
    ```
 
-5. Make Excel see the new skill: Settings (...) > Manage plugins & skills > Custom skills, check the Custom skills switch is on and select Refresh (the round arrow). Wait until the list loads, then turn interview-calendar on. Close the dialog and type @inter in the prompt box - the skill should appear.
-6. Run the skill in Allow editing with a one-line prompt. First check that the title bar shows BrightPath_Interview_Schedule: the skill is available in every workbook, but it only works where tblInterviews exists. When it finishes, inspect the calendar and select Done. Then ask Copilot to add the check formula and compare it with the number of interviews on the calendar.
+5. Create the skill's folder and upload SKILL.md. In the OneDrive skills folder select Create or upload > Folder, name it pareto-chart (lower case, with a hyphen) and select Create. Open the new folder, select Create or upload > Files upload, choose SKILL.md from work-c34 and select Open. When the upload finishes, SKILL.md is listed inside the pareto-chart folder.
+
+   ```text
+   OneDrive : Documents > Copilot > Microsoft Excel > skills > pareto-chart > SKILL.md
+   Check    : folder name = the name: line = pareto-chart (lower case, hyphen, no spaces)
+   Check    : the file is called SKILL.md and sits directly inside the pareto-chart folder
+   ```
+
+6. Install the skill in Excel. Go back to Excel: Copilot pane > Settings (...) > Manage plugins & skills > Custom skills. Check the Custom skills switch is on and select Refresh (the round arrow). Wait until the list loads, then turn pareto-chart on. Close the dialog, click the Copilot prompt box and type @pare - pareto-chart should appear in the list. If it does not, wait a minute and select Refresh again.
+
+   ```text
+   Excel : Copilot pane > Settings (...) > Manage plugins & skills > Custom skills > Refresh
+   Then  : turn pareto-chart on, close the dialog and type @pare in the prompt box
+   Check : pareto-chart appears in the list
+   ```
+
+7. Use the skill. First check that the title bar shows BrightPath_Job_Postings: a skill is available in every workbook, but it only works where its table exists. Choose Allow editing and send the one-line prompt. Copilot should create a sheet Pareto_Job_Category with a summary table and a combo chart beside it: columns from Customer Service (145) down to Procurement (1), a different colour for each column, and a cumulative % line that passes 80% at category 6. Inspect it and select Done. Then ask Copilot to add a Checks sheet so you can compare the numbers.
 
    ```text
    ALLOW EDITING:
-   @interview-calendar Build the calendar for the week starting Monday 6 July 2026.
+   @pareto-chart Plot a Pareto chart of Job_Category in tblJobs.
 
    CHECK (Allow editing):
-   In an empty cell to the right of the calendar, add this formula and tell me whether it matches the number of interviews on the calendar:
-   =COUNTIFS(tblInterviews[Interview_Date],">="&DATE(2026,7,6),tblInterviews[Interview_Date],"<="&DATE(2026,7,10))
+   Add a Checks sheet with formulas that count all the jobs, the Customer Service jobs and the number of job categories, so I can check the Pareto chart.
    ```
 
-7. Reuse it. This is the point of a skill: next week's calendar needs only the skill name and a date. Week 2 has no clashes - check the skill says so.
+8. Reuse it. This is the point of a skill: a different column needs only its name. Run it on Client_Sector, then ask Copilot which job categories make up the vital few.
 
    ```text
    ALLOW EDITING:
-   @interview-calendar Week starting 13 July 2026.
+   @pareto-chart Plot a Pareto chart of Client_Sector in tblJobs.
+
+   CHAT ONLY:
+   Which job categories together make up 80% of the postings? Give their combined share.
    ```
 
-8. Improve the skill. Ask Copilot to update the file, save it over SKILL.md in OneDrive, select Refresh in Custom skills and rerun week 1. A skill is a living recipe: improve it whenever you correct Copilot twice. Log your prompts.
+9. Improve the skill. A skill is a living recipe: improve it whenever you correct Copilot twice. Go back to the web chat, send the prompt below, then paste your current SKILL.md under it. Save the reply as SKILL.md as in Step 3. In OneDrive open the pareto-chart folder, select Create or upload > Files upload, choose the new SKILL.md and select Replace when OneDrive asks. In Excel select Custom skills > Refresh and rerun the skill on Job_Category: the chart now shows a dashed 80% line and one Other column that groups the 6 categories under 2% (29 postings, 5.8%). Finally log your prompts - fill in the two web-chat rows yourself, because Excel Copilot cannot see the web chat.
 
    ```text
-   CHAT ONLY:
-   Update the interview-calendar SKILL.md so the summary also shows total interview hours per Interviewer, and the reply lists the busiest day. Return the full updated file.
+   PROMPT (Microsoft Copilot web):
+   I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column at the end.
+   Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first.
+
+   ALLOW EDITING:
+   @pareto-chart Plot a Pareto chart of Job_Category in tblJobs.
 
    LOG (Allow editing):
-   Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
+   In Prompt_Log, leave the web-chat rows (Step 2 / Prompt A and Step 9 / Prompt F) unchanged. For each Excel prompt I ran, fill in What Copilot did and How I verified, and set Decision to Keep. Do not invent results for web prompts. I will tell you any row to change to Revise or Undo.
    ```
 
 
@@ -1881,48 +1913,50 @@ An interview-calendar skill in your OneDrive skills folder, and BrightPath_Inter
 
 | Purpose | Prompt |
 |---|---|
-| Write a skill | Write a SKILL.md for a skill named weekly-recruiter-report that summarises interviews by Interviewer and Client for a given week, with a small bar chart. |
-| Explain a skill | Read this SKILL.md and tell me what Copilot will do, step by step, and anything that is unclear. |
-| Call a skill | @interview-calendar Build the calendar for the week starting Monday 6 July 2026. |
-| Reuse | @interview-calendar Week starting 13 July 2026. |
-| Clash check | List every interview clash in tblInterviews for 6-10 July 2026 with both Interview_IDs. |
-| Improve | Update the skill so Video interviews show the Teams icon text [Teams] and the calendar prints on one A4 page. |
-| Question | Which interviewer has the most interviews in the week of 6 July, and on which day? |
+| Write a skill · Microsoft Copilot web | In the web chat at https://copilot.microsoft.com, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook. |
+| Call the skill | @pareto-chart Plot a Pareto chart of Job_Category in tblJobs. |
+| Reuse | @pareto-chart Plot a Pareto chart of Client_Sector in tblJobs. |
+| Check | Add a Checks sheet with formulas that count all the jobs and the Customer Service jobs, so I can check the Pareto chart. |
+| Vital few | Which job categories together make up 80% of the postings? Show their combined share. |
+| Explain | Explain in plain English how to read this Pareto chart: what the columns, the line and the 80% point tell me. |
+| Improve the skill · Microsoft Copilot web | I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first. |
 
 **Test it**
 
 | Check | Expected result |
 |---|---|
-| Week of 6 July | 23 interviews = the COUNTIFS check |
-| By day | Mon 7, Tue 5, Wed 5, Thu 3, Fri 3 |
-| Clashes flagged | INT-010/INT-011 Kevin Ong; INT-015/INT-016 Orchid Room; INT-018/INT-019 Aisha Rahman |
-| Busiest interviewer | Aisha Rahman (9 interviews) |
-| Week of 13 July | 18 interviews, no clashes |
-| Skill | interview-calendar appears when you type @ and runs from a one-line prompt |
+| Top category | Customer Service: 145 of 500 jobs (29.0%); 16 categories in all |
+| Vital few | 6 of 16 categories reach 83.0% (80% is passed at Nursing & Healthcare) |
+| Pareto chart | Columns high to low, a different colour for each, cumulative % line 0-100% on a secondary axis |
+| Client_Sector Pareto | Technology first (149 jobs, 29.8%); 4 sectors reach 80.8% |
+| Improved skill | 6 categories under 2% grouped into Other (29 jobs, 5.8%) |
+| Skill | pareto-chart appears when you type @ and runs from a one-line prompt |
 
 **Checkpoint and rejoin point**
 
-Keep the skill: it stays in your OneDrive and works in any workbook with an interviews table. Topic 3 uses rules and skills to build dashboards.
+Keep the skill: it stays in your OneDrive and works in any workbook with a table and a category column. Topic 3 uses rules and skills to build dashboards.
 
 **Troubleshooting**
 
 | If this happens | Fix |
 |---|---|
-| The skill does not appear after Refresh. | The folder name must match the name: line exactly (lower case, hyphens) and the file must be SKILL.md inside that folder. Select Refresh again. |
+| The skill does not appear after Refresh. | The folder name must match the name: line exactly (lower case, hyphens) and the file must be SKILL.md directly inside that folder. Select Refresh again and turn pareto-chart on. |
 | There is no Add in OneDrive or Create OneDrive folder button. | Custom skills are rolling out and depend on your licence and update channel. Use the ready-made SKILL.md to read the format, and run the same steps as a normal prompt instead. |
-| Copilot says tblInterviews is not present in this workbook. | The skill ran in another lab's workbook. Open BrightPath_Interview_Schedule.xlsx and send the prompt again from its Copilot pane. |
-| The calendar misses a clash. | Ask: 'Check again for overlapping interviews with the same Interviewer or the same Onsite Room on each day.' Then add that wording to the skill's steps. |
-| The file saved as SKILL.md.txt or with formatting. | Save as plain text with the exact name SKILL.md. In TextEdit choose Format > Make Plain Text first. |
+| Copilot says tblJobs is not present in this workbook. | The skill ran in another lab's workbook. Open BrightPath_Job_Postings.xlsx and send the prompt again from its Copilot pane. |
+| The web chat draws a chart or asks me to upload my workbook instead of writing SKILL.md. | Paste the full Step 2 prompt again. It asks for reusable skill instructions only; the workbook is used later in Excel, so nothing needs uploading. |
+| The file saved as SKILL.md.txt, or it contains ``` lines. | Save as plain text with the exact name SKILL.md (Windows: Save as type All files; Mac: Format > Make Plain Text) and delete any ``` lines before the first ---. |
+| All the columns are the same colour. | Ask: 'Give every column a different colour and keep the cumulative line dark grey.' Then add that sentence to the skill's steps, save, refresh and rerun. |
+| The cumulative % line looks flat. | It is on the same axis as the columns. Ask: 'Move Cumulative % to a secondary axis from 0% to 100%.' Then add that to the skill's steps. |
 
 **Challenge**
 
-Ask Copilot to write a second skill, weekly-recruiter-report, that summarises interviews by Interviewer and Client for a given week with a small bar chart. Save it, refresh and call it.
+Ask Copilot in Excel to create mock data of 500 rows for another question - for example helpdesk tickets with 12 issue categories, as a table named tblTickets. Run @pareto-chart on the Issue_Category column and name the vital few.
 
 **Reflection**
 
-Which weekly or monthly task in your own job would make the best first custom skill, and what would its description say?
+Which report in your own job is really a Pareto question - a long list where a few causes matter most - and what would the skill's description say?
 
-> **Note:** The lab folder labs/lab-06-*/ holds the instruction PDF with sample prompts, sample-prompts.txt and the mock-data workbook (data/BrightPath_Interview_Schedule.xlsx), plus skills/interview-calendar/SKILL.md (ready-made skill to upload if you run short of time). Use only the supplied fictional BrightPath data or information you are authorised to process. Do not paste credentials, confidential business material or real employees' personal data into Copilot, rules or skills.
+> **Note:** The lab folder labs/lab-06-*/ holds the instruction PDF with sample prompts, sample-prompts.txt and the mock-data workbook (data/BrightPath_Job_Postings.xlsx), plus skills/pareto-chart/SKILL.md (ready-made skill to upload if you run short of time). Use only the supplied fictional BrightPath data or information you are authorised to process. Do not paste credentials, confidential business material or real employees' personal data into Copilot, rules or skills.
 
 ---
 
@@ -1935,8 +1969,8 @@ Use this checkpoint to explain what you can now do and identify any lab evidence
 |---|---|
 | LO2 · Personalisation | Your own preferences, saved once in Settings and applied in every workbook. |
 | LO2 · .Rules | One workbook's standards in a visible .Rules sheet, so a one-line prompt cleans the data. |
-| LO2 · Built-in skills | @chart-design, @unit-economics, @check-model and @theme-design - checked against formulas. |
-| LO2 · Custom skills | A SKILL.md written with Copilot, saved in OneDrive and reused with one @mention. |
+| LO2 · Built-in skills | @chart-design plots the charts and @theme-design gives them one look - checked against a Checks sheet. |
+| LO2 · Custom skills | A pareto-chart SKILL.md written with Copilot, uploaded to OneDrive, installed and reused with one @mention. |
 
 ---
 
@@ -2648,22 +2682,23 @@ Across eight labs you moved from single prompts to rules, skills and a reusable,
 - **@mention** — Typing @ and a skill's name in the prompt to call that skill, e.g. @chart-design.
 - **Allow editing** — The default Copilot mode: it plans and makes changes to the workbook in one go.
 - **Attrition rate** — Exits in a period divided by average headcount in that period.
-- **CAC** — Customer acquisition cost: sales and marketing spend divided by new clients won.
 - **Chat only** — The Copilot mode that answers and analyses without changing the workbook.
 - **Clean data with Copilot** — Automated cleanup (Data > Clean Data) that suggests fixes for spaces, capitals and similar issues.
 - **Cost per hire** — Total recruiting cost in a period divided by hires in that period.
+- **Cumulative %** — A running total of each category's share, so the Pareto line shows how much the top categories cover.
 - **Custom skill** — A SKILL.md file you save in its own folder in your OneDrive skills folder.
 - **Front matter** — The block between --- lines at the top of SKILL.md holding the skill's name and description.
 - **Sheet reference** — Sheet!Cell, e.g. Control!B1 - a cell on another sheet; $ (e.g. $B$1) locks it when the formula is copied.
 - **Structured reference** — A formula reference by table and column name; [@Column] means this row, Table[Column] the whole column.
 - **GETPIVOTDATA** — An Excel function that reads a value from a PivotTable, so a KPI card follows its slicers.
 - **KPI card** — A dashboard cell or shape that shows one headline measure, calculated by formula.
-- **LTV** — Lifetime value: average revenue per client x gross margin / monthly churn.
 - **Offer acceptance rate** — Accepted offers divided by offers with a decision (accepted + declined).
+- **Pareto chart** — Columns sorted high to low plus a cumulative % line, to find the few categories behind most of the total.
 - **Personalization** — Your own Copilot preferences, stored with your account and applied in every workbook.
 - **PivotChart** — A chart linked to a PivotTable that updates and filters with it.
 - **Plan mode** — The Copilot mode that shows its planned steps and waits for your approval before changing anything.
 - **Skill** — Saved instructions that tell Copilot how to do a repeatable task; built-in or custom.
 - **Slicer** — An on-sheet filter button that can control several PivotTables and charts.
+- **Theme** — One coordinated set of colours, fonts and formats for cells, tables and charts, e.g. applied with @theme-design.
 - **Timeline** — A slider filter for a date field that can control several PivotTables.
 - **XLOOKUP** — An Excel function that finds a value in one range and returns the matching value from another.

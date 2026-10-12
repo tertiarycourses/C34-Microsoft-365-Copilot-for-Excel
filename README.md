@@ -16,7 +16,7 @@ Use Copilot in Excel for everyday Excel work, make it consistent and repeatable 
 
 ## About the course
 
-Copilot in Excel now does far more than answer questions. You choose how it works (**Chat only**, **Plan** or **Allow editing**), pick the AI model, bring in other files, clean messy data, and write formulas, PivotTables and charts from plain English. You can also teach it your standards: **Personalization** for your own preferences, a **`.Rules` sheet** for one workbook, and **skills** for repeatable tasks. Skills include Microsoft's built-in ones (such as `@chart-design`, `@theme-design`, `@unit-economics` and `@check-model`) and custom `SKILL.md` skills that Copilot can write for you.
+Copilot in Excel now does far more than answer questions. You choose how it works (**Chat only**, **Plan** or **Allow editing**), pick the AI model, bring in other files, clean messy data, and write formulas, PivotTables and charts from plain English. You can also teach it your standards: **Personalization** for your own preferences, a **`.Rules` sheet** for one workbook, and **skills** for repeatable tasks. Skills include Microsoft's built-in ones (such as `@chart-design` and `@theme-design`) and custom `SKILL.md` skills that Copilot can write for you, such as a Pareto-chart skill.
 
 This course covers all of that in three topics, and ends with an interactive dashboard built from Copilot, rules and skills together.
 
@@ -37,7 +37,7 @@ By the end of the course, you will be able to:
 | Topic | Content |
 |---|---|
 | **1. Excel Fundamentals with Copilot** | Chat only, Plan and Allow editing; the Copilot pane, data sources and the model picker; data prep and automated cleanup; formulas and XLOOKUP; PivotTables, PivotCharts and charts |
-| **2. Skills and Rules** | Personalisation; workbook rules on a `.Rules` sheet and how they work; Personalization vs `.Rules` vs skills compared; built-in formatting, visualisation and finance skills; custom `SKILL.md` skills; using Copilot to write and improve a skill (e.g. an interview calendar) |
+| **2. Skills and Rules** | Personalisation; workbook rules on a `.Rules` sheet and how they work; Personalization vs `.Rules` vs skills compared; built-in chart and theme skills (`@chart-design`, `@theme-design`); custom `SKILL.md` skills; using Copilot to write, upload, install and improve a skill (a Pareto-chart skill); Pareto charts |
 | **3. Interactive Dashboards** | What a skill is (reusable in any workbook, custom skills installed in your OneDrive skills folder); highly visual dashboard design; KPI definitions and style in `.Rules`; Plan mode plus `@chart-design` and `@theme-design`; slicers, a timeline and KPI cards; a reusable dashboard skill; refresh testing and responsible sharing |
 
 ## Labs
@@ -60,8 +60,8 @@ See the [labs index](labs/README.md).
 | 2 | [Generate and Verify Formula Columns and XLOOKUPs for Job Requisitions](labs/lab-02-formulas-and-xlookup/Lab-02-Instructions.pdf) | Formulas & XLOOKUP | [PDF](labs/lab-02-formulas-and-xlookup/Lab-02-Instructions.pdf) | [Job requisitions](labs/lab-02-formulas-and-xlookup/data/BrightPath_Job_Requisitions.xlsx) |
 | 3 | [Build PivotTables, PivotCharts and Recruitment Charts with Copilot](labs/lab-03-pivottables-pivotcharts-and-visuals/Lab-03-Instructions.pdf) | PivotTables, PivotCharts & Visuals | [PDF](labs/lab-03-pivottables-pivotcharts-and-visuals/Lab-03-Instructions.pdf) | [Recruitment metrics](labs/lab-03-pivottables-pivotcharts-and-visuals/data/BrightPath_Recruitment_Metrics.xlsx) |
 | 4 | [Clean Messy Client Orders with Cleanup, Personalisation and Rules](labs/lab-04-workbook-rules-and-personalisation/Lab-04-Instructions.pdf) | Workbook Rules & Personalisation | [PDF](labs/lab-04-workbook-rules-and-personalisation/Lab-04-Instructions.pdf) | [Client orders (raw)](labs/lab-04-workbook-rules-and-personalisation/data/BrightPath_Client_Orders_Raw.xlsx) |
-| 5 | [Analyse HR-Outsourcing Finances with Built-in Skills](labs/lab-05-built-in-skills-visual-and-finance/Lab-05-Instructions.pdf) | Built-in Skills: Visual & Finance | [PDF](labs/lab-05-built-in-skills-visual-and-finance/Lab-05-Instructions.pdf) | [HR-outsourcing finance](labs/lab-05-built-in-skills-visual-and-finance/data/BrightPath_HR_Outsourcing_Finance.xlsx) |
-| 6 | [Use Copilot to Build a Custom Interview-Calendar Skill](labs/lab-06-custom-skills-calendar/Lab-06-Instructions.pdf) | Custom Skills: Calendar | [PDF](labs/lab-06-custom-skills-calendar/Lab-06-Instructions.pdf) | [Interview schedule](labs/lab-06-custom-skills-calendar/data/BrightPath_Interview_Schedule.xlsx) |
+| 5 | [Plot and Style Client Growth Charts with Built-in Visual Skills](labs/lab-05-built-in-skills-visual-design/Lab-05-Instructions.pdf) | Built-in Skills: Visual Design | [PDF](labs/lab-05-built-in-skills-visual-design/Lab-05-Instructions.pdf) | [HR-outsourcing client growth](labs/lab-05-built-in-skills-visual-design/data/BrightPath_HR_Outsourcing_Finance.xlsx) |
+| 6 | [Use Copilot to Build a Custom Pareto-Chart Skill](labs/lab-06-custom-skills-pareto-chart/Lab-06-Instructions.pdf) | Custom Skills: Pareto Chart | [PDF](labs/lab-06-custom-skills-pareto-chart/Lab-06-Instructions.pdf) | [Job postings (500 rows)](labs/lab-06-custom-skills-pareto-chart/data/BrightPath_Job_Postings.xlsx) |
 | 7 | [Build an Interactive Recruitment Dashboard with Rules and Skills](labs/lab-07-interactive-dashboard/Lab-07-Instructions.pdf) | Interactive Dashboard | [PDF](labs/lab-07-interactive-dashboard/Lab-07-Instructions.pdf) | [Dashboard data](labs/lab-07-interactive-dashboard/data/BrightPath_Recruitment_Dashboard_Data.xlsx) |
 | 8 | [Turn the Dashboard into a Reusable Skill, Refresh It and Share It Safely](labs/lab-08-dashboard-skill-refresh-and-share/Lab-08-Instructions.pdf) | Dashboard Skill, Refresh & Share | [PDF](labs/lab-08-dashboard-skill-refresh-and-share/Lab-08-Instructions.pdf) | [Workforce headcount](labs/lab-08-dashboard-skill-refresh-and-share/data/BrightPath_Workforce_Headcount.xlsx) |
 
@@ -69,7 +69,7 @@ See the [labs index](labs/README.md).
 
 - You need a current Excel for Microsoft 365 desktop app (Windows or Mac) and a work account with a Microsoft 365 Copilot licence.
 - Copy each lab workbook into a local `work-c34` folder and open it in Excel; no OneDrive upload is needed. OneDrive is used only for **custom skills** (Labs 6 and 8), which Excel reads from your OneDrive skills folder.
-- In Lab 8, draft the custom skill in [Microsoft 365 Copilot on the web](https://copilot.cloud.microsoft/), then install it through OneDrive and run it in Excel. The creation prompt includes the workbook context, so no upload is needed for drafting.
+- In Lab 6, draft the Pareto-chart skill in [Copilot on the web](https://copilot.microsoft.com), upload `SKILL.md` to your OneDrive skills folder, install it in Excel and run it. In Lab 8, draft the dashboard skill in [Microsoft 365 Copilot on the web](https://copilot.cloud.microsoft/) and install it the same way. Each creation prompt includes the workbook context, so no upload is needed for drafting.
 - Skills and workbook rules are fully supported only when Excel's display language is **English**.
 - Copilot's menus and skills are still rolling out, so some labels may differ on your screen. Each lab includes troubleshooting tips.
 

@@ -1,0 +1,100 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 6: Use Copilot to Build a Custom Pareto-Chart Skill
+Sample prompts: use the app labelled in each step. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-6
+
+[1] Write a skill · Microsoft Copilot web
+In the web chat at https://copilot.microsoft.com, use the complete Step 2 prompt below to draft pareto-chart. It describes the table, columns and chart because the web chat cannot see your workbook.
+
+[2] Call the skill
+@pareto-chart Plot a Pareto chart of Job_Category in tblJobs.
+
+[3] Reuse
+@pareto-chart Plot a Pareto chart of Client_Sector in tblJobs.
+
+[4] Check
+Add a Checks sheet with formulas that count all the jobs and the Customer Service jobs, so I can check the Pareto chart.
+
+[5] Vital few
+Which job categories together make up 80% of the postings? Show their combined share.
+
+[6] Explain
+Explain in plain English how to read this Pareto chart: what the columns, the line and the 80% point tell me.
+
+[7] Improve the skill · Microsoft Copilot web
+I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column. Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first.
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Table   : tblJobs (500 job postings, Jan-Jun 2026)
+Columns : Job_ID, Posted_Date, Job_Category (16 values), Client_Sector (6 values), Employment_Type, Status, Openings
+Pareto  : columns = jobs per category, highest to lowest, a different colour for each column;
+          line = cumulative % of all jobs, 0% to 100% on a secondary axis
+
+[Step 2]
+PROMPT (Microsoft Copilot web):
+Write a complete SKILL.md for a Copilot in Excel skill named pareto-chart.
+Return reusable skill instructions only; do not draw a chart or claim to see my workbook in this chat.
+Start with YAML front matter containing name: pareto-chart and a description.
+Description: Use when I ask for a Pareto chart, an 80/20 analysis or the vital few categories in a table column.
+When the skill runs in Excel I will name a table and a category column, for example tblJobs and Job_Category. If I do not, it must ask me.
+Steps:
+1) Never change the source table or any existing sheet.
+2) Create a new sheet named Pareto_<column name> with a summary table: Category, Count, Share %, Cumulative %, sorted by Count from highest to lowest. Use formulas that read the source table so it updates when rows are added, and add a Total row.
+3) Create one combo chart from the summary: Count as columns and Cumulative % as a line with markers on a secondary axis from 0% to 100%.
+4) Give every column a different colour. Never use one colour for all the columns. Make the line dark grey.
+5) Format the chart cleanly: white background, no border or effects, data labels on the columns, axis titles, no legend, and a title that states the finding, for example "6 of 16 categories make up 83% of the total".
+6) Place the chart to the right of the summary table, starting at column G.
+7) Under the table, list the vital few: the categories needed to reach 80% and their combined share.
+8) Check that the Count total equals the number of rows in the source table, and report the row count, the number of categories, the top category and how many categories reach 80%.
+Return only the full SKILL.md text, starting with the --- front matter, without code fences or commentary.
+
+[Step 3]
+File   : work-c34/SKILL.md (plain text)
+Line 1 : ---
+Line 2 : name: pareto-chart
+Check  : no ``` lines and no text before the first ---
+Short of time? Use skills/pareto-chart/SKILL.md from this lab folder instead.
+
+[Step 4]
+Excel    : Copilot pane > Settings (...) > Manage plugins & skills > Custom skills
+Switch   : Custom skills = On
+Then     : Add in OneDrive (or Create OneDrive folder, then Open skills folder)
+OneDrive : Documents > Copilot > Microsoft Excel > skills
+
+[Step 5]
+OneDrive : Documents > Copilot > Microsoft Excel > skills > pareto-chart > SKILL.md
+Check    : folder name = the name: line = pareto-chart (lower case, hyphen, no spaces)
+Check    : the file is called SKILL.md and sits directly inside the pareto-chart folder
+
+[Step 6]
+Excel : Copilot pane > Settings (...) > Manage plugins & skills > Custom skills > Refresh
+Then  : turn pareto-chart on, close the dialog and type @pare in the prompt box
+Check : pareto-chart appears in the list
+
+[Step 7]
+ALLOW EDITING:
+@pareto-chart Plot a Pareto chart of Job_Category in tblJobs.
+
+CHECK (Allow editing):
+Add a Checks sheet with formulas that count all the jobs, the Customer Service jobs and the number of job categories, so I can check the Pareto chart.
+
+[Step 8]
+ALLOW EDITING:
+@pareto-chart Plot a Pareto chart of Client_Sector in tblJobs.
+
+CHAT ONLY:
+Which job categories together make up 80% of the postings? Give their combined share.
+
+[Step 9]
+PROMPT (Microsoft Copilot web):
+I will paste my current pareto-chart SKILL.md below. Update it so the chart also shows a dashed 80% reference line and groups any category with less than 2% share into one Other column at the end.
+Preserve its front matter and numbered steps. Return the full file without code fences. If I have not pasted the file, ask me for it first.
+
+ALLOW EDITING:
+@pareto-chart Plot a Pareto chart of Job_Category in tblJobs.
+
+LOG (Allow editing):
+In Prompt_Log, leave the web-chat rows (Step 2 / Prompt A and Step 9 / Prompt F) unchanged. For each Excel prompt I ran, fill in What Copilot did and How I verified, and set Decision to Keep. Do not invent results for web prompts. I will tell you any row to change to Revise or Undo.

@@ -2,35 +2,20 @@ Microsoft 365 Copilot for Excel (C34) — Lab 1: Explore and Question Recruitmen
 Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
 Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-1
 
-[1] Describe
-Describe tblApplications: what one row represents, each column's data type, the row count and the Applied_Date range. Do not change the workbook.
+[1] Summary
+Give me a quick summary of this pipeline data in five bullet points.
 
-[2] Data quality
-List any Application_ID that appears more than once in tblApplications and any Source value that is not in the canonical list on About_This_Data.
+[2] Question
+Which sector received the most applications?
 
-[3] Plan first
-Plan how you would flag duplicate Application_IDs and standardise Source. Show me the steps before you change anything.
+[3] Question
+Which recruiter has the most candidates at the Offer stage?
 
-[4] Clean helper column
-Add a column Source_Clean that trims spaces from Source and replaces 'Linked In' with 'LinkedIn'. Do not change the original Source column.
+[4] Highlight
+Highlight the candidates with an interview score of 5 in light blue.
 
-[5] Question
-Using tblApplications, count applications and hires by Source_Clean and show the hire rate. Sort by hires, highest first.
-
-[6] Question
-Which Client_Sector received the most applications, and how many? Show the count for every sector.
-
-[7] Highlight
-Highlight rows where Stage is Hired in light green.
-
-[8] Sort
-Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline from lowest to highest.
-
-[9] Filter
-Filter to show only Technology applications at the Interview stage.
-
-[10] Insight
-What's interesting about this pipeline data? Give three observations, each with the numbers behind it.
+[5] Insight
+What's interesting about this data? Give me three observations with the numbers behind them.
 
 ------------------------------------------------------------
 Step prompts used in this lab
@@ -44,51 +29,31 @@ Sheets    : About_This_Data | Applications | Prompt_Log
 
 [Step 2]
 ALLOW EDITING:
-Format the data on the Applications sheet (from A1 to the last row and column) as an Excel table with headers. Name the table tblApplications. Do not change, sort or delete any values.
-Then tell me the table name, the number of columns and the number of data rows.
+Turn the data on the Applications sheet into a table named tblApplications. Don't change any values.
+Then tell me how many rows and columns it has.
 
 [Step 3]
-GOAL: Describe this candidate pipeline before I analyse it.
-CONTEXT: BrightPath recruitment desk, H1 2026. One row should be one application.
-DATA: Use only tblApplications.
-CONSTRAINTS: Do not change the workbook.
-OUTPUT: What a row represents, each column with its data type, the number of rows, the Applied_Date range and the distinct values of Stage and Source.
-REVIEW: Tell me how you counted the rows.
+CHAT ONLY:
+Describe this data for me. What does one row represent, what dates does it cover, and what are the different Stage and Source values?
 
 [Step 4]
 CHAT ONLY:
-Check tblApplications for data-quality issues. List any Application_ID that appears more than once, and any Source value that is not exactly one of: LinkedIn, JobStreet, MyCareersFuture, Referral, BrightPath Website, Job Fair, Talent Database. Give the count of each issue. Do not change anything.
+Are there any data-quality problems in tblApplications, such as repeated Application_IDs or Source names spelt in different ways? Don't change anything yet.
 
 PLAN MODE:
-1) Highlight Application_ID cells that appear more than once in tblApplications with an orange fill.
-2) Add a column Source_Clean to tblApplications that trims spaces from Source and changes 'Linked In' to 'LinkedIn'. Do not delete or edit any existing values.
-
-FOLLOW-UP: For each duplicated Application_ID, give the row numbers of both copies and say whether the two rows are identical.
-
-FOLLOW-UP: Highlight the Source cells in tblApplications where Source_Clean is different from Source with a yellow fill. Tell me how many cells you highlighted and list their Application_IDs.
-
-FOLLOW-UP: List the distinct Source_Clean values with a count of each. Confirm there is no 'Linked In' and no value with a trailing space, and that tblApplications still has 242 rows.
+Highlight the repeated Application_IDs in orange. Then add a Source_Clean column with the Source names tidied up, and keep the original Source column as it is.
 
 [Step 5]
 PROMPT (Chat only):
-Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
-Show a table sorted by hires, highest first, with hire rate = hires / applications.
+Which source brings in the most hires? Show the applications, hires and hire rate for each source, using Source_Clean.
 
 CHECK (Allow editing):
-On a sheet named Checks (create it if needed), add these formulas with a label beside each, then tell me the results:
-=COUNTIFS(tblApplications[Stage],"Hired")
-=COUNTIFS(tblApplications[Source_Clean],"LinkedIn",tblApplications[Stage],"Hired")
-
-CHAT ONLY (new chat, different model):
-Using tblApplications, count applications and hires (Stage = "Hired") by Source_Clean.
-Show a table sorted by hires, highest first.
+Add a Checks sheet with formulas that count the total hires and the LinkedIn hires, so I can check your answer.
 
 [Step 6]
-1) Highlight entire rows of tblApplications where Stage is "Hired" with a light green fill.
-2) Sort tblApplications by Interview_Score from highest to lowest, then by Days_in_Pipeline from lowest to highest.
-3) Filter tblApplications to show only Client_Sector = "Technology" and Stage = "Interview".
-4) How many rows of tblApplications are visible with this filter?
-5) Clear all filters on tblApplications and confirm all 242 rows are visible.
+1) Highlight the rows of candidates who were hired in light green.
+2) Sort the table so the highest interview scores come first.
+3) Show only the Technology candidates at the Interview stage. How many are there?
 
 [Step 7]
 LOG (Allow editing):

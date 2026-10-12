@@ -1,0 +1,81 @@
+Microsoft 365 Copilot for Excel (C34) — Lab 5: Plot and Style Client Growth Charts with Built-in Visual Skills
+Sample prompts for Copilot in Excel. Copy one at a time, adapt it, and verify every result.
+Prompts web page (one-click Copy): https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/prompts/#lab-5
+
+[1] Find skills
+Which skills do you have for charts and formatting? When would I use each one?
+
+[2] Chart skill
+@chart-design Recommend the best chart for new vs churned clients by month, then create it.
+
+[3] Chart skill
+@chart-design Chart the sales and marketing spend for each Channel in H1 2026 as bars, longest first.
+
+[4] Style skill
+@theme-design Apply a coordinated theme to this workbook.
+
+[5] Colours
+@theme-design Use navy #1F4E79 and teal #2A9D8F as the main colours on every chart.
+
+[6] Brand skill
+@brandkit Apply our organisation's brand colours and fonts to the charts.
+
+[7] Explain
+Explain why you chose this chart type for this data, and which other chart types would also work.
+
+[8] Question
+Which acquisition channel took the most sales and marketing spend in H1 2026, and how much was it?
+
+------------------------------------------------------------
+Step prompts used in this lab
+------------------------------------------------------------
+
+[Step 1]
+Tables : tblClientMonths (18 months) | tblClients (158 clients) | tblSpend (spend by month and channel)
+H1 2026 : Jan-Jun 2026
+Chart 1 : MRR and active clients by month   -> Charts!A1:H18
+Chart 2 : new vs churned clients by month   -> Charts!J1:Q18
+Chart 3 : H1 2026 spend by Channel          -> Charts!A20:H37
+Chart 4 : active clients by Plan, Jun 2026  -> Charts!J20:Q37
+
+[Step 2]
+Where         : Settings (...) > Manage plugins & skills - turn on only these
+Visualisation : chart-design (off by default)
+Formatting    : theme-design - only if this folder is shown
+Call a skill  : type @ and its name, e.g. @chart-design
+
+CHAT ONLY:
+Which of your skills would help me choose the right chart for this data and style the finished sheet? Do not change anything.
+
+[Step 3]
+ALLOW EDITING:
+@chart-design On a new sheet named Charts, create a combo chart from tblClientMonths, placed over A1:H18, with MRR as columns and Clients_End as a line on a secondary axis, Jan 2025 to Jun 2026.
+Format it cleanly: white background, no border or effects, axis titles with units, and a title that states the finding.
+
+[Step 4]
+ALLOW EDITING:
+@chart-design Recommend the best chart for new vs churned clients by month, then create it on the Charts sheet over J1:Q18 in the same clean style as the first chart.
+
+ALLOW EDITING:
+@chart-design Chart the sales and marketing spend for each Channel in H1 2026 (Jan-Jun) from tblSpend as bars, longest first, on the Charts sheet over A20:H37 in the same clean style.
+
+ALLOW EDITING:
+@chart-design Show how many active clients each Plan has in Jun 2026 from tblClients, as the chart type you think suits it best, on the Charts sheet over J20:Q37 in the same clean style.
+
+[Step 5]
+ALLOW EDITING:
+@chart-design Review the four charts on the Charts sheet so they read as one set: a title that states the finding on each, the same fonts and axis style, data labels only where they help, and all four the same size.
+
+[Step 6]
+CHECK (Allow editing):
+Add a Checks sheet with formulas that give the MRR and active clients in Jun 2026, the total new and churned clients over the 18 months, the H1 2026 spend for each Channel, and the active clients for each Plan, so I can check the four charts.
+
+[Step 7]
+ALLOW EDITING:
+@theme-design Apply one clean, professional theme to the Charts and Checks sheets and all four charts.
+
+FOLLOW-UP:
+@theme-design Use navy #1F4E79 and teal #2A9D8F as the main colours, and keep every chart readable.
+
+LOG (Allow editing):
+Prompt_Log already lists every prompt in this lab. For each one I ran, fill in What Copilot did and How I verified, and set Decision to Keep. I will tell you any row to change to Revise or Undo.
