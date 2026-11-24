@@ -84,6 +84,10 @@ See the [labs index](labs/README.md).
 
 The deck, Learner Guide, Lesson Plan and labs are all generated from one content source in `.agents/skills/non-wsq-courseware-build/build/`, so they stay aligned. To rebuild them, run `build_courseware.sh` in that folder.
 
+### Datin edition
+
+[Agentic Ai for Financial Data Analysis](courseware_datin/README.md) is the Datin classroom edition. It includes a separate deck, guides, four finance labs and the [Datin prompt page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/datin/prompts/). The C34 LMS uses the standard package under [`courseware/`](courseware/).
+
 ## Distribution boundary
 
 This repository publishes the current learner-facing courseware and labs. It does not publish superseded versions (`courseware/archive/`), source reference material or credentials. This is a non-WSQ commercial course, so it has no assessment.

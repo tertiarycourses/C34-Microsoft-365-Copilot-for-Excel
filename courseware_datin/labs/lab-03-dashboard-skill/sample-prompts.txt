@@ -1,0 +1,10 @@
+Agentic Ai for Financial Data Analysis · Lab 3 · Install and Reuse the Dashboard Skill
+
+Convert Prompt 2
+@skill-builder Turn the theme prompt below into an Excel skill named datin-dark-sales-dashboard. For an existing interactive sales dashboard, apply the theme while preserving its layout, source data, formulas, charts and working filters. If the request is to create a dashboard and none exists, first build one from the workbook sales table with GHS Net Sales, Gross Profit, Gross Margin and Order Count, monthly trend and regional charts, doughnut charts for product and channel mix, and Region, Channel and Product filters. Apply the theme and verify the filters. Show the proposed skill for approval. Theme prompt: Redesign the dashboard with a modern dark theme using navy blue backgrounds, gold accents, and high-contrast white text. Keep the existing layout, charts, metrics, and interactive filters fully functional. Make sure all labels and charts remain easy to read.
+
+Run the short prompt
+Create an interactive Datin sales dashboard.
+
+Invoke the skill explicitly
+@datin-dark-sales-dashboard Create an interactive Datin sales dashboard.

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title} | Datin prompts</title>
+<style>
+:root {{color-scheme: light; font: 16px/1.6 system-ui, sans-serif; color: #0b1730; background: #f3f5f9}}
+* {{box-sizing: border-box}}
+body {{margin: 0}}
+main {{max-width: 58rem; margin: auto; padding: 2rem clamp(1rem, 4vw, 2.25rem) 4rem}}
+.hero {{padding: clamp(1.25rem, 4vw, 2.75rem); background: #0b1730; color: white; border-radius: 1rem}}
+.hero p {{margin: 0; color: #e9be64; font-weight: 700}}
+h1,h2,h3 {{line-height: 1.22; text-wrap: balance}}
+h1 {{font-size: clamp(2rem, 6vw, 3.15rem); margin: .5rem 0 0; letter-spacing: -.045em}}
+h2 {{font-size: clamp(1.4rem, 4vw, 2rem); margin: 0}}
+nav,.resources {{display: flex; flex-wrap: wrap; gap: .5rem 1rem}}
+nav {{margin: 1.5rem 0; padding-bottom: .85rem; border-bottom: 1px solid #c6cfdd}}
+a {{color: #174882; overflow-wrap: anywhere}}
+a:focus-visible,button:focus-visible {{outline: 3px solid #2f5bb8; outline-offset: 3px}}
+section {{margin: 2.4rem 0}}
+section p {{margin: .55rem 0}}
+.resources {{padding: 0; list-style: none; font-size: .94rem}}
+article {{margin: .85rem 0; border: 1px solid #c6cfdd; border-radius: .75rem; background: white; overflow: hidden}}
+article header {{display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .75rem 1rem; background: #e7edf6}}
+h3 {{margin: 0; font-size: 1rem}}
+pre {{padding: 1rem; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: .98rem/1.64 system-ui, sans-serif}}
+button {{font: inherit; font-weight: 700; background: #0b1730; color: white; padding: .4em .8em; border: 0; border-radius: .4rem; cursor: pointer; flex-shrink: 0}}
+footer {{border-top: 1px solid #c6cfdd; padding-top: 1rem; font-size: .9rem}}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero"><p>Datin · Lab prompts</p><h1>{title}</h1></header>
+  <nav aria-label="Jump to lab">{nav}</nav>
+{panels}
+  <footer>C34 · Datin edition · Powered by <a href="https://www.tertiaryinfotech.com/">Tertiary Infotech Academy Pte Ltd</a></footer>
+</main>
+<script>
+document.querySelectorAll('button').forEach((button) => {{
+  button.addEventListener('click', async () => {{
+    const prompt = button.closest('article').querySelector('pre');
+    const selection = window.getSelection();
+    let copied = false;
+    try {{
+      await navigator.clipboard.writeText(prompt.textContent);
+      copied = true;
+    }} catch {{
+      const range = document.createRange();
+      range.selectNodeContents(prompt);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try {{ copied = document.execCommand('copy'); }} catch {{ /* the text stays selected */ }}
+      if (copied) selection.removeAllRanges();
+    }}
+    window.clearTimeout(button.resetTimer);
+    button.textContent = copied ? 'Copied' : 'Text selected';
+    button.resetTimer = window.setTimeout(() => {{ button.textContent = 'Copy'; }}, 1800);
+  }});
+}});
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Agentic Ai for Financial Data Analysis · Lab 2 · Create and Restyle an Interactive Sales Dashboard
+
+Prompt 1 · Create the dashboard
+Create a professional, interactive sales dashboard using the data in this workbook. Include key sales metrics, charts showing sales trends and performance, and interactive filters so I can explore the data. Put everything on a new worksheet.
+
+Prompt 2 · Customize the theme
+Redesign the dashboard with a modern dark theme using navy blue backgrounds, gold accents, and high-contrast white text. Keep the existing layout, charts, metrics, and interactive filters fully functional. Make sure all labels and charts remain easy to read.
+
+Follow-up · Complete or repair
+On the dashboard sheet, use only tblDatinSales. Show Net Sales, Gross Profit, Gross Margin (total Gross Profit divided by total Net Sales) and Order Count (count Order_ID). Format money in GHS. Show a monthly net revenue trend, regional revenue bars, and doughnut charts for Product and Channel mix. Connect Region, Channel and Product controls to every KPI and chart. Keep the Sales Data table unchanged and tell me which controls you implemented.

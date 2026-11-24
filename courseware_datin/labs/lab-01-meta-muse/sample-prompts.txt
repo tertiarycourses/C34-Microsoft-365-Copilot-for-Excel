@@ -1,0 +1,10 @@
+Agentic Ai for Financial Data Analysis · Lab 1 · Prioritise Month-End Exceptions with Meta Muse
+
+Check email and calendar connectors
+Confirm whether you can read Gmail and Google Calendar in this demo account. Tell me which connectors are available and what approval you need before an action. Do not read anything yet or change settings.
+
+Track month-end email and calendar
+Prepare a read-only month-end brief for the fictional Tema distributor. In the approved demo Gmail account find only subjects beginning DATIN DEMO. In the demo Google Calendar check only events beginning DATIN DEMO for the next seven days, in Accra time (GMT). Match the email and event by ticket ID. Rank S-104 (sales cut-off), S-109 (supplier duplicate) and S-112 (credit note) by the recorded deadline. Return the source, deadline, evidence to check and approval owner. Mark missing details. Do not send or move email, change events, post entries or make payments. Tell me whether you can repeat this as a read-only scheduled brief. Ask before creating any schedule.
+
+Fallback · Draft from inline mock notes
+You are helping the finance team of a fictional wholesale distributor in Tema, Ghana, at month-end. Work only from these mock notes. Today is Tuesday. S-104: reconcile a short rice delivery against a GHS 4,800 sales invoice before the cut-off on Wednesday at 2 pm. S-109: check a possible duplicate GHS 3,250 supplier invoice before the payment review on Thursday at 10 am. S-112: check a request for a GHS 620 credit note for returned detergent, with no deadline given. Rank the three items by explicit deadline. Return ID, reason, evidence to check and one draft recommendation per item. Mark missing information and name the accounting record or tool needed. Identify who should approve a posting, payment or customer credit. Draft only. Leave accounts, connectors, records and payments untouched.

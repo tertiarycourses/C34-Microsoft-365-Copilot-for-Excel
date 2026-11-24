@@ -1,0 +1,10 @@
+Agentic Ai for Financial Data Analysis · Lab 4 · Review the Bank of Ghana Financial Statements
+
+Extract with scope and sources
+Use only the attached Bank of Ghana Report and Financial Statements for the year ended 31 December 2025. First identify the four year and entity columns. Extract 2025 and 2024 Bank-only loss for the year, cost of open market operations and other comprehensive income. Then extract 2025 Bank-only total assets, total liabilities, total equity and cash flows. Return one row per item with exact line label, signed values, entity, year, units, printed page and note if shown. Keep figures in GH¢’000. Report a missing or unreadable figure without guessing.
+
+Reconcile and investigate
+Use the attached PDF as evidence. Show the formulas and printed source pages for four checks in GH¢’000. Recalculate the 2025 Bank loss plus other comprehensive income, assets less liabilities, and the opening-to-closing cash bridge including the reported exchange-rate effect. Compare Group loss in the directors’ financial results summary with total Group loss and its attribution on the 2025 statement of profit or loss. Quantify the difference and test whether non-controlling interest explains it. Keep Bank and Group separate. Flag anything that remains unresolved.
+
+Draft the review memo
+Draft a short financial-statement review memo for Word using only the attached Bank of Ghana PDF and the figures I have verified. Summarise KPMG’s opinion in relation to Note 2(a)(i), its emphasis of matter and the investment securities impairment key audit matter. Add three verified findings with signed amounts in GH¢’000, printed pages and a follow-up for each open point. Separate reported facts, calculations and interpretations. State what an analytical review of public material cannot establish. Do not issue an audit opinion.

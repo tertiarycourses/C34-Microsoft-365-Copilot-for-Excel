@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Ai for Financial Data Analysis | Datin prompts</title>
+<style>
+:root {color-scheme: light; font: 16px/1.6 system-ui, sans-serif; color: #0b1730; background: #f3f5f9}
+* {box-sizing: border-box}
+body {margin: 0}
+main {max-width: 58rem; margin: auto; padding: 2rem clamp(1rem, 4vw, 2.25rem) 4rem}
+.hero {padding: clamp(1.25rem, 4vw, 2.75rem); background: #0b1730; color: white; border-radius: 1rem}
+.hero p {margin: 0; color: #e9be64; font-weight: 700}
+h1,h2,h3 {line-height: 1.22; text-wrap: balance}
+h1 {font-size: clamp(2rem, 6vw, 3.15rem); margin: .5rem 0 0; letter-spacing: -.045em}
+h2 {font-size: clamp(1.4rem, 4vw, 2rem); margin: 0}
+nav,.resources {display: flex; flex-wrap: wrap; gap: .5rem 1rem}
+nav {margin: 1.5rem 0; padding-bottom: .85rem; border-bottom: 1px solid #c6cfdd}
+a {color: #174882; overflow-wrap: anywhere}
+a:focus-visible,button:focus-visible {outline: 3px solid #2f5bb8; outline-offset: 3px}
+section {margin: 2.4rem 0}
+section p {margin: .55rem 0}
+.resources {padding: 0; list-style: none; font-size: .94rem}
+article {margin: .85rem 0; border: 1px solid #c6cfdd; border-radius: .75rem; background: white; overflow: hidden}
+article header {display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .75rem 1rem; background: #e7edf6}
+h3 {margin: 0; font-size: 1rem}
+pre {padding: 1rem; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: .98rem/1.64 system-ui, sans-serif}
+button {font: inherit; font-weight: 700; background: #0b1730; color: white; padding: .4em .8em; border: 0; border-radius: .4rem; cursor: pointer; flex-shrink: 0}
+footer {border-top: 1px solid #c6cfdd; padding-top: 1rem; font-size: .9rem}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero"><p>Datin · Lab prompts</p><h1>Agentic Ai for Financial Data Analysis</h1></header>
+  <nav aria-label="Jump to lab"><a href="#lab-1">Lab 1 · Meta Muse</a><a href="#lab-2">Lab 2 · Interactive Excel dashboard</a><a href="#lab-3">Lab 3 · Excel custom skills</a><a href="#lab-4">Lab 4 · Copilot financial review</a></nav>
+
+  <section id="lab-1">
+    <h2>Lab 1 · Prioritise Month-End Exceptions with Meta Muse</h2>
+    <p>Read a demo Gmail inbox and Google Calendar to prepare a finance exception queue for a Tema distributor. Check cut-off, duplicate payment and credit-note evidence.</p>
+    <ul class="resources"><li><a href="../labs/lab-01-meta-muse/Lab-01-Instructions.pdf">Instructions PDF</a></li><li><a href="https://muse.ai/">Open Muse</a></li></ul>
+
+    <article>
+      <header><h3>Check email and calendar connectors</h3><button type="button" aria-label="Copy Check email and calendar connectors">Copy</button></header>
+      <pre>Confirm whether you can read Gmail and Google Calendar in this demo account. Tell me which connectors are available and what approval you need before an action. Do not read anything yet or change settings.</pre>
+    </article>
+    <article>
+      <header><h3>Track month-end email and calendar</h3><button type="button" aria-label="Copy Track month-end email and calendar">Copy</button></header>
+      <pre>Prepare a read-only month-end brief for the fictional Tema distributor. In the approved demo Gmail account find only subjects beginning DATIN DEMO. In the demo Google Calendar check only events beginning DATIN DEMO for the next seven days, in Accra time (GMT). Match the email and event by ticket ID. Rank S-104 (sales cut-off), S-109 (supplier duplicate) and S-112 (credit note) by the recorded deadline. Return the source, deadline, evidence to check and approval owner. Mark missing details. Do not send or move email, change events, post entries or make payments. Tell me whether you can repeat this as a read-only scheduled brief. Ask before creating any schedule.</pre>
+    </article>
+    <article>
+      <header><h3>Fallback · Draft from inline mock notes</h3><button type="button" aria-label="Copy Fallback · Draft from inline mock notes">Copy</button></header>
+      <pre>You are helping the finance team of a fictional wholesale distributor in Tema, Ghana, at month-end. Work only from these mock notes. Today is Tuesday. S-104: reconcile a short rice delivery against a GHS 4,800 sales invoice before the cut-off on Wednesday at 2 pm. S-109: check a possible duplicate GHS 3,250 supplier invoice before the payment review on Thursday at 10 am. S-112: check a request for a GHS 620 credit note for returned detergent, with no deadline given. Rank the three items by explicit deadline. Return ID, reason, evidence to check and one draft recommendation per item. Mark missing information and name the accounting record or tool needed. Identify who should approve a posting, payment or customer credit. Draft only. Leave accounts, connectors, records and payments untouched.</pre>
+    </article>
+  </section>
+
+  <section id="lab-2">
+    <h2>Lab 2 · Create and Restyle an Interactive Sales Dashboard</h2>
+    <p>The trainer runs Prompt 1 to build the dashboard. Learners run Prompt 2 as the hands-on activity and compare the numbers and filter behavior before and after.</p>
+    <ul class="resources"><li><a href="../labs/lab-02-interactive-sales-dashboard/Lab-02-Instructions.pdf">Instructions PDF</a></li><li><a href="../labs/lab-02-interactive-sales-dashboard/data/Datin_Sales_Finance_H1_GHS.xlsx">Datin_Sales_Finance_H1_GHS.xlsx</a></li><li><a href="../labs/lab-02-interactive-sales-dashboard/examples/Datin_Sales_Dashboard_Example_GHS.xlsx">Finished dark dashboard example</a></li><li><a href="https://www.youtube.com/watch?v=YgcEesCDIkw">Kevin Stratvert’s dashboard walkthrough</a></li><li><a href="https://support.microsoft.com/en-us/excel/get-started/use-slicers-to-filter-data">Microsoft’s slicer guide</a></li></ul>
+
+    <article>
+      <header><h3>Prompt 1 · Create the dashboard</h3><button type="button" aria-label="Copy Prompt 1 · Create the dashboard">Copy</button></header>
+      <pre>Create a professional, interactive sales dashboard using the data in this workbook. Include key sales metrics, charts showing sales trends and performance, and interactive filters so I can explore the data. Put everything on a new worksheet.</pre>
+    </article>
+    <article>
+      <header><h3>Prompt 2 · Customize the theme</h3><button type="button" aria-label="Copy Prompt 2 · Customize the theme">Copy</button></header>
+      <pre>Redesign the dashboard with a modern dark theme using navy blue backgrounds, gold accents, and high-contrast white text. Keep the existing layout, charts, metrics, and interactive filters fully functional. Make sure all labels and charts remain easy to read.</pre>
+    </article>
+    <article>
+      <header><h3>Follow-up · Complete or repair</h3><button type="button" aria-label="Copy Follow-up · Complete or repair">Copy</button></header>
+      <pre>On the dashboard sheet, use only tblDatinSales. Show Net Sales, Gross Profit, Gross Margin (total Gross Profit divided by total Net Sales) and Order Count (count Order_ID). Format money in GHS. Show a monthly net revenue trend, regional revenue bars, and doughnut charts for Product and Channel mix. Connect Region, Channel and Product controls to every KPI and chart. Keep the Sales Data table unchanged and tell me which controls you implemented.</pre>
+    </article>
+  </section>
+
+  <section id="lab-3">
+    <h2>Lab 3 · Install and Reuse the Dashboard Skill</h2>
+    <p>Save the theme and its preservation checks in SKILL.md. Add the create-if-missing steps so the same skill can apply the theme during a fresh dashboard build.</p>
+    <ul class="resources"><li><a href="../labs/lab-03-dashboard-skill/Lab-03-Instructions.pdf">Instructions PDF</a></li><li><a href="../labs/lab-03-dashboard-skill/data/Datin_Sales_Finance_H2_GHS.xlsx">Datin_Sales_Finance_H2_GHS.xlsx</a></li><li><a href="../labs/lab-03-dashboard-skill/skills/datin-dark-sales-dashboard/SKILL.md">Ready-To-Upload Skill</a></li><li><a href="https://support.microsoft.com/en-gb/excel/copilot/copilot-in-excel-skills">Microsoft’s Excel skills guide</a></li></ul>
+
+    <article>
+      <header><h3>Convert Prompt 2</h3><button type="button" aria-label="Copy Convert Prompt 2">Copy</button></header>
+      <pre>@skill-builder Turn the theme prompt below into an Excel skill named datin-dark-sales-dashboard. For an existing interactive sales dashboard, apply the theme while preserving its layout, source data, formulas, charts and working filters. If the request is to create a dashboard and none exists, first build one from the workbook sales table with GHS Net Sales, Gross Profit, Gross Margin and Order Count, monthly trend and regional charts, doughnut charts for product and channel mix, and Region, Channel and Product filters. Apply the theme and verify the filters. Show the proposed skill for approval. Theme prompt: Redesign the dashboard with a modern dark theme using navy blue backgrounds, gold accents, and high-contrast white text. Keep the existing layout, charts, metrics, and interactive filters fully functional. Make sure all labels and charts remain easy to read.</pre>
+    </article>
+    <article>
+      <header><h3>Run the short prompt</h3><button type="button" aria-label="Copy Run the short prompt">Copy</button></header>
+      <pre>Create an interactive Datin sales dashboard.</pre>
+    </article>
+    <article>
+      <header><h3>Invoke the skill explicitly</h3><button type="button" aria-label="Copy Invoke the skill explicitly">Copy</button></header>
+      <pre>@datin-dark-sales-dashboard Create an interactive Datin sales dashboard.</pre>
+    </article>
+  </section>
+
+  <section id="lab-4">
+    <h2>Lab 4 · Review the Bank of Ghana Financial Statements</h2>
+    <p>Attach the published report to Copilot Chat. Recheck its calculations against the signed statements and document your findings in Word.</p>
+    <ul class="resources"><li><a href="../labs/lab-04-bog-financial-report/Lab-04-Instructions.pdf">Instructions PDF</a></li><li><a href="../labs/lab-04-bog-financial-report/Bank of Ghana 2025 - Financial Report Review.docx">Editable Word workpaper</a></li><li><a href="https://www.bog.gov.gh/wp-content/uploads/2026/05/2025-Financial-Statements-1.pdf">Official Bank of Ghana 2025 financial statements</a></li><li><a href="https://support.microsoft.com/en-au/microsoft-365-copilot/add-content-to-microsoft-copilot-chat-prompts">Microsoft guidance on attaching files</a></li></ul>
+
+    <article>
+      <header><h3>Extract with scope and sources</h3><button type="button" aria-label="Copy Extract with scope and sources">Copy</button></header>
+      <pre>Use only the attached Bank of Ghana Report and Financial Statements for the year ended 31 December 2025. First identify the four year and entity columns. Extract 2025 and 2024 Bank-only loss for the year, cost of open market operations and other comprehensive income. Then extract 2025 Bank-only total assets, total liabilities, total equity and cash flows. Return one row per item with exact line label, signed values, entity, year, units, printed page and note if shown. Keep figures in GH¢’000. Report a missing or unreadable figure without guessing.</pre>
+    </article>
+    <article>
+      <header><h3>Reconcile and investigate</h3><button type="button" aria-label="Copy Reconcile and investigate">Copy</button></header>
+      <pre>Use the attached PDF as evidence. Show the formulas and printed source pages for four checks in GH¢’000. Recalculate the 2025 Bank loss plus other comprehensive income, assets less liabilities, and the opening-to-closing cash bridge including the reported exchange-rate effect. Compare Group loss in the directors’ financial results summary with total Group loss and its attribution on the 2025 statement of profit or loss. Quantify the difference and test whether non-controlling interest explains it. Keep Bank and Group separate. Flag anything that remains unresolved.</pre>
+    </article>
+    <article>
+      <header><h3>Draft the review memo</h3><button type="button" aria-label="Copy Draft the review memo">Copy</button></header>
+      <pre>Draft a short financial-statement review memo for Word using only the attached Bank of Ghana PDF and the figures I have verified. Summarise KPMG’s opinion in relation to Note 2(a)(i), its emphasis of matter and the investment securities impairment key audit matter. Add three verified findings with signed amounts in GH¢’000, printed pages and a follow-up for each open point. Separate reported facts, calculations and interpretations. State what an analytical review of public material cannot establish. Do not issue an audit opinion.</pre>
+    </article>
+  </section>
+  <footer>C34 · Datin edition · Powered by <a href="https://www.tertiaryinfotech.com/">Tertiary Infotech Academy Pte Ltd</a></footer>
+</main>
+<script>
+document.querySelectorAll('button').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const prompt = button.closest('article').querySelector('pre');
+    const selection = window.getSelection();
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(prompt.textContent);
+      copied = true;
+    } catch {
+      const range = document.createRange();
+      range.selectNodeContents(prompt);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try { copied = document.execCommand('copy'); } catch { /* the text stays selected */ }
+      if (copied) selection.removeAllRanges();
+    }
+    window.clearTimeout(button.resetTimer);
+    button.textContent = copied ? 'Copied' : 'Text selected';
+    button.resetTimer = window.setTimeout(() => { button.textContent = 'Copy'; }, 1800);
+  });
+});
+</script>
+</body>
+</html>
