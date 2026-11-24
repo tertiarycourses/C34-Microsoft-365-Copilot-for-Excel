@@ -32,7 +32,7 @@ footer {border-top: 1px solid #c6cfdd; padding-top: 1rem; font-size: .9rem}
 <body>
 <main>
   <header class="hero"><p>Datin · Lab prompts</p><h1>Agentic Ai for Financial Data Analysis</h1></header>
-  <nav aria-label="Jump to lab"><a href="#lab-1">Lab 1 · Meta Muse</a><a href="#lab-2">Lab 2 · Interactive Excel dashboard</a><a href="#lab-3">Lab 3 · Excel custom skills</a></nav>
+  <nav aria-label="Jump to lab"><a href="#lab-1">Lab 1 · Meta Muse</a><a href="#lab-2">Lab 2 · Interactive Excel dashboard</a><a href="#lab-3">Lab 3 · Excel custom skills</a><a href="#lab-4">Lab 4 · Copilot financial review</a></nav>
 
   <section id="lab-1">
     <h2>Lab 1 · Prioritise Month-End Exceptions with Meta Muse</h2>
@@ -88,6 +88,25 @@ footer {border-top: 1px solid #c6cfdd; padding-top: 1rem; font-size: .9rem}
     <article>
       <header><h3>Invoke the skill explicitly</h3><button type="button" aria-label="Copy Invoke the skill explicitly">Copy</button></header>
       <pre>@datin-dark-sales-dashboard Create an interactive Datin sales dashboard.</pre>
+    </article>
+  </section>
+
+  <section id="lab-4">
+    <h2>Lab 4 · Review the Bank of Ghana Financial Statements</h2>
+    <p>Attach the published report to Copilot Chat. Recheck its calculations against the signed statements and document your findings in Word.</p>
+    <ul class="resources"><li><a href="../labs/lab-04-bog-financial-report/Lab-04-Instructions.pdf">Instructions PDF</a></li><li><a href="../labs/lab-04-bog-financial-report/Bank of Ghana 2025 - Financial Report Review.docx">Editable Word workpaper</a></li><li><a href="https://www.bog.gov.gh/wp-content/uploads/2026/05/2025-Financial-Statements-1.pdf">Official Bank of Ghana 2025 financial statements</a></li><li><a href="https://support.microsoft.com/en-au/microsoft-365-copilot/add-content-to-microsoft-copilot-chat-prompts">Microsoft guidance on attaching files</a></li></ul>
+
+    <article>
+      <header><h3>Extract with scope and sources</h3><button type="button" aria-label="Copy Extract with scope and sources">Copy</button></header>
+      <pre>Use only the attached Bank of Ghana Report and Financial Statements for the year ended 31 December 2025. First identify the four year and entity columns. Extract 2025 and 2024 Bank-only loss for the year, cost of open market operations and other comprehensive income. Then extract 2025 Bank-only total assets, total liabilities, total equity and cash flows. Return one row per item with exact line label, signed values, entity, year, units, printed page and note if shown. Keep figures in GH¢’000. Report a missing or unreadable figure without guessing.</pre>
+    </article>
+    <article>
+      <header><h3>Reconcile and investigate</h3><button type="button" aria-label="Copy Reconcile and investigate">Copy</button></header>
+      <pre>Use the attached PDF as evidence. Show the formulas and printed source pages for four checks in GH¢’000. Recalculate the 2025 Bank loss plus other comprehensive income, assets less liabilities, and the opening-to-closing cash bridge including the reported exchange-rate effect. Compare Group loss in the directors’ financial results summary with total Group loss and its attribution on the 2025 statement of profit or loss. Quantify the difference and test whether non-controlling interest explains it. Keep Bank and Group separate. Flag anything that remains unresolved.</pre>
+    </article>
+    <article>
+      <header><h3>Draft the review memo</h3><button type="button" aria-label="Copy Draft the review memo">Copy</button></header>
+      <pre>Draft a short financial-statement review memo for Word using only the attached Bank of Ghana PDF and the figures I have verified. Summarise KPMG’s opinion in relation to Note 2(a)(i), its emphasis of matter and the investment securities impairment key audit matter. Add three verified findings with signed amounts in GH¢’000, printed pages and a follow-up for each open point. Separate reported facts, calculations and interpretations. State what an analytical review of public material cannot establish. Do not issue an audit opinion.</pre>
     </article>
   </section>
   <footer>C34 · Datin edition · Powered by <a href="https://www.tertiaryinfotech.com/">Tertiary Infotech Academy Pte Ltd</a></footer>
