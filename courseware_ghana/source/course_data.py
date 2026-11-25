@@ -8,7 +8,7 @@ from tema_case import CANVAS
 TITLE = "Agentic Ai for Financial Data Analysis"
 SHORT_TITLE = TITLE
 COURSE_CODE = "C34"
-COURSE_PAGE = "Datin edition · Open README.md in the courseware_datin folder"
+COURSE_PAGE = "Datin edition · Open README.md in the courseware_ghana folder"
 VERSION = "v1.6"
 VERSION_DATE = "24 November 2026"
 ORG = "Tertiary Infotech Academy Pte Ltd"

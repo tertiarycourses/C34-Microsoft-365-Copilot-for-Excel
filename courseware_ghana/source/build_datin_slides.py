@@ -193,7 +193,7 @@ def main():
     K.cards(D, "Excel Copilot · sign in", "Use Your Assigned Outlook Training Account",
             SIGN_IN_CARDS, cols=2, desc_pt=21, bottom=5.35, tipt=SIGN_IN_TIP)
     K.flow(D, "Class materials", "How You'll Learn", [
-        ("folder", "Open Datin", "Use courseware_datin."),
+        ("folder", "Open Datin", "Use courseware_ghana."),
         ("book", "Open your lab", "Read the lab PDF."),
         ("edit", "Copy a prompt", "Open prompts/index.html."),
         ("check", "Verify", "Check sources and totals."),

@@ -39,4 +39,4 @@ The H1 and H2 starters each contain 432 fictional orders. The finished workbook 
 
 ## Rebuild
 
-From the C34 project root, run `bash courseware_datin/source/build.sh`. The Datin content and data are in `source/`. The build uses the reference v57 PowerPoint, its slide design components and the C34 document generators. If your reference repository checkout is in a different location, set `DATIN_REFERENCE_REPO` to its root. The build requires Python with python-pptx, python-docx, ReportLab, XlsxWriter, Pillow and PyMuPDF, plus LibreOffice’s `soffice`.
+From the C34 project root, run `bash courseware_ghana/source/build.sh`. The Datin content and data are in `source/`. The build uses the reference v57 PowerPoint, its slide design components and the C34 document generators. If your reference repository checkout is in a different location, set `DATIN_REFERENCE_REPO` to its root. The build requires Python with python-pptx, python-docx, ReportLab, XlsxWriter, Pillow and PyMuPDF, plus LibreOffice’s `soffice`.

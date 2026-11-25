@@ -86,7 +86,7 @@ The deck, Learner Guide, Lesson Plan and labs are all generated from one content
 
 ### Datin edition
 
-[Agentic Ai for Financial Data Analysis](courseware_datin/README.md) is the Datin classroom edition. It includes a separate deck, guides, four finance labs and the [Datin prompt page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/datin/prompts/). The C34 LMS uses the standard package under [`courseware/`](courseware/).
+[Agentic Ai for Financial Data Analysis](courseware_ghana/README.md) is the Datin classroom edition. It includes a separate deck, guides, four finance labs and the [Datin prompt page](https://tertiarycourses.github.io/C34-Microsoft-365-Copilot-for-Excel/datin/prompts/). The C34 LMS uses the standard package under [`courseware/`](courseware/).
 
 ## Distribution boundary
 
